@@ -1,0 +1,171 @@
+body {
+    overflow: hidden;
+}
+nav{
+    background-color: #FFBF00;
+    width: 100%;
+}
+.logo1{
+    padding: 5px;
+    height: 90px;
+    width: 180px;
+}
+label.logo{
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+}
+nav .datetime{
+    float: right;
+    margin: 4px 5px;
+}
+
+/*datetime*/
+.datetime{
+    color: #fff;
+    background-color: #10101E;
+    font-family: "Segoe UI",sans-serif;
+    width: 600px;
+    padding: 15px 10px;
+    border: 3px solid #777;
+    border-radius: 5px;
+}
+.date{
+    font-size: 15px;
+    font-weight: 600;
+    justify-content: center;
+    letter-spacing: 3px;
+    text-align: center;
+    
+}
+.time{
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.time span:not(:last-child){
+    position: relative;
+    margin: 0 6px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 3px;
+}
+.time span:last-child{
+    background: #ffbf00;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: px;
+    padding: 0 5px;
+    border-radius: 3px;
+}
+
+/*Login*/
+.loginbox{
+    width: 320px;
+    height: 450px;
+    background-color: #000;
+    color: #fff;
+    top:50%;
+    left:50%;
+    position: absolute;
+    box-sizing: border-box;
+    transform: translate(-50%,-50%);
+    padding: 70px 30px;
+}
+
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+h1{
+    margin: 0;
+    padding:0 0 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.loginbox p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.loginbox input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.loginbox input[type="email"], input[type="password"]{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background:transparent;
+    outline: none;
+    height: 40px;
+    color:#fff;
+    font-size: 16px;
+}
+.loginbox input[type="submit"]{
+    border: none;
+    outline: none;
+    height: 40px;
+    font-weight: bold;
+    background:#ffbf00 ;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.loginbox input[type="submit"]:hover{
+    background: #ffd633;
+    cursor: pointer;
+}
+.loginbox a{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgray;
+}
+
+.loginbox a:hover{
+    color: #ffd633;
+}
+
+canvas {
+    display: block;
+    width: 100vw;
+    height: 90vh;
+}
+
+@media only screen and (max-width: 868px) {
+    nav{
+     display: block;
+    }
+    .loginbox{
+       
+     width: 320px;
+     height: 450px;
+     background-color: #000;
+     color: #fff;
+     top:60%;
+     left:50%;
+     position: absolute;
+     box-sizing: border-box;
+     transform: translate(-50%,-50%);
+     padding: 70px 30px;
+     }
+     .datetime{
+         color: #fff;
+         background-color: #10101E;
+         font-family: "Segoe UI",sans-serif;
+         width: 400px;
+         padding: 15px 10px;
+         border: 3px solid #777;
+         border-radius: 5px;
+     }
+   }
