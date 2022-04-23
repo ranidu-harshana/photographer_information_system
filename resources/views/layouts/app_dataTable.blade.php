@@ -31,7 +31,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>     
     <script>
         $(document).ready(function() {
-            $('#example').DataTable();
+            $('#all-items-datatable').DataTable();
         } );
 
         // $(document).ready(function() {

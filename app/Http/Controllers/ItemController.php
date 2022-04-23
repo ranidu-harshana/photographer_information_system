@@ -26,7 +26,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('admin.create-item');
+        $function_types = FunctionType::all();
+        return view('admin.create-item', ['function_types'=>$function_types]);
     }
 
     /**
@@ -38,7 +39,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'item_code'=>['required'],
+            'item_code'=>['required', 'unique:items,item_code'],
             'item_desc'=>['required'],
             'function_type_id'=>['required'],
             'item_price'=>['required'],
@@ -46,8 +47,8 @@ class ItemController extends Controller
 
         $function = FunctionType::find($request->function_type_id);
         $function->items()->create($validated);
-
-        return back();
+        session()->flash('item-created', 'Item Created');
+        return redirect()->route('item.index');
     }
 
     /**
@@ -69,7 +70,9 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Item::find($id);
+        $function_types = FunctionType::all();
+        return view('admin.edit-item', ['item'=>$item, 'function_types'=>$function_types]);
     }
 
     /**
@@ -81,7 +84,17 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'item_code'=>['required'],
+            'item_desc'=>['required'],
+            'function_type_id'=>['required'],
+            'item_price'=>['required'],
+        ]);
+
+        $item = Item::find($id);
+        $item->update($validated);
+        session()->flash('item-updated', 'Item Updated');
+        return redirect()->route('item.index');
     }
 
     /**

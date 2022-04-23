@@ -6,13 +6,13 @@
             <div class="card-box">
                 <div class="card-block">
                     <h6 class="card-title text-bold">All Customers</h6>
-                    @if (session('bill-created'))
+                    @if (session('item-created'))
                         <div class="alert alert-success">
-                            {{ session('bill-created') }}
+                            {{ session('item-created') }}
                         </div>
-                    @elseif(session('function-posponed'))
+                    @elseif(session('item-updated'))
                         <div class="alert alert-success">
-                            {{ session('function-posponed') }}
+                            {{ session('item-updated') }}
                         </div>
                     @elseif(session('measurment-date-updated'))
                         <div class="alert alert-success">
@@ -21,7 +21,7 @@
                     @endif
 
                     <div class="table-responsive">
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <table id="all-items-datatable" class="table table-striped table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th>Item Code</th>
@@ -39,7 +39,11 @@
                                         <td>{{ $item->item_desc }}</td>
                                         <td>{{ $item->item_price }}</td>
                                         <td>{{ $item->function_type->name }}</td>
-                                        <td>Edit</td>
+                                        <td>
+                                            <a href="{{ route('item.edit', $item->id) }}">
+                                                <button type="button" class="btn btn-success btn-sm">Edit</button>
+                                            </a>
+                                        </td>
                                         <td>Delete</td>
                                     </tr>    
                                 @endforeach
