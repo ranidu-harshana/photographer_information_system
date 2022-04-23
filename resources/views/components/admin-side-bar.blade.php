@@ -21,11 +21,15 @@
                         <li><a href="">Function Type</a></li>
                         <li><a href="">Packages</a></li>
                         <li><a href="{{ route('item.create') }}">Items</a></li>
-                        @if (auth()->check())
-                        @if (auth()->user()->is_admin())
-                            <li><a href="">Branches</a></li>
-                        @endif
-                        @endif
+                        <li><a href="">Branches</a></li>
+                    </ul>
+                </li>
+
+                <li class="submenu">
+                    <a href="#"><i class="fa fa-user"></i> <span> Inventory </span> <span><i class="fas fa-caret-down"></i></span></a>
+                    <ul style="display: none;">
+                        <li><a href="">All Packages</a></li>
+                        <li><a href="{{ route('item.index') }}">All Items</a></li>
                     </ul>
                 </li>
 
