@@ -21,7 +21,11 @@
                         <li><a href="">Function Type</a></li>
                         <li><a href="">Packages</a></li>
                         <li><a href="{{ route('item.create') }}">Items</a></li>
-                        <li><a href="">Branches</a></li>
+                        @if (auth()->check())
+                        @if (auth()->user()->is_admin())
+                            <li><a href="">Branches</a></li>
+                        @endif
+                        @endif
                     </ul>
                 </li>
 
