@@ -1,7 +1,7 @@
 <div class="header">
     <div class="header-left">
         <a href="{{ route('home') }}" class="logo">
-            <img src="{{ asset('assets/img/Logo.jpg') }}" width="35" height="35" alt=""> <span>Sri Kula Medura</span>
+            <img src="{{ asset('assets/img/logo.jpg') }}" width="35" height="35" alt=""> <span>Photography</span>
         </a>
     </div>
     <a id="toggle_btn" href="javascript:void(0);"><i class="fa fa-bars"></i></a>

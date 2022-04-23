@@ -8,13 +8,22 @@
                 </li>
 
                 <li>
-                    <a href=""><i class="fas fa-clipboard-list"></i> <span>Create New</span></a>
+                    <a href="{{ route('customer.create') }}"><i class="fas fa-clipboard-list"></i> <span>Create New</span></a>
                 </li>
 
                 <li>
                     <a href=""><i class="fas fa-users"></i> <span>Events List</span></a>
                 </li>
 
+                <li class="submenu">
+                    <a href="#"><i class="fa fa-user"></i> <span> Master </span> <span><i class="fas fa-caret-down"></i></span></a>
+                    <ul style="display: none;">
+                        <li><a href="">Function Type</a></li>
+                        <li><a href="">Packages</a></li>
+                        <li><a href="{{ route('item.create') }}">Items</a></li>
+                        <li><a href="">Branches</a></li>
+                    </ul>
+                </li>
 
                 <li class="submenu">
                     <a href="#"><i class="fas fa-book"></i> <span> Reports </span> <span><i class="fas fa-caret-down"></i></span></a>
