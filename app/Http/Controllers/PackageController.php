@@ -16,7 +16,8 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $packages = Package::all();
+        return view('admin.all-packages', ['packages'=>$packages]);
     }
 
     /**
@@ -49,7 +50,8 @@ class PackageController extends Controller
         $package = $function->packages()->create($validated);
 
         $package->items()->attach($request->items);
-        return back();
+        session()->flash('package-created', 'Package Created');
+        return redirect()->route('package.index');
     }
 
     /**
@@ -94,6 +96,8 @@ class PackageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Package::find($id);
+        $item->delete();
+        return back();
     }
 }

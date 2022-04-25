@@ -34,6 +34,10 @@
             $('#all-items-datatable').DataTable();
         } );
 
+        $(document).ready(function() {
+            $('#all-packages-datatable').DataTable();
+        } );
+
         // $(document).ready(function() {
         //     $('#all_items_datatable').DataTable();
         // } );
