@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\FunctionType;
 use App\Models\Item;
+use App\Models\Package;
 use Illuminate\Http\Request;
 
-class ItemController extends Controller
+class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
-        return view('admin.all-items', ['items'=>$items]);
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class ItemController extends Controller
     public function create()
     {
         $function_types = FunctionType::all();
-        return view('admin.create-item', ['function_types'=>$function_types]);
+        return view('admin.create-package', ['function_types'=>$function_types]);
     }
 
     /**
@@ -39,16 +39,17 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'item_code'=>['required', 'unique:items,item_code'],
-            'item_desc'=>['required'],
-            'function_type_id'=>['required'],
-            'item_price'=>['required'],
+            'package_code'=>['nullable'],
+            'name'=>['nullable'],
+            'desc'=>['nullable'],
+            'package_price'=>['nullable'],
         ]);
 
         $function = FunctionType::find($request->function_type_id);
-        $function->items()->create($validated);
-        session()->flash('item-created', 'Item Created');
-        return redirect()->route('item.index');
+        $package = $function->packages()->create($validated);
+
+        $package->items()->attach($request->items);
+        return back();
     }
 
     /**
@@ -70,9 +71,7 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        $item = Item::find($id);
-        $function_types = FunctionType::all();
-        return view('admin.edit-item', ['item'=>$item, 'function_types'=>$function_types]);
+        //
     }
 
     /**
@@ -84,17 +83,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'item_code'=>['required'],
-            'item_desc'=>['required'],
-            'function_type_id'=>['required'],
-            'item_price'=>['required'],
-        ]);
-
-        $item = Item::find($id);
-        $item->update($validated);
-        session()->flash('item-updated', 'Item Updated');
-        return redirect()->route('item.index');
+        //
     }
 
     /**
@@ -105,14 +94,6 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        $item = Item::find($id);
-        $item->delete();
-        return back();
-    }
-
-    public function get_items_of_function($id) {
-        $items = Item::where('function_type_id', '=', $id)->get()->toArray();
-        
-        return response()->json($items);
+        //
     }
 }

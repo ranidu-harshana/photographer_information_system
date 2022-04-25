@@ -19,7 +19,7 @@
                     <a href="#"><i class="fa fa-user"></i> <span> Master </span> <span><i class="fas fa-caret-down"></i></span></a>
                     <ul style="display: none;">
                         <li><a href="">Function Type</a></li>
-                        <li><a href="">Packages</a></li>
+                        <li><a href="{{ route('package.create') }}">Packages</a></li>
                         <li><a href="{{ route('item.create') }}">Items</a></li>
                         <li><a href="">Branches</a></li>
                     </ul>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PackageController;
 use App\Models\FunctionType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('customer', CustomerController::class);
     Route::resource('item', ItemController::class);
     Route::resource('function/type', FunctionType::class);
+    Route::resource('package', PackageController::class);
+
+    Route::get('/get/item/{function_id}', [ItemController::class, 'get_items_of_function'])->name('get_items_of_function');
 });
