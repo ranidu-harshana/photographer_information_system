@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FunctionType;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -92,6 +93,10 @@ class ItemController extends Controller
         ]);
 
         $item = Item::find($id);
+        if($request->function_type_id != $item->function_type_id) {
+            DB::table('item_package')->where('item_id', $item->id)->delete();
+        }
+
         $item->update($validated);
         session()->flash('item-updated', 'Item Updated');
         return redirect()->route('item.index');

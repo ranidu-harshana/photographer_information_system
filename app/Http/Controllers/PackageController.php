@@ -40,7 +40,7 @@ class PackageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'package_code'=>['nullable'],
+            'package_code'=>['nullable', 'unique:packages,package_code'],
             'name'=>['nullable'],
             'desc'=>['nullable'],
             'package_price'=>['nullable'],
@@ -73,7 +73,9 @@ class PackageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $package = Package::find($id);
+        $function_types = FunctionType::all();
+        return view('admin.edit-package', ['package'=>$package, 'function_types'=>$function_types]);
     }
 
     /**
@@ -85,7 +87,16 @@ class PackageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name'=>['required'],
+            'desc'=>['required'],
+            'package_price'=>['required'],
+        ]);
+
+        $package = Package::find($id);
+        $package->update($validated);
+        session()->flash('package-updated', 'Package Updated');
+        return redirect()->route('package.index');
     }
 
     /**
