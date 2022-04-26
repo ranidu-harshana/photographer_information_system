@@ -18,4 +18,9 @@ class FunctionType extends Model
     {
         return $this->hasMany(Package::class);
     }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }

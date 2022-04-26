@@ -24,7 +24,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::resource('customer', CustomerController::class);
+    // Route::resource('customer', CustomerController::class);
     Route::resource('item', ItemController::class);
     Route::resource('function/type', FunctionType::class);
     Route::resource('package', PackageController::class);

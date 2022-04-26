@@ -25,4 +25,8 @@ class Package extends Model
     public function items() {
         return $this->belongsToMany(Item::class);
     }
+
+    public function customers() {
+        return $this->belongsToMany(Customer::class);
+    }
 }
