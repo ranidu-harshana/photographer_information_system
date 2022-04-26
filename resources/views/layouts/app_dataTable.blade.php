@@ -38,6 +38,10 @@
             $('#all-packages-datatable').DataTable();
         } );
 
+        $(document).ready(function() {
+            $('#all-customers-datatable').DataTable();
+        } );
+
         // $(document).ready(function() {
         //     $('#all_items_datatable').DataTable();
         // } );

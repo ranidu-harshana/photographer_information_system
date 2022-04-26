@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\SessionController;
 use App\Models\FunctionType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('package', PackageController::class);
 
     Route::get('/get/item/{function_id}', [ItemController::class, 'get_items_of_function'])->name('get_items_of_function');
+
+    Route::post('set_tab0_session', [SessionController::class, 'set_tab0_session']);
+    Route::post('set_tab1_session', [SessionController::class, 'set_tab1_session']);
+    Route::post('set_tab2_session', [SessionController::class, 'set_tab2_session']);
+    Route::post('set_tab3_session', [SessionController::class, 'set_tab3_session']);
+    Route::post('set_tab4_session', [SessionController::class, 'set_tab4_session']);
+    Route::post('set_tab5_session', [SessionController::class, 'set_tab5_session']);
 });

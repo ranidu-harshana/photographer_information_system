@@ -15,7 +15,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        
+        $customers = Customer::all();
+        return view('admin.all-customers', ['customers'=>$customers]);
     }
 
     /**
@@ -61,7 +62,7 @@ class CustomerController extends Controller
 
         $function_type = FunctionType::find($request->function_type_id);
         $function_type->customers()->create($validated);
-        
+        return redirect()->route('customer.index');
     }
 
     /**
@@ -72,7 +73,8 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('admin.customer-profile', ['customer'=>$customer]);
     }
 
     /**

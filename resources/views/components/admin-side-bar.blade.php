@@ -12,7 +12,7 @@
                 </li>
 
                 <li>
-                    <a href=""><i class="fas fa-users"></i> <span>Events List</span></a>
+                    <a href="{{ route('customer.index') }}"><i class="fas fa-users"></i> <span>Events List</span></a>
                 </li>
 
                 <li class="submenu">
