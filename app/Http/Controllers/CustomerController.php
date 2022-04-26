@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\FunctionType;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -13,7 +15,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -23,7 +25,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create-customer');
     }
 
     /**
@@ -34,7 +36,32 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'bill_nulber'=>['nullable'],
+            'function_type_id'=>['required'],
+            'name'=>['required'],
+            'address'=>['required'],
+            'mob_no1'=>['required'],
+            'mob_no2'=>['nullable'],
+            'wedding_date'=>['nullable'],
+            'wedding_location'=>['nullable'],
+            'home_com_date'=>['nullable'],
+            'home_com_location'=>['nullable'],
+
+            // 'event_type'=>['nullable'],
+
+            'event_date'=>['nullable'],
+            'event_location'=>['nullable'],
+            'photo_shoot_date'=>['nullable'],
+            'photo_shoot_location'=>['nullable'],
+            'total_payment'=>['nullable'],
+            'discount'=>['nullable'],
+            'advance_payment'=>['nullable'],
+        ]);
+
+        $function_type = FunctionType::find($request->function_type_id);
+        $function_type->customers()->create($validated);
+        
     }
 
     /**
