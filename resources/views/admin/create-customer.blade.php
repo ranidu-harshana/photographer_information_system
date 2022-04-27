@@ -54,8 +54,8 @@
                         <label>Type </label>
                         <select name="function_type_id" id="function_type_id" required class="form-control" value="{{ old('type') }}">
                             <option value="">Select Type</option>
-                            <option value="1">Photo Shoot</option>
-                            <option value="2">Wedding</option>
+                            <option value="1">Wedding</option>
+                            <option value="2">Photoshoot</option>
                             <option value="3">Event</option>
                         </select>
                     </div>
@@ -221,7 +221,7 @@
             $('#wedding_type_id').prop('required', false)
             $('#function_type_id').change(function() {
                 var function_type_id = $('#function_type_id').val()
-                if(function_type_id == 1){
+                if(function_type_id == 2){
                     $('#wedding_type').hide();
                     $('#wedding_div').hide();
                     $('#homecomming_div').hide();
@@ -232,7 +232,7 @@
                     $('#wedding_date').prop('required', false)
                     $('#event_date').prop('required', false)
                     $('#wedding_type_id').prop('required', false)
-                }else if (function_type_id == 2) {
+                }else if (function_type_id == 1) {
                     $('#wedding_type').show();
                     $('#wedding_div').hide();
                     $('#homecomming_div').hide();

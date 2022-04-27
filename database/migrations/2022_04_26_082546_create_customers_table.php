@@ -35,6 +35,7 @@ return new class extends Migration
             $table->double('advance_payment')->nullable();
             $table->double('total_package_price')->nullable();
             $table->double('total_item_price')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }
