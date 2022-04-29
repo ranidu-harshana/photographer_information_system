@@ -26,7 +26,7 @@
                 </li>
 
                 <li class="submenu">
-                    <a href="#"><i class="fa fa-user"></i> <span> Inventory </span> <span><i class="fas fa-caret-down"></i></span></a>
+                    <a href="#"><i class="fas fa-warehouse"></i> <span> Inventory </span> <span><i class="fas fa-caret-down"></i></span></a>
                     <ul style="display: none;">
                         <li><a href="{{ route('package.index') }}">All Packages</a></li>
                         <li><a href="{{ route('item.index') }}">All Items</a></li>

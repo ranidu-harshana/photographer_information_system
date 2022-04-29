@@ -29,6 +29,8 @@ class Customer extends Model
         'total_payment',
         'discount',
         'advance_payment',
+        'total_package_price',
+        'total_item_price',
     ];
 
     public function packages() {
@@ -41,5 +43,10 @@ class Customer extends Model
 
     public function function_type() {
         return $this->belongsTo(FunctionType::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class)->orderBy('created_at', 'DESC');
     }
 }

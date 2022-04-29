@@ -109,7 +109,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     @foreach ($package->items as $item)
-                                                                        <input type="checkbox" id="detach_items{{ $item->id }}" name="detach_items[]" value="{{ $item->id }}"> <label for="detach_items{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
+                                                                        <input type="checkbox" id="detach_items{{ $package->id }}{{ $item->id }}" name="detach_items[]" value="{{ $item->id }}"> <label for="detach_items{{ $package->id }}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
                                                                     @endforeach
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -190,7 +190,7 @@
                     html = '';
                     if (data.length != 0) {
                         data.forEach(element => {
-                            html += '<input type="checkbox" id="attach_items'+element.id+'" name="attach_items[]" value="'+element.id+'"> <label for="attach_items'+element.id+'">'+element.item_desc+'</label> <br>';
+                            html += '<input type="checkbox" id="attach_items'+package_id+''+element.id+'" name="attach_items[]" value="'+element.id+'"> <label for="attach_items'+package_id+''+element.id+'">'+element.item_desc+'</label> <br>';
                         });
                     }else{
                         html = '<div class="alert alert-success" role="alert">No any Items for this Package</div>';

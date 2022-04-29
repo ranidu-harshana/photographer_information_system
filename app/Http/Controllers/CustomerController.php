@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\FunctionType;
+use App\Models\Item;
+use App\Models\Package;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -74,7 +76,20 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::find($id);
-        return view('admin.customer-profile', ['customer'=>$customer]);
+        $ids = [];
+        foreach($customer->items as $item){
+            array_push($ids, $item->id);
+        }
+        $items = Item::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
+
+        $ids = [];
+        foreach($customer->packages as $package){
+            array_push($ids, $package->id);
+        }
+        $packages = Package::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
+        $notes = $customer->notes;
+
+        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'notes'=>$notes]);
     }
 
     /**
@@ -110,4 +125,98 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function item_detach(Request $request, $id) {
+        $request->validate([
+            'detach_items'=>'required',
+        ]);
+        $customer = Customer::find($id);
+        $customer->items()->detach($request->detach_items);
+
+        $total_item_price = 0;
+        if ($customer->total_item_price != NULL) {
+            $total_item_price = $customer->total_item_price;
+        }
+        
+        foreach ($request->detach_items as $detach_items) {
+            $item = Item::find($detach_items);
+            $total_item_price = $total_item_price - $item->item_price;
+        }
+        $r = $customer->update([
+            'total_item_price'=>$total_item_price,
+        ]);
+
+        return back();
+    }
+
+    public function item_attach(Request $request, $id) {
+        $request->validate([
+            'attach_items'=>'required',
+        ]);
+        $customer = Customer::find($id);
+        $customer->items()->attach($request->attach_items);
+
+        $total_item_price = 0;
+        if ($customer->total_item_price != NULL) {
+            $total_item_price = $customer->total_item_price;
+        }
+
+        foreach ($request->attach_items as $attach_items) {
+            $item = Item::find($attach_items);
+            $total_item_price = $total_item_price + $item->item_price;
+        }
+        $r = $customer->update([
+            'total_item_price'=>$total_item_price,
+        ]);
+        
+        return back();
+    }
+
+
+    public function package_detach(Request $request, $id) {
+        $request->validate([
+            'detach_packages'=>'required',
+        ]);
+        $customer = Customer::find($id);
+        $customer->packages()->detach($request->detach_packages);
+
+        $total_package_price = 0;
+        if ($customer->total_package_price != NULL) {
+            $total_package_price = $customer->total_package_price;
+        }
+        
+        foreach ($request->detach_packages as $detach_packages) {
+            $package = Package::find($detach_packages);
+            $total_package_price = $total_package_price - $package->package_price;
+        }
+        $r = $customer->update([
+            'total_package_price'=>$total_package_price,
+        ]);
+
+        return back();
+    }
+
+    public function package_attach(Request $request, $id) {
+        $request->validate([
+            'attach_packages'=>'required',
+        ]);
+        $customer = Customer::find($id);
+        $customer->packages()->attach($request->attach_packages);
+
+        $total_package_price = 0;
+        if ($customer->total_package_price != NULL) {
+            $total_package_price = $customer->total_package_price;
+        }
+
+        foreach ($request->attach_packages as $attach_packages) {
+            $package = Package::find($attach_packages);
+            $total_package_price = $total_package_price + $package->package_price;
+        }
+        $r = $customer->update([
+            'total_package_price'=>$total_package_price,
+        ]);
+        
+        return back();
+    }
+
 }
