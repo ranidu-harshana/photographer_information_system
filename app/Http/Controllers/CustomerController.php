@@ -61,8 +61,8 @@ class CustomerController extends Controller
         ]);
 
         $function_type = FunctionType::find($request->function_type_id);
-        $function_type->customers()->create($validated);
-        return redirect()->route('customer.index');
+        $customer = $function_type->customers()->create($validated);
+        return redirect()->route('customer.show', $customer);
     }
 
     /**

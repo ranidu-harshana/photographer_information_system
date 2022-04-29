@@ -111,4 +111,33 @@ class PackageController extends Controller
         $item->delete();
         return back();
     }
+
+    public function get_package_items($id) {
+        $package = Package::find($id);
+        $ids = [];
+        foreach($package->items as $item){
+            array_push($ids, $item->id);
+        }
+        $items = Item::where('function_type_id', '=', $package->function_type_id)->whereNotIn('id', $ids)->get();
+
+        return response()->json($items);
+    }
+
+    public function item_detach(Request $request, $id) {
+        $request->validate([
+            'detach_items'=>'required',
+        ]);
+        $package = Package::find($id);
+        $package->items()->detach($request->detach_items);
+        return back();
+    }
+
+    public function item_attach(Request $request, $id) {
+        $request->validate([
+            'attach_items'=>'required',
+        ]);
+        $package = Package::find($id);
+        $package->items()->attach($request->attach_items);
+        return back();
+    }
 }

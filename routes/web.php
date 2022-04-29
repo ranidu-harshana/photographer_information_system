@@ -29,8 +29,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('item', ItemController::class);
     Route::resource('function/type', FunctionType::class);
     Route::resource('package', PackageController::class);
+    Route::get('/get_package_items/{package}', [PackageController::class, 'get_package_items'])->name('get_package_items');
 
     Route::get('/get/item/{function_id}', [ItemController::class, 'get_items_of_function'])->name('get_items_of_function');
+    Route::delete('/detach/item/{package_id}', [PackageController::class, 'item_detach'])->name('item.detach');
+    Route::post('/attach/item/{package_id}', [PackageController::class, 'item_attach'])->name('item.attach');
 
     Route::post('set_tab0_session', [SessionController::class, 'set_tab0_session']);
     Route::post('set_tab1_session', [SessionController::class, 'set_tab1_session']);
