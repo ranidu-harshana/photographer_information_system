@@ -227,4 +227,115 @@ class CustomerController extends Controller
         return back();
     }
 
+
+    public function get_all_func_dates() {
+        $date_arr = [];
+
+        $all_wedding_dates = Customer::select('wedding_date')->get();
+        $wedding_dates = array_values($all_wedding_dates->toArray());
+        foreach ($wedding_dates as $key => $value) {
+            if ($value['wedding_date'] != NULL) {
+                array_push($date_arr, $value['wedding_date']);
+            }
+            
+        }
+
+        $all_home_com_dates = Customer::select('home_com_date')->get();
+        $home_com_dates = array_values($all_home_com_dates->toArray());
+        foreach ($home_com_dates as $key => $value) {
+            if ($value['home_com_date'] != NULL) {
+                array_push($date_arr, $value['home_com_date']);
+            }
+            
+        }
+        
+        $all_event_dates = Customer::select('event_date')->get();
+        $event_dates = array_values($all_event_dates->toArray());
+        foreach ($event_dates as $key => $value) {
+            if ($value['event_date'] != NULL) {
+                array_push($date_arr, $value['event_date']);
+            }
+            
+        }
+
+        $all_photo_shoot_dates = Customer::select('photo_shoot_date')->get();
+        $photo_shoot_dates = array_values($all_photo_shoot_dates->toArray());
+        foreach ($photo_shoot_dates as $key => $value) {
+            if ($value['photo_shoot_date'] != NULL) {
+                array_push($date_arr, $value['photo_shoot_date']);
+            }
+            
+        }
+
+        return response()->json($date_arr);
+    }
+
+    public function get_functions_of_day(Request $request) {
+        $arr = [];
+        $customers = Customer::where('wedding_date', '=', "{$request->date}")->get();
+        foreach ($customers as $customer) {
+            $data_arr = [];
+            // $postponed = $customer->postponed;
+            // if ($postponed == NULL) {
+            //     $postponed = "NO";
+            // }
+            $data_arr['name'] = $customer->name;
+            // $data_arr['postponed'] = $postponed;
+            $data_arr['customer_id'] = $customer->id;
+            $data_arr['bill_number'] = $customer->bill_nulber;
+            $data_arr['status'] = $customer->status;
+            $data_arr['type'] = 1;
+            array_push($arr, $data_arr);
+        }
+
+        $customers = Customer::where('home_com_date', '=', "{$request->date}")->get();
+        foreach ($customers as $customer) {
+            $data_arr = [];
+            // $postponed = $customer->postponed;
+            // if ($postponed == NULL) {
+            //     $postponed = "NO";
+            // }
+            $data_arr['name'] = $customer->name;
+            // $data_arr['postponed'] = $postponed;
+            $data_arr['customer_id'] = $customer->id;
+            $data_arr['bill_number'] = $customer->bill_nulber;
+            $data_arr['status'] = $customer->status;
+            $data_arr['type'] = 2;
+            array_push($arr, $data_arr);
+        }
+
+        $customers = Customer::where('event_date', '=', "{$request->date}")->get();
+        foreach ($customers as $customer) {
+            $data_arr = [];
+            // $postponed = $customer->postponed;
+            // if ($postponed == NULL) {
+            //     $postponed = "NO";
+            // }
+            $data_arr['name'] = $customer->name;
+            // $data_arr['postponed'] = $postponed;
+            $data_arr['customer_id'] = $customer->id;
+            $data_arr['bill_number'] = $customer->bill_nulber;
+            $data_arr['status'] = $customer->status;
+            $data_arr['type'] = 3;
+            array_push($arr, $data_arr);
+        }
+
+        $customers = Customer::where('photo_shoot_date', '=', "{$request->date}")->get();
+        foreach ($customers as $customer) {
+            $data_arr = [];
+            // $postponed = $customer->postponed;
+            // if ($postponed == NULL) {
+            //     $postponed = "NO";
+            // }
+            $data_arr['name'] = $customer->name;
+            // $data_arr['postponed'] = $postponed;
+            $data_arr['customer_id'] = $customer->id;
+            $data_arr['bill_number'] = $customer->bill_nulber;
+            $data_arr['status'] = $customer->status;
+            $data_arr['type'] = 4;
+            array_push($arr, $data_arr);
+        }
+        return response()->json($arr);
+    }
+
 }

@@ -23,12 +23,12 @@ return new class extends Migration
             $table->string('mob_no2')->nullable();
             $table->date('wedding_date')->nullable();
             $table->string('wedding_location')->nullable();
-            $table->string('home_com_date')->nullable();
+            $table->date('home_com_date')->nullable();
             $table->string('home_com_location')->nullable();
             $table->string('event_type')->nullable();
-            $table->string('event_date')->nullable();
+            $table->date('event_date')->nullable();
             $table->string('event_location')->nullable();
-            $table->string('photo_shoot_date')->nullable();
+            $table->date('photo_shoot_date')->nullable();
             $table->string('photo_shoot_location')->nullable();
             $table->double('total_payment')->nullable();
             $table->double('discount')->nullable();

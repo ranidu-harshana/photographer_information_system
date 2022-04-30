@@ -141,21 +141,32 @@
                                 html = ''
                                 if(data.length != 0) {
                                     data.forEach(element => {
-                                        if(element.status == 1) {
-                                            if(element.postponed == "NO") {
-                                                html += '<a class="badge badge-success mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+'<br>';
-                                            }else{
-                                                html += '<a class="badge badge-primary mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+' | <span class="text-danger">'+element.postponed+'</span><br>';
-                                            }
-                                        }else {
-                                            html += '<a class="badge badge-danger mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                        if(element.type == 1) {
+                                            html += '<a class="badge badge-success mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                             html += element.bill_number;
-                                            html += '</a> | '+element.name+' | <span class="text-danger">cancelled</span><br>';
+                                            html += '</a> | '+element.name+' | <span class="text-success">Wedding</span>  <br>';
+                                        }else if(element.type == 2) {
+                                            html += '<a class="badge badge-primary mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += element.bill_number;
+                                            html += '</a> | '+element.name+' | <span class="text-primary">HomeComming</span> <br>';
+                                        }else if(element.type == 3) {
+                                            html += '<a class="badge badge-warning mb-2" style="color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += element.bill_number;
+                                            html += '</a> | '+element.name+' | <span class="text-warning">Event</span> <br>';
+                                        }else if(element.type == 4) {
+                                            html += '<a class="badge mb-2" style="background-color:blue; color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += element.bill_number;
+                                            html += '</a> | '+element.name+' | <span style="color: blue">PhotoShoot</span> <br>';
                                         }
+                                                
+                                            
+                                            //     html += '<a class="badge badge-primary mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            //     html += element.bill_number;
+                                            //     html += '</a> | '+element.name+' | <span class="text-danger">'+element.postponed+'</span><br>';
+                                            
+                                            // html += '<a class="badge badge-danger mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            // html += element.bill_number;
+                                            // html += '</a> | '+element.name+' | <span class="text-danger">cancelled</span><br>';
                                         
                                         
                                     });
@@ -186,7 +197,6 @@
                             load();
                         });
 
-                        document.getElementById('closeButton').addEventListener('click', closeModal);
                     }
                     load();
                     initButtons();
