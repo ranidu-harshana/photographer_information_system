@@ -40,7 +40,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'bill_nulber'=>['nullable'],
+            'bill_nulber'=>['required', 'unique:customers,bill_nulber'],
             'function_type_id'=>['required'],
             'name'=>['required'],
             'address'=>['required'],
@@ -62,6 +62,7 @@ class CustomerController extends Controller
             'advance_payment'=>['nullable'],
         ]);
 
+        $validated['bill_nulber'] = sprintf('%05d', $request->bill_nulber);
         $function_type = FunctionType::find($request->function_type_id);
         $customer = $function_type->customers()->create($validated);
         return redirect()->route('customer.show', $customer);

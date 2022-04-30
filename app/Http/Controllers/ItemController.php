@@ -46,6 +46,8 @@ class ItemController extends Controller
             'item_price'=>['required'],
         ]);
 
+        $validated['item_code'] = sprintf('%05d', $request->item_code);
+
         $function = FunctionType::find($request->function_type_id);
         $function->items()->create($validated);
         session()->flash('item-created', 'Item Created');
@@ -97,6 +99,7 @@ class ItemController extends Controller
             DB::table('item_package')->where('item_id', $item->id)->delete();
         }
 
+        $validated['item_code'] = sprintf('%05d', $request->item_code);
         $item->update($validated);
         session()->flash('item-updated', 'Item Updated');
         return redirect()->route('item.index');

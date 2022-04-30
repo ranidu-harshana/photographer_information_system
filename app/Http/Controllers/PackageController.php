@@ -40,13 +40,14 @@ class PackageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'package_code'=>['nullable', 'unique:packages,package_code'],
+            'package_code'=>['required', 'unique:packages,package_code'],
             'name'=>['nullable'],
             'desc'=>['nullable'],
             'package_price'=>['nullable'],
         ]);
 
         $function = FunctionType::find($request->function_type_id);
+        $validated['package_code'] = sprintf('%05d', $request->package_code);
         $package = $function->packages()->create($validated);
 
         $package->items()->attach($request->items);
@@ -88,12 +89,14 @@ class PackageController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
+            'package_code'=>['required'],
             'name'=>['required'],
             'desc'=>['required'],
             'package_price'=>['required'],
         ]);
 
         $package = Package::find($id);
+        $validated['package_code'] = sprintf('%05d', $request->package_code);
         $package->update($validated);
         session()->flash('package-updated', 'Package Updated');
         return redirect()->route('package.index');
