@@ -273,6 +273,8 @@ function visibleTextField() {
 }
 
 $(document).ready(function(){
+	
+
 	var last_count_i = $("#last_count_i").val();
 	for (let i = 0; i < last_count_i; i++) {
 		$("#edit_btn"+i).on('click',function(){
@@ -293,7 +295,7 @@ $(document).ready(function(){
 		});
 	}
 
-	for (let j = 0; j <= 4; j++) {
+	for (let j = 0; j <= 5; j++) {
 		$("#tab"+j).on('click',function(){
 			$.ajaxSetup({
 				headers: {

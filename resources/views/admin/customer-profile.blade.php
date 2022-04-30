@@ -111,16 +111,35 @@
     </div>
     <div class="profile-tabs">
         <ul class="nav nav-tabs nav-tabs-bottom">
-            <li class="nav-item" id="tab0"><a class="nav-link @if (session('tab0')) active @endif" href="#packages_tab" data-toggle="tab">Packages</a></li>
-            <li class="nav-item" id="tab1"><a class="nav-link @if (session('tab1')) active @endif" href="#items_tab" data-toggle="tab">Items</a></li>
-            <li class="nav-item" id="tab2"><a class="nav-link @if (session('tab2')) active @endif" href="#bill_tab" data-toggle="tab">Bill</a></li>
-            <li class="nav-item" id="tab3"><a class="nav-link @if (session('tab3')) active @endif" href="#notes_tab" data-toggle="tab">Notes</a></li>
-            <li class="nav-item" id="tab4"><a class="nav-link @if (session('tab4')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li>
+            <li class="nav-item" id="tab0"><a class="nav-link @if (session('tab0')) active @elseif (!session('tab0') && !session('tab1') && !session('tab2') && !session('tab3') && !session('tab4')  && !session('tab5')) active @endif" href="#overview_tab" data-toggle="tab">Overview</a></li>
+            <li class="nav-item" id="tab1"><a class="nav-link @if (session('tab1')) active @endif" href="#packages_tab" data-toggle="tab">Packages</a></li>
+            <li class="nav-item" id="tab2"><a class="nav-link @if (session('tab2')) active @endif" href="#items_tab" data-toggle="tab">Items</a></li>
+            <li class="nav-item" id="tab3"><a class="nav-link @if (session('tab3')) active @endif" href="#bill_tab" data-toggle="tab">Bill</a></li>
+            <li class="nav-item" id="tab4"><a class="nav-link @if (session('tab4')) active @endif" href="#notes_tab" data-toggle="tab">Notes</a></li>
+            <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li>
             
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane @if (session('tab0')) show active @endif" id="packages_tab" >
+            <div class="tab-pane @if (session('tab0')) show active @elseif (!session('tab0') && !session('tab1') && !session('tab2') && !session('tab3') && !session('tab4') && !session('tab5')) show active @endif" id="overview_tab" >
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card-box">
+                            <h4 class="card-title">Overview</h4>
+                            <ul class="personal-info">
+                                <li>
+                                    <span class="title">Dressing Place </span>
+                                    <span class="text-primary">
+                                            In Home
+                                    </span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane @if (session('tab1')) active @endif" id="packages_tab" >
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="card-box">
@@ -224,7 +243,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab1')) active @endif" id="items_tab">
+            <div class="tab-pane @if (session('tab2')) active @endif" id="items_tab">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="card-box">
@@ -328,7 +347,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab2')) active @endif" id="bill_tab" >
+            <div class="tab-pane @if (session('tab3')) active @endif" id="bill_tab" >
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card-box">
@@ -372,7 +391,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab3')) active @endif" id="notes_tab">
+            <div class="tab-pane @if (session('tab4')) active @endif" id="notes_tab">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card-box">
@@ -468,7 +487,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab4')) active @endif" id="other_tab" >
+            <div class="tab-pane @if (session('tab5')) active @endif" id="other_tab" >
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card-box">

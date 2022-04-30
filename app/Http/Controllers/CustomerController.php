@@ -17,6 +17,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        session()->forget('tab0');
+        session()->forget('tab1');
+        session()->forget('tab2');
+        session()->forget('tab3');
+        session()->forget('tab4');
+        session()->forget('tab5');
+        
         $customers = Customer::all();
         return view('admin.all-customers', ['customers'=>$customers]);
     }

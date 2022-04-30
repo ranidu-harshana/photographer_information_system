@@ -163,7 +163,7 @@
                     </div>
 
                     <div class="text-right">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -208,6 +208,18 @@
 
     <script>
         $(document).ready(function(){
+            $("#submit").on('click',function(){
+                $.ajaxSetup({
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "../set_tab0_session",
+                    type: "POST",
+                })
+            });
+
             $('#discount_by_field').prop("disabled", true);
             $('#wedding_type').hide();
             $('#wedding_div').hide();

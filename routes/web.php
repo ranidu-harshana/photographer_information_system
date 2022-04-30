@@ -51,3 +51,4 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::resource('note', NoteController::class);
     Route::put('/note/{note}/mark_as_read', [NoteController::class, 'mark_as_read'])->name('note.mark_as_read');
 });
+
