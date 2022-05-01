@@ -338,4 +338,16 @@ class CustomerController extends Controller
         return response()->json($arr);
     }
 
+    public function edit_bill(Request $request, $id) {
+        $validated = $request->validate([
+            'total_payment' => ['nullable'],
+            'discount' => ['nullable'],
+            'advance_payment' => ['nullable'],
+            'total_package_price' => ['nullable'],
+            'total_item_price' => ['nullable'],
+        ]);
+        $customer = Customer::find($id);
+        $customer->update($validated);
+        return back();
+    }
 }

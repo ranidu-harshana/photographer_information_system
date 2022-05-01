@@ -116,7 +116,7 @@
             <li class="nav-item" id="tab2"><a class="nav-link @if (session('tab2')) active @endif" href="#items_tab" data-toggle="tab">Items</a></li>
             <li class="nav-item" id="tab3"><a class="nav-link @if (session('tab3')) active @endif" href="#bill_tab" data-toggle="tab">Bill</a></li>
             <li class="nav-item" id="tab4"><a class="nav-link @if (session('tab4')) active @endif" href="#notes_tab" data-toggle="tab">Notes</a></li>
-            <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li>
+            {{-- <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li> --}}
             
         </ul>
 
@@ -128,9 +128,9 @@
                             <h4 class="card-title">Overview</h4>
                             <ul class="personal-info">
                                 <li>
-                                    <span class="title">Dressing Place </span>
+                                    <span class="title">Developing Yet </span>
                                     <span class="text-primary">
-                                            In Home
+                                            
                                     </span>
                                 </li>
 
@@ -355,16 +355,149 @@
                                 <div class="col-3">
                                     <h4 class="card-title">Billing</h4>
                                 </div>
-                                
+                                <div class="col-9 text-right">
+                                    <button class="btn btn-sm" style="background-color:	#0275d8; color:white" type="button" data-toggle="modal" data-target="#editBillModal">Edit Bill</button>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="editBillModal" tabindex="-1" role="dialog" aria-labelledby="editBillLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editBillLabel">Edit Bill</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('edit_bill', $customer->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Amount</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="total_payment" class="form-control" value="{{ $customer->total_payment }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Discount</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="discount" class="form-control" value="{{ $customer->discount }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Advance Payment</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="advance_payment" value="{{ $customer->advance_payment }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Package Price</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="total_package_price" value="{{ $customer->total_package_price }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 col-form-label">Item Price</label>
+                                                        <div class="col-md-9">
+                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="total_item_price" value="{{ $customer->total_item_price }}">
+                                                        </div>
+                                                    </div>
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <ul class="personal-info">
                                 <li>
-                                    <span class="title">Total Amount</span>
-                                    <span class="text-primary"> .00 </span>
+                                    <span class="title">Amount</span>
+                                    @if ($customer->total_payment != NULL || $customer->total_payment != 0)
+                                        <span class="text-primary"> {{ $customer->total_payment }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
                                 </li>
+
+                                <li>
+                                    <span class="title">Discount </span>
+                                    @if ($customer->discount != NULL || $customer->discount != 0)
+                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                </li>
+                                
+                                <li>
+                                    <span class="title">Advance Payment </span>
+                                    @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
+                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                    
+                                </li>
+                                <li>
+                                    <span class="title">Total Package Price </span>
+                                    @if ($customer->total_package_price != NULL || $customer->total_package_price != 0)
+                                        <span class="text-primary"> {{ $customer->total_package_price }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                    
+                                </li>
+                                <li>
+                                    <span class="title">Total Item Price </span>
+                                    @if ($customer->total_item_price != NULL || $customer->total_item_price != 0)
+                                        <span class="text-primary"> {{ $customer->total_item_price }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                    
+                                </li>
+
+                                <li>
+                                    <span class="title">Total Amount</span>
+                                    <span class="text-primary"><b> {{ $customer->total_payment + $customer->total_package_price + $customer->total_item_price }}.00 </b></span>
+                                    
+                                </li>
+                                @php $intering_payment = 0; @endphp
+                                @foreach ($customer->intering_payments as $value)
+                                    @php $intering_payment += $value->intering_payment; @endphp
+                                @endforeach
+                                @php $balance = ($customer->total_payment + $customer->total_package_price + $customer->total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+                                <li>
+                                    <span class="title">Balance </span>
+                                    <span class="text"><a href="#">
+                                        @if ($balance == 0)
+                                            <span class="text-success">Payment Success</span> 
+                                        @else
+                                            {{ $balance }}.00
+                                        @endif
+                                    </a></span>
+                                </li>
+
                             </ul>
-                            
+                            @if ($balance != 0)
+                                <form action="{{ route('intering_payment.store') }}" method="POST">
+                                    @csrf
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-4">Intering Payment</label>
+                                        <div class="col-md-4">
+                                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                            <input type="text" class="form-control" name="intering_payment" onkeypress="return isExactNumberKey(event)" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="submit" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </form>
+                            @endif
                         </div>
                     </div>
 
@@ -379,12 +512,55 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td scope="col">#</td>
-                                    <td scope="col">Intering Payment</td>
-                                    <td scope="col">Created At</td>
-                                    <td>Edit</td>
-                                </tr>
+                                @if (count($customer->intering_payments) != 0)
+                                    @php $counter = 1; @endphp
+                                    @foreach ($customer->intering_payments as $intering_payment)
+                                        <tr>
+                                            <th scope="row">{{ $counter }}</th>
+                                            <td>{{ $intering_payment->intering_payment }}.00</td>
+                                            <td>{{ $intering_payment->created_at }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editInterimPayment{{ $intering_payment->id }}">
+                                                    Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <div class="modal fade" id="editInterimPayment{{ $intering_payment->id }}" tabindex="-1" role="dialog" aria-labelledby="editInterimPayment{{ $intering_payment->id }}Label" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editInterimPayment{{ $intering_payment->id }}Label">Edit Interim Payment</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('intering_payment.update', $intering_payment->id) }}" method="post">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group row">
+                                                                <label class="col-md-3 col-form-label">Payment</label>
+                                                                <div class="col-md-9">
+                                                                    <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="intering_payment" class="form-control" value="{{ $intering_payment->intering_payment }}">
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @php $counter++; @endphp
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td scope="row" colspan="3" class="text-center text-secondary">No Any Payments</td>
+                                    </tr>  
+                                @endif
                                 
                             </tbody>
                         </table>
@@ -487,7 +663,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab5')) active @endif" id="other_tab" >
+            {{-- <div class="tab-pane @if (session('tab5')) active @endif" id="other_tab" >
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card-box">
@@ -504,7 +680,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
         </div>
     </div>

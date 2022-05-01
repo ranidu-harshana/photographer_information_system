@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InteringPaymentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PackageController;
@@ -53,6 +54,8 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::post('/get_all_func_dates', [CustomerController::class, 'get_all_func_dates'])->name('get_all_func_dates');
     Route::post('/get_functions_of_day', [CustomerController::class, 'get_functions_of_day'])->name('get_functions_of_day');
+    Route::put('/edit/bill/{customer}', [CustomerController::class, 'edit_bill'])->name('edit_bill');
 
+    Route::resource('intering_payment', InteringPaymentController::class);
 });
 

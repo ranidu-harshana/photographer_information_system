@@ -49,4 +49,8 @@ class Customer extends Model
     {
         return $this->hasMany(Note::class)->orderBy('created_at', 'DESC');
     }
+
+    public function intering_payments() {
+        return $this->hasMany(InteringPayment::class);
+    }
 }
