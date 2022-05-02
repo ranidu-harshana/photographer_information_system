@@ -43,11 +43,15 @@
     <script>
         $(document).ready(function(){
             localStorage.clear();
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
-                url: "../get_all_func_dates",
+                url: "{{url('get_all_func_dates')}}",
                 type: "POST",
                 data: {
-                    "_token": "{{ csrf_token() }}",
                     "display" : 1,
                 },
                 success: function(data){
@@ -128,12 +132,15 @@
                         clicked = date;
                         $("#date_display_area").html(clicked);
                         const eventForDay = events.find(e => e.date === clicked);
-                        
+                        $.ajaxSetup({
+                            headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
                         $.ajax({
-                            url: "../get_functions_of_day",
+                            url: "{{url('get_functions_of_day')}}",
                             type: "POST",
                             data: {
-                                "_token": "{{ csrf_token() }}",
                                 "display" : 1,
                                 "date": clicked,
                             },
@@ -179,12 +186,6 @@
                         })
                     }
 
-                    function closeModal() {
-                        deleteEventModal.style.display = 'none';
-                        backDrop.style.display = 'none';
-                        clicked = null;
-                        load();
-                    }
 
                     function initButtons() {
                         document.getElementById('nextButton').addEventListener('click', () => {

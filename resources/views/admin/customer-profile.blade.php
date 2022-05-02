@@ -123,20 +123,144 @@
         <div class="tab-content">
             <div class="tab-pane @if (session('tab0')) show active @elseif (!session('tab0') && !session('tab1') && !session('tab2') && !session('tab3') && !session('tab4') && !session('tab5')) show active @endif" id="overview_tab" >
                 <div class="row">
+                    <div class="col-lg-6 row">
+                        <div class="col-lg-12">
+                            <div class="card-box">
+                                <h4 class="card-title">Package Details</h4>
+                                <div class="row mb-3">
+                                    <label for="package_name" class="col-md-4 col-form-label text-md-end"><b>{{ __('Selected Packages') }}</b></label>
+                
+                                    <div class="col-md-6">
+                                        @if ($customer->packages->count() != 0)
+                                            @foreach ($customer->packages as $package)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" disabled checked>
+                                                    <label class="form-check-label" for="packagees{{ $package->id }}">
+                                                        {{ $package->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                        <span class="text-primary">
+                                            No any Selected Packages
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <ul class="personal-info">
+                                    <li>
+                                        <span class="title">Total Package Price </span>
+                                        @if ($customer->total_package_price != NULL || $customer->total_package_price != 0)
+                                            <span class="text-primary"> {{ $customer->total_package_price }}.00 </span>
+                                        @else
+                                            0.00
+                                        @endif
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card-box">
+                                <h4 class="card-title">Item Details</h4>
+                                <div class="row mb-3">
+                                    <label for="package_name" class="col-md-4 col-form-label text-md-end"><b>{{ __('Selected Items') }}</b></label>
+                
+                                    <div class="col-md-6">
+                                        @if ($customer->items->count() != 0)
+                                            @foreach ($customer->items as $item)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" disabled checked>
+                                                    <label class="form-check-label" for="item{{ $item->id }}">
+                                                        {{ $item->item_desc }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                        <span class="text-primary">
+                                            No any Selected Items
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <ul class="personal-info">
+                                    
+                                    <li>
+                                        <span class="title">Total Item Price </span>
+                                        @if ($customer->total_item_price != NULL || $customer->total_item_price != 0)
+                                            <span class="text-primary"> {{ $customer->total_item_price }}.00 </span>
+                                        @else
+                                            0.00
+                                        @endif
+                                        
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-lg-6">
                         <div class="card-box">
-                            <h4 class="card-title">Overview</h4>
+                            <div class="row">
+                                <div class="col-3">
+                                    <h4 class="card-title">Billing Details</h4>
+                                </div>
+                            </div>
+                            
                             <ul class="personal-info">
                                 <li>
-                                    <span class="title">Developing Yet </span>
-                                    <span class="text-primary">
-                                            
-                                    </span>
+                                    <span class="title">Amount</span>
+                                    @if ($customer->total_payment != NULL || $customer->total_payment != 0)
+                                        <span class="text-primary"> {{ $customer->total_payment }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                </li>
+
+                                <li>
+                                    <span class="title">Discount </span>
+                                    @if ($customer->discount != NULL || $customer->discount != 0)
+                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                </li>
+                                
+                                <li>
+                                    <span class="title">Advance Payment </span>
+                                    @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
+                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                    
+                                </li>
+
+                                <li>
+                                    <span class="title">Total Amount</span>
+                                    <span class="text-primary"><b> {{ $customer->total_payment + $customer->total_package_price + $customer->total_item_price }}.00 </b></span>
+                                </li>
+                                @php $intering_payment = 0; @endphp
+                                @foreach ($customer->intering_payments as $value)
+                                    @php $intering_payment += $value->intering_payment; @endphp
+                                @endforeach
+                                @php $balance = ($customer->total_payment + $customer->total_package_price + $customer->total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+                                <li>
+                                    <span class="title">Balance </span>
+                                    <span class="text"><a href="#">
+                                        @if ($balance == 0)
+                                            <span class="text-success">Payment Success</span> 
+                                        @else
+                                            {{ $balance }}.00
+                                        @endif
+                                    </a></span>
                                 </li>
 
                             </ul>
+
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="tab-pane @if (session('tab1')) active @endif" id="packages_tab" >

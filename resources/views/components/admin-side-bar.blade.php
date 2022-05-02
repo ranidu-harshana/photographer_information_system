@@ -4,7 +4,7 @@
             <ul>
                 <li class="menu-title">Main</li>
                 <li class="active">
-                    <a href=""><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+                    <a href="{{ route('home') }}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
                 </li>
 
                 <li>
@@ -28,8 +28,8 @@
                 <li class="submenu">
                     <a href="#"><i class="fas fa-warehouse"></i> <span> Inventory </span> <span><i class="fas fa-caret-down"></i></span></a>
                     <ul style="display: none;">
-                        <li><a href="{{ route('package.index') }}">All Packages</a></li>
-                        <li><a href="{{ route('item.index') }}">All Items</a></li>
+                        <li><a href="{{ route('package.index') }}" target="_blank">All Packages</a></li>
+                        <li><a href="{{ route('item.index') }}" target="_blank">All Items</a></li>
                     </ul>
                 </li>
 
