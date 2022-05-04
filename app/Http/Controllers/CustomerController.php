@@ -7,6 +7,7 @@ use App\Models\FunctionType;
 use App\Models\Item;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -25,6 +26,8 @@ class CustomerController extends Controller
         session()->forget('tab5');
         
         $customers = Customer::all();
+        
+
         return view('admin.all-customers', ['customers'=>$customers]);
     }
 
@@ -97,7 +100,24 @@ class CustomerController extends Controller
         $packages = Package::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
         $notes = $customer->notes;
 
-        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'notes'=>$notes]);
+        $customers = DB::table('customer_package_items')->where('customer_id', '=', $id)->get();
+        $arr = [];
+        foreach ($customers as $customer_package_id) {
+            $package_id = $customer_package_id->package_id;
+            if (array_key_exists($package_id, $arr)) {
+                continue;
+            }else{
+                $customer_items = DB::table('customer_package_items')->where('package_id', '=', $package_id)->get();
+                $item_arr = [];
+                foreach ($customer_items as $item) {
+                    array_push($item_arr, $item->item_id);
+                }
+                $arr[$package_id] = $item_arr;
+            }
+        }
+        
+        // dd($arr);
+        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'notes'=>$notes, 'arr'=>$arr]);
     }
 
     /**
@@ -348,6 +368,38 @@ class CustomerController extends Controller
         ]);
         $customer = Customer::find($id);
         $customer->update($validated);
+        return back();
+    }
+
+    public function detach_package_item_customer(Request $request) {
+        $customer_id = $request->customer_id;
+        $package_id = $request->package_id;
+        $request->validate([
+            'items'=>'required'
+        ]);
+
+        foreach ($request->items as $item) {
+            DB::table('customer_package_items')->insert([
+                'customer_id'=>$customer_id,
+                'package_id'=>$package_id,
+                'item_id'=>$item,
+            ]);
+        }
+        return redirect()->route('customer.show', $customer_id);
+    }
+
+    public function attach_package_item_customer(Request $request) {
+        $customer_id = $request->customer_id;
+        $package_id = $request->package_id;
+
+        $request->validate([
+            'items'=>'required'
+        ]);
+
+        foreach ($request->items as $item) {
+            $deleted = DB::table('customer_package_items')->where('customer_id', '=', $customer_id)->where('package_id', '=', $package_id)->where('item_id','=', $item)->delete();
+        }
+
         return back();
     }
 }

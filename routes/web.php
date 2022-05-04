@@ -8,6 +8,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SessionController;
 use App\Models\FunctionType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +57,14 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/get_functions_of_day', [CustomerController::class, 'get_functions_of_day'])->name('get_functions_of_day');
     Route::put('/edit/bill/{customer}', [CustomerController::class, 'edit_bill'])->name('edit_bill');
 
+    Route::post('/detach/item/package/customer', [CustomerController::class, 'detach_package_item_customer'])->name('detach_package_item_customer');
+    Route::delete('/attach/item/package/customer', [CustomerController::class, 'attach_package_item_customer'])->name('attach_package_item_customer');
+
     Route::resource('intering_payment', InteringPaymentController::class);
+
+    Route::get('test/{customer}', function($customer_id) {
+        
+        
+    });
 });
 

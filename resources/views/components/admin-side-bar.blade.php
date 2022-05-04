@@ -16,7 +16,7 @@
                 </li>
 
                 <li class="submenu">
-                    <a href="#"><i class="fa fa-user"></i> <span> Master </span> <span><i class="fas fa-caret-down"></i></span></a>
+                    <a href="#"><i class="fas fa-shield-alt"></i> <span> Master </span> <span><i class="fas fa-caret-down"></i></span></a>
                     <ul style="display: none;">
                         {{-- <li><a href="">Function Type</a></li> --}}
                         <li><a href="{{ route('package.create') }}">Create Packages</a></li>

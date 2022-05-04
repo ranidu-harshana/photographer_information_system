@@ -5,10 +5,14 @@
     {!! implode('', $errors->all('<div>:message</div>')) !!}
 @endif --}}
     <div class="row">
-        <div class="col-sm-7 col-6">
+        <div class="col-sm-2 col-6">
             <h4 class="page-title">Customer Profile</h4>
         </div>
     
+        <div class="col-sm-5 col-6 text-left ">
+            <button class="btn" style="background-color:#0275d8; color:white">Generate Bill</button>
+        </div>
+
         <div class="col-sm-5 col-6 text-right m-b-30 ">
             <a href="" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
             <a href="" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Postpone</a>
@@ -117,7 +121,6 @@
             <li class="nav-item" id="tab3"><a class="nav-link @if (session('tab3')) active @endif" href="#bill_tab" data-toggle="tab">Bill</a></li>
             <li class="nav-item" id="tab4"><a class="nav-link @if (session('tab4')) active @endif" href="#notes_tab" data-toggle="tab">Notes</a></li>
             {{-- <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li> --}}
-            
         </ul>
 
         <div class="tab-content">
@@ -263,7 +266,7 @@
 
                 </div>
             </div>
-            <div class="tab-pane @if (session('tab1')) active @endif" id="packages_tab" >
+            <div class="tab-pane @if (session('tab1')) active @endif" id="packages_tab">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="card-box">
@@ -344,6 +347,7 @@
                                         <th scope="col">Package Code</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -354,6 +358,89 @@
                                                     <td>{{ $package->package_code }}</td>
                                                     <td>{{ $package->name }}</td>
                                                     <td>{{ $package->package_price }}</td>
+                                                    <td>
+                                                        <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Detach Items">
+                                                            <button type="button" class="btn btn-danger btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndDetachPackageItemsModal{{ $package->id }}"><i class="fas fa-unlink"></i></button>
+                                                            <div class="modal fade" id="viewAndDetachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndDetachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="viewAndDetachPackageItemsModal{{ $package->id }}Label">Detach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('detach_package_item_customer') }}" method="post">
+                                                                                @csrf
+                                                                                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                                                                <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                                                @foreach ($package->items as $item)
+                                                                                    @php 
+                                                                                        if($arr != [] && array_key_exists($package->id, $arr)) {
+                                                                                            $item_arr = $arr[$package->id];
+                                                                                        }
+                                                                                    @endphp
+                                                                                    @if ($arr != [] && array_key_exists($package->id, $arr))
+                                                                                        @if (!in_array($item->id, $item_arr))
+                                                                                            <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
+                                                                                        @endif
+                                                                                    @else
+                                                                                        <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-danger" name="detach_item_customer">Done</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Attach Items">
+                                                            <button type="button" class="btn btn-success btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndAttachPackageItemsModal{{ $package->id }}"><i class="fas fa-paperclip"></i></button>
+                                                            <div class="modal fade" id="viewAndAttachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndAttachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="viewAndAttachPackageItemsModal{{ $package->id }}Label">Attach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('attach_package_item_customer') }}" method="post">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                                                                <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                                                @foreach ($package->items as $item)
+                                                                                    @php 
+                                                                                        if($arr != [] && array_key_exists($package->id, $arr)) {
+                                                                                            $item_arr = $arr[$package->id];
+                                                                                        }
+                                                                                    @endphp
+                                                                                    @if ($arr != [] && array_key_exists($package->id, $arr))
+                                                                                        @if (in_array($item->id, $item_arr))
+                                                                                            <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endforeach
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-danger" name="detach_item_customer">Done</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    
                                                 </tr>
                                             @endforeach
                                         @else
@@ -626,68 +713,71 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <table class="table table-striped table-hover table-sm">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Intering Payment</th>
-                                    <th scope="col">Created At</th>
-                                    <th>Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($customer->intering_payments) != 0)
-                                    @php $counter = 1; @endphp
-                                    @foreach ($customer->intering_payments as $intering_payment)
-                                        <tr>
-                                            <th scope="row">{{ $counter }}</th>
-                                            <td>{{ $intering_payment->intering_payment }}.00</td>
-                                            <td>{{ $intering_payment->created_at }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editInterimPayment{{ $intering_payment->id }}">
-                                                    Edit
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <div class="modal fade" id="editInterimPayment{{ $intering_payment->id }}" tabindex="-1" role="dialog" aria-labelledby="editInterimPayment{{ $intering_payment->id }}Label" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editInterimPayment{{ $intering_payment->id }}Label">Edit Interim Payment</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form action="{{ route('intering_payment.update', $intering_payment->id) }}" method="post">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group row">
-                                                                <label class="col-md-3 col-form-label">Payment</label>
-                                                                <div class="col-md-9">
-                                                                    <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="intering_payment" class="form-control" value="{{ $intering_payment->intering_payment }}">
+                        <div class="card-box">
+                            <h4 class="card-title">Interim Payments Details</h4>   
+                            <table class="table table-striped table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Interim Payment</th>
+                                        <th scope="col">Created At</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (count($customer->intering_payments) != 0)
+                                        @php $counter = 1; @endphp
+                                        @foreach ($customer->intering_payments as $intering_payment)
+                                            <tr>
+                                                <th scope="row">{{ $counter }}</th>
+                                                <td>{{ $intering_payment->intering_payment }}.00</td>
+                                                <td>{{ $intering_payment->created_at }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editInterimPayment{{ $intering_payment->id }}">
+                                                        Edit
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <div class="modal fade" id="editInterimPayment{{ $intering_payment->id }}" tabindex="-1" role="dialog" aria-labelledby="editInterimPayment{{ $intering_payment->id }}Label" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editInterimPayment{{ $intering_payment->id }}Label">Edit Interim Payment</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('intering_payment.update', $intering_payment->id) }}" method="post">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group row">
+                                                                    <label class="col-md-3 col-form-label">Payment</label>
+                                                                    <div class="col-md-9">
+                                                                        <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="intering_payment" class="form-control" value="{{ $intering_payment->intering_payment }}">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                                        </form>
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        @php $counter++; @endphp
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td scope="row" colspan="3" class="text-center text-secondary">No Any Payments</td>
-                                    </tr>  
-                                @endif
-                                
-                            </tbody>
-                        </table>
+                                            @php $counter++; @endphp
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td scope="row" colspan="4" class="text-center text-secondary">No Any Payments</td>
+                                        </tr>  
+                                    @endif
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -729,61 +819,64 @@
                     </div>
                     
                     <div class="col-md-8">
-                        <table class="table table-striped table-hover table-sm">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Note</th>
-                                    <th>Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $i = 1;
-                                @endphp
-                                @if ($notes->count() != 0)
-                                    @foreach ($notes as $note)
-                                        <tr>
-                                            <td>
-                                                @if ($note->status == 1)
-                                                    <input type="checkbox" checked>
-                                                @else
-                                                    <input type="checkbox">
-                                                @endif
-                                                
-                                            </td>
-                                            <td>{{ $note->note }}</td>
-                                            <td style="width: 110px">{{ $note->created_at }}</td>
-                                            <td style="width: 100px">
-                                                <div class="row">
-                                                    <input type="hidden" value="{{ $note->id }}" id="note_id{{$i}}">
-                                                    <button type="submit" class="btn btn-warning btn-sm" name="edit" id="edit_btn{{$i}}"><i class="fal fa-edit"></i> </button>&nbsp;
-                                                    <form action="{{ route('note.destroy', $note->id) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" name="delete"><i class="far fa-trash-alt"></i> </button>&nbsp;
-                                                    </form>
-                                                    <form action="{{ route('note.mark_as_read', $note->id) }}" method="post">
-                                                        @csrf
-                                                        @method("PUT")
-                                                        <button type="submit" class="btn btn-success btn-sm" name="mark_as_done"><i class="fas fa-clipboard-check"></i> </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $i++;
-                                        @endphp
-                                    @endforeach
-                                @else
-                                <tr>
-                                    <td colspan='4' class="text-center">No any Notes</td>
-                                </tr>
-                                @endif
-                                <input type="hidden" name="" id="last_count_i" value="{{$i}}">
-                            </tbody>
-                        </table>
+                        <div class="card-box">
+                            <h4 class="card-title">All Notes</h4>
+                            <table class="table table-striped table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Note</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @if ($notes->count() != 0)
+                                        @foreach ($notes as $note)
+                                            <tr>
+                                                <td>
+                                                    @if ($note->status == 1)
+                                                        <input type="checkbox" checked>
+                                                    @else
+                                                        <input type="checkbox">
+                                                    @endif
+                                                    
+                                                </td>
+                                                <td>{{ $note->note }}</td>
+                                                <td style="width: 110px">{{ $note->created_at }}</td>
+                                                <td style="width: 100px">
+                                                    <div class="row">
+                                                        <input type="hidden" value="{{ $note->id }}" id="note_id{{$i}}">
+                                                        <button type="submit" class="btn btn-warning btn-sm" name="edit" id="edit_btn{{$i}}"><i class="fal fa-edit"></i> </button>&nbsp;
+                                                        <form action="{{ route('note.destroy', $note->id) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger btn-sm" name="delete"><i class="far fa-trash-alt"></i> </button>&nbsp;
+                                                        </form>
+                                                        <form action="{{ route('note.mark_as_read', $note->id) }}" method="post">
+                                                            @csrf
+                                                            @method("PUT")
+                                                            <button type="submit" class="btn btn-success btn-sm" name="mark_as_done"><i class="fas fa-clipboard-check"></i> </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $i++;
+                                            @endphp
+                                        @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan='4' class="text-center">No any Notes</td>
+                                    </tr>
+                                    @endif
+                                    <input type="hidden" name="" id="last_count_i" value="{{$i}}">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -809,7 +902,6 @@
         </div>
     </div>
 
-    {{-- Autocompleting Text Fields --}}
     <script>
         $('#cost_edit_form').hide()
         $('#cost_view_form').show()
