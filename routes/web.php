@@ -60,6 +60,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/detach/item/package/customer', [CustomerController::class, 'detach_package_item_customer'])->name('detach_package_item_customer');
     Route::delete('/attach/item/package/customer', [CustomerController::class, 'attach_package_item_customer'])->name('attach_package_item_customer');
 
+    Route::put('/update_customer_items/{item}', [CustomerController::class, 'update_customer_items'])->name('update_customer_items');
+    Route::put('/update_customer_packages/{package}', [CustomerController::class, 'update_customer_packages'])->name('update_customer_packages');
+
     Route::resource('intering_payment', InteringPaymentController::class);
 
     Route::get('test/{customer}', function($customer_id) {

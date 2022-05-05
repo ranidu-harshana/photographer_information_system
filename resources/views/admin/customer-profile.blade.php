@@ -153,8 +153,14 @@
                                 <ul class="personal-info">
                                     <li>
                                         <span class="title">Total Package Price </span>
-                                        @if ($customer->total_package_price != NULL || $customer->total_package_price != 0)
-                                            <span class="text-primary"> {{ $customer->total_package_price }}.00 </span>
+                                        @php $total_package_price = 0; @endphp
+                                        @foreach ($customer->packages as $package)
+                                            @php
+                                                $total_package_price += $package->pivot->package_price;
+                                            @endphp
+                                        @endforeach
+                                        @if ($total_package_price != 0)
+                                            <span class="text-primary"> {{ $total_package_price }}.00 </span>
                                         @else
                                             0.00
                                         @endif
@@ -191,8 +197,15 @@
                                     
                                     <li>
                                         <span class="title">Total Item Price </span>
-                                        @if ($customer->total_item_price != NULL || $customer->total_item_price != 0)
-                                            <span class="text-primary"> {{ $customer->total_item_price }}.00 </span>
+                                        
+                                        @php $total_item_price = 0; @endphp
+                                        @foreach ($customer->items as $item)
+                                            @php
+                                                $total_item_price += $item->pivot->item_price;
+                                            @endphp
+                                        @endforeach
+                                        @if ($total_item_price != 0)
+                                            <span class="text-primary"> {{ $total_item_price }}.00 </span>
                                         @else
                                             0.00
                                         @endif
@@ -241,13 +254,13 @@
 
                                 <li>
                                     <span class="title">Total Amount</span>
-                                    <span class="text-primary"><b> {{ $customer->total_payment + $customer->total_package_price + $customer->total_item_price }}.00 </b></span>
+                                    <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
                                 </li>
                                 @php $intering_payment = 0; @endphp
                                 @foreach ($customer->intering_payments as $value)
                                     @php $intering_payment += $value->intering_payment; @endphp
                                 @endforeach
-                                @php $balance = ($customer->total_payment + $customer->total_package_price + $customer->total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+                                @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
                                 <li>
                                     <span class="title">Balance </span>
                                     <span class="text"><a href="#">
@@ -348,16 +361,17 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Action</th>
+                                        <th scope="col">Edit</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         @if ($customer->packages->count() != 0)
                                             @foreach ($customer->packages as $package)
                                                 <tr>
-                                                    <th scope="row">1</th>
+                                                    <th scope="row">{{ $package->pivot->id }}</th>
                                                     <td>{{ $package->package_code }}</td>
                                                     <td>{{ $package->name }}</td>
-                                                    <td>{{ $package->package_price }}</td>
+                                                    <td>{{ $package->pivot->package_price }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Detach Items">
                                                             <button type="button" class="btn btn-danger btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndDetachPackageItemsModal{{ $package->id }}"><i class="fas fa-unlink"></i></button>
@@ -440,7 +454,40 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    
+                                                    <td>
+                                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerPackage{{ $package->pivot->id }}">
+                                                            Edit
+                                                        </button>
+                                                        
+                                                        <div class="modal fade" id="updateCustomerPackage{{ $package->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="updateCustomerPackage{{ $package->pivot->id }}Label" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="updateCustomerPackage{{ $package->pivot->id }}Label">Modal title</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('update_customer_packages', $package->pivot->id) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="form-group row">
+                                                                            <label class="col-md-3 col-form-label">Price</label>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="package_price" class="form-control" value="{{ $package->pivot->package_price }}">
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -534,21 +581,64 @@
                                     <th scope="col">Item Code</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Edit</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @if ($customer->items->count() != 0)
                                         @foreach ($customer->items as $item)
                                             <tr>
-                                                <th scope="row">1</th>
+                                                <th scope="row">{{ $item->pivot->id }}</th>
                                                 <td>{{ $item->item_code }}</td>
                                                 <td>{{ $item->item_desc }}</td>
-                                                <td>{{ $item->item_price }}</td>
+                                                <td>{{ $item->pivot->item_price }}</td>
+                                                <td>{{ $item->pivot->quantity }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerItem{{ $item->pivot->id }}">
+                                                        Edit
+                                                    </button>
+                                                    
+                                                    <div class="modal fade" id="updateCustomerItem{{ $item->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="updateCustomerItem{{ $item->pivot->id }}Label" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateCustomerItem{{ $item->pivot->id }}Label">Update</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ route('update_customer_items', $item->pivot->id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 col-form-label">Price</label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="item_price" class="form-control" value="{{ $item->pivot->item_price }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 col-form-label">Quantity</label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="quantity" class="form-control" value="{{ $item->pivot->quantity }}">
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan='4' class="text-center">No any Items Attched</td>
+                                            <td colspan='5' class="text-center">No any Items Attched</td>
                                         </tr>
                                     @endif
                                     
@@ -601,19 +691,6 @@
                                                             <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="advance_payment" value="{{ $customer->advance_payment }}">
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">Package Price</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="total_package_price" value="{{ $customer->total_package_price }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-md-3 col-form-label">Item Price</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="total_item_price" value="{{ $customer->total_item_price }}">
-                                                        </div>
-                                                    </div>
-                                                
                                             </div>
                                             <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -655,33 +732,43 @@
                                 </li>
                                 <li>
                                     <span class="title">Total Package Price </span>
-                                    @if ($customer->total_package_price != NULL || $customer->total_package_price != 0)
-                                        <span class="text-primary"> {{ $customer->total_package_price }}.00 </span>
+                                    @php $total_package_price = 0; @endphp
+                                    @foreach ($customer->packages as $package)
+                                        @php
+                                            $total_package_price += $package->pivot->package_price;
+                                        @endphp
+                                    @endforeach
+                                    @if ($total_package_price != 0)
+                                        <span class="text-primary"> {{ $total_package_price }}.00 </span>
                                     @else
                                         0.00
                                     @endif
-                                    
                                 </li>
                                 <li>
                                     <span class="title">Total Item Price </span>
-                                    @if ($customer->total_item_price != NULL || $customer->total_item_price != 0)
-                                        <span class="text-primary"> {{ $customer->total_item_price }}.00 </span>
+                                    @php $total_item_price = 0; @endphp
+                                    @foreach ($customer->items as $item)
+                                        @php
+                                            $total_item_price += $item->pivot->item_price;
+                                        @endphp
+                                    @endforeach
+                                    @if ($total_item_price != 0)
+                                        <span class="text-primary"> {{ $total_item_price }}.00 </span>
                                     @else
                                         0.00
                                     @endif
-                                    
                                 </li>
 
                                 <li>
                                     <span class="title">Total Amount</span>
-                                    <span class="text-primary"><b> {{ $customer->total_payment + $customer->total_package_price + $customer->total_item_price }}.00 </b></span>
+                                    <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
                                     
                                 </li>
                                 @php $intering_payment = 0; @endphp
                                 @foreach ($customer->intering_payments as $value)
                                     @php $intering_payment += $value->intering_payment; @endphp
                                 @endforeach
-                                @php $balance = ($customer->total_payment + $customer->total_package_price + $customer->total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+                                @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
                                 <li>
                                     <span class="title">Balance </span>
                                     <span class="text"><a href="#">
@@ -834,8 +921,8 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @if ($notes->count() != 0)
-                                        @foreach ($notes as $note)
+                                    @if ($customer->notes->count() != 0)
+                                        @foreach ($customer->notes as $note)
                                             <tr>
                                                 <td>
                                                     @if ($note->status == 1)
@@ -898,7 +985,6 @@
                     </div>
                 </div>
             </div> --}}
-            
         </div>
     </div>
 
@@ -910,4 +996,4 @@
             $('#cost_view_form').hide()
         }
     </script>
-@endsection     
+@endsection

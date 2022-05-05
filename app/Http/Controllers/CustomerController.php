@@ -98,7 +98,6 @@ class CustomerController extends Controller
             array_push($ids, $package->id);
         }
         $packages = Package::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
-        $notes = $customer->notes;
 
         $customers = DB::table('customer_package_items')->where('customer_id', '=', $id)->get();
         $arr = [];
@@ -117,7 +116,7 @@ class CustomerController extends Controller
         }
         
         // dd($arr);
-        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'notes'=>$notes, 'arr'=>$arr]);
+        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'arr'=>$arr]);
     }
 
     /**
@@ -161,19 +160,6 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
         $customer->items()->detach($request->detach_items);
 
-        $total_item_price = 0;
-        if ($customer->total_item_price != NULL) {
-            $total_item_price = $customer->total_item_price;
-        }
-        
-        foreach ($request->detach_items as $detach_items) {
-            $item = Item::find($detach_items);
-            $total_item_price = $total_item_price - $item->item_price;
-        }
-        $r = $customer->update([
-            'total_item_price'=>$total_item_price,
-        ]);
-
         return back();
     }
 
@@ -182,24 +168,14 @@ class CustomerController extends Controller
             'attach_items'=>'required',
         ]);
         $customer = Customer::find($id);
-        $customer->items()->attach($request->attach_items);
 
-        $total_item_price = 0;
-        if ($customer->total_item_price != NULL) {
-            $total_item_price = $customer->total_item_price;
+        foreach ($request->attach_items as $attach_item) {
+            $item = Item::find($attach_item);
+            $customer->items()->attach($item->id, ['item_price'=>$item->item_price, 'quantity'=>1]);
         }
-
-        foreach ($request->attach_items as $attach_items) {
-            $item = Item::find($attach_items);
-            $total_item_price = $total_item_price + $item->item_price;
-        }
-        $r = $customer->update([
-            'total_item_price'=>$total_item_price,
-        ]);
         
         return back();
     }
-
 
     public function package_detach(Request $request, $id) {
         $request->validate([
@@ -207,19 +183,6 @@ class CustomerController extends Controller
         ]);
         $customer = Customer::find($id);
         $customer->packages()->detach($request->detach_packages);
-
-        $total_package_price = 0;
-        if ($customer->total_package_price != NULL) {
-            $total_package_price = $customer->total_package_price;
-        }
-        
-        foreach ($request->detach_packages as $detach_packages) {
-            $package = Package::find($detach_packages);
-            $total_package_price = $total_package_price - $package->package_price;
-        }
-        $r = $customer->update([
-            'total_package_price'=>$total_package_price,
-        ]);
 
         return back();
     }
@@ -229,24 +192,46 @@ class CustomerController extends Controller
             'attach_packages'=>'required',
         ]);
         $customer = Customer::find($id);
-        $customer->packages()->attach($request->attach_packages);
 
-        $total_package_price = 0;
-        if ($customer->total_package_price != NULL) {
-            $total_package_price = $customer->total_package_price;
+        foreach ($request->attach_packages as $attach_package) {
+            $package = Package::find($attach_package);
+            $customer->packages()->attach($package->id, ['package_price'=>$package->package_price]);
         }
-
-        foreach ($request->attach_packages as $attach_packages) {
-            $package = Package::find($attach_packages);
-            $total_package_price = $total_package_price + $package->package_price;
-        }
-        $r = $customer->update([
-            'total_package_price'=>$total_package_price,
-        ]);
         
         return back();
     }
 
+    public function detach_package_item_customer(Request $request) {
+        $customer_id = $request->customer_id;
+        $package_id = $request->package_id;
+        $request->validate([
+            'items'=>'required'
+        ]);
+
+        foreach ($request->items as $item) {
+            DB::table('customer_package_items')->insert([
+                'customer_id'=>$customer_id,
+                'package_id'=>$package_id,
+                'item_id'=>$item,
+            ]);
+        }
+        return redirect()->route('customer.show', $customer_id);
+    }
+
+    public function attach_package_item_customer(Request $request) {
+        $customer_id = $request->customer_id;
+        $package_id = $request->package_id;
+
+        $request->validate([
+            'items'=>'required'
+        ]);
+
+        foreach ($request->items as $item) {
+            $deleted = DB::table('customer_package_items')->where('customer_id', '=', $customer_id)->where('package_id', '=', $package_id)->where('item_id','=', $item)->delete();
+        }
+
+        return back();
+    }
 
     public function get_all_func_dates() {
         $date_arr = [];
@@ -363,43 +348,28 @@ class CustomerController extends Controller
             'total_payment' => ['nullable'],
             'discount' => ['nullable'],
             'advance_payment' => ['nullable'],
-            'total_package_price' => ['nullable'],
-            'total_item_price' => ['nullable'],
         ]);
         $customer = Customer::find($id);
         $customer->update($validated);
         return back();
     }
 
-    public function detach_package_item_customer(Request $request) {
-        $customer_id = $request->customer_id;
-        $package_id = $request->package_id;
-        $request->validate([
-            'items'=>'required'
+    public function update_customer_items(Request $reqeust, $id) {
+        $validated = $reqeust->validate([
+            'item_price'=>'required',
+            'quantity'=>'required',
         ]);
 
-        foreach ($request->items as $item) {
-            DB::table('customer_package_items')->insert([
-                'customer_id'=>$customer_id,
-                'package_id'=>$package_id,
-                'item_id'=>$item,
-            ]);
-        }
-        return redirect()->route('customer.show', $customer_id);
+        $customer_item = DB::table('customer_item')->where('id', '=', $id)->update($validated);
+        return back();
     }
 
-    public function attach_package_item_customer(Request $request) {
-        $customer_id = $request->customer_id;
-        $package_id = $request->package_id;
-
-        $request->validate([
-            'items'=>'required'
+    public function update_customer_packages(Request $reqeust, $id) {
+        $validated = $reqeust->validate([
+            'package_price'=>'required',
         ]);
 
-        foreach ($request->items as $item) {
-            $deleted = DB::table('customer_package_items')->where('customer_id', '=', $customer_id)->where('package_id', '=', $package_id)->where('item_id','=', $item)->delete();
-        }
-
+        $customer_package = DB::table('customer_package')->where('id', '=', $id)->update($validated);
         return back();
     }
 }

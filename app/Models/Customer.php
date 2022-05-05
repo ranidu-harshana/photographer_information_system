@@ -34,11 +34,11 @@ class Customer extends Model
     ];
 
     public function packages() {
-        return $this->belongsToMany(Package::class);
+        return $this->belongsToMany(Package::class)->withPivot('id', 'package_price');
     }
 
     public function items() {
-        return $this->belongsToMany(Item::class);
+        return $this->belongsToMany(Item::class)->withPivot('id', 'item_price', 'quantity');
     }
 
     public function function_type() {
@@ -53,4 +53,6 @@ class Customer extends Model
     public function intering_payments() {
         return $this->hasMany(InteringPayment::class);
     }
+
+    
 }
