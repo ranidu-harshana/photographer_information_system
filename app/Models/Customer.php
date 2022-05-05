@@ -26,8 +26,11 @@ class Customer extends Model
         'event_location',
         'photo_shoot_date',
         'photo_shoot_location',
+        'preshoot_date',
+        'preshoot_location',
         'total_payment',
         'discount',
+        'branch_id',
         'advance_payment',
         'total_package_price',
         'total_item_price',
@@ -54,5 +57,7 @@ class Customer extends Model
         return $this->hasMany(InteringPayment::class);
     }
 
-    
+    public function branch() {
+        return $this->belongsTo(Branch::class);
+    }
 }

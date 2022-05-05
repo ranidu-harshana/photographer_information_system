@@ -4,6 +4,26 @@
 {{-- @if($errors->any())
     {!! implode('', $errors->all('<div>:message</div>')) !!}
 @endif --}}
+    @php $total_package_price = 0; @endphp
+    @foreach ($customer->packages as $package)
+        @php
+            $total_package_price += $package->pivot->package_price;
+        @endphp
+    @endforeach
+
+    @php $total_item_price = 0; @endphp
+    @foreach ($customer->items as $item)
+        @php
+            $total_item_price += $item->pivot->item_price;
+        @endphp
+    @endforeach
+
+    @php $intering_payment = 0; @endphp
+    @foreach ($customer->intering_payments as $value)
+        @php $intering_payment += $value->intering_payment; @endphp
+    @endforeach
+    @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+    
     <div class="row">
         <div class="col-sm-2 col-6">
             <h4 class="page-title">Customer Profile</h4>
@@ -18,7 +38,7 @@
             <a href="" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Postpone</a>
         </div>
     </div>
-    <div class="card-box profile-header " id="profile-card">
+    <div class="card-box profile-header " id="profile-card" style="min-height: 260px; overflow:scroll; overflow-x: hidden;">
         <div class="row">
             <div class="col-md-12 ">
                 <div class="profile-view">
@@ -35,11 +55,25 @@
                                     <div class="staff-id">Address : {{ $customer->address }}</div>
                                     <div class="staff-id">Bill Number : {{ $customer->bill_nulber }}</div>
                                     <div class="staff-id">Booked On : {{ $customer->created_at }}</div>
-                                    <div class="staff-id">Branch : </div>
+                                    <div class="staff-id">Branch : {{ $customer->branch->name }}</div>
+                                    <div class="staff-id">Phone 1 : {{ $customer->mob_no1 }}</div>
+                                    @if ($customer->mob_no2 != NULL)
+                                        <div class="staff-id">Phone 2 : {{ $customer->mob_no2 }}</div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <ul class="personal-info">
+                                    <li>
+                                        <span class="title ">Due Payment</span>
+                                        @if ($balance == 0)
+                                            <span class="text-success">Payment Success</span> 
+                                        @else
+                                        <span class="text "><a class="text-danger"><b>{{ $balance }}.00</b></a></span>
+                                        @endif
+                                        
+                                    </li>
+
                                     <li>
                                         <span class="title">Phone 1</span>
                                         <span class="text"><a href="#">{{ $customer->mob_no1 }}</a></span>
@@ -102,6 +136,18 @@
                                             <li>
                                                 <span class="title">Place</span>
                                                 <span class="text">{{ $customer->photo_shoot_location }}</span>
+                                            </li>
+                                        @endif
+                                    @endif
+                                    @if ($customer->preshoot_date != NULL)
+                                        <li>
+                                            <span class="title">Pre Shoot Date</span>
+                                            <span class="text">{{ $customer->preshoot_date }}</span>
+                                        </li>
+                                        @if ($customer->preshoot_location != NULL)
+                                            <li>
+                                                <span class="title">Place</span>
+                                                <span class="text">{{ $customer->preshoot_location }}</span>
                                             </li>
                                         @endif
                                     @endif
@@ -732,12 +778,7 @@
                                 </li>
                                 <li>
                                     <span class="title">Total Package Price </span>
-                                    @php $total_package_price = 0; @endphp
-                                    @foreach ($customer->packages as $package)
-                                        @php
-                                            $total_package_price += $package->pivot->package_price;
-                                        @endphp
-                                    @endforeach
+                                    
                                     @if ($total_package_price != 0)
                                         <span class="text-primary"> {{ $total_package_price }}.00 </span>
                                     @else
@@ -746,12 +787,7 @@
                                 </li>
                                 <li>
                                     <span class="title">Total Item Price </span>
-                                    @php $total_item_price = 0; @endphp
-                                    @foreach ($customer->items as $item)
-                                        @php
-                                            $total_item_price += $item->pivot->item_price;
-                                        @endphp
-                                    @endforeach
+                                    
                                     @if ($total_item_price != 0)
                                         <span class="text-primary"> {{ $total_item_price }}.00 </span>
                                     @else
@@ -764,11 +800,6 @@
                                     <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
                                     
                                 </li>
-                                @php $intering_payment = 0; @endphp
-                                @foreach ($customer->intering_payments as $value)
-                                    @php $intering_payment += $value->intering_payment; @endphp
-                                @endforeach
-                                @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
                                 <li>
                                     <span class="title">Balance </span>
                                     <span class="text"><a href="#">

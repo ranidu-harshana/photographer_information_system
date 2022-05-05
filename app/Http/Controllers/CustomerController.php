@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\FunctionType;
 use App\Models\Item;
@@ -38,7 +39,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('admin.create-customer');
+        $branches = Branch::all();
+        return view('admin.create-customer', ['branches'=>$branches]);
     }
 
     /**
@@ -54,6 +56,7 @@ class CustomerController extends Controller
             'function_type_id'=>['required'],
             'name'=>['required'],
             'address'=>['required'],
+            'branch_id'=>['required'],
             'mob_no1'=>['required'],
             'mob_no2'=>['nullable'],
             'wedding_date'=>['nullable'],
@@ -67,6 +70,8 @@ class CustomerController extends Controller
             'event_location'=>['nullable'],
             'photo_shoot_date'=>['nullable'],
             'photo_shoot_location'=>['nullable'],
+            'preshoot_date'=>['nullable'],
+            'preshoot_location'=>['nullable'],
             'total_payment'=>['nullable'],
             'discount'=>['nullable'],
             'advance_payment'=>['nullable'],

@@ -51,6 +51,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Branch</label>
+                        <select name="branch_id" id="" required class="form-control">
+                            <option value="">Select Branch</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>    
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label>Type </label>
                         <select name="function_type_id" id="function_type_id" required class="form-control" value="{{ old('type') }}">
                             <option value="">Select Type</option>
@@ -133,6 +143,17 @@
                         </div>
                     </div>
                     {{-- End when wedding type is Photoshoot --}}
+
+                    <div class="form-group">
+                        <label>Preshoot Date</label>
+                        <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                        @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preshoot Location</label>
+                        <input name="preshoot_location" id="preshoot_location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
+                    </div>
 
                     <div class="form-group">
                         <label>Total Amount</label>
