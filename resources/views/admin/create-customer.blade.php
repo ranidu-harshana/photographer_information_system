@@ -21,15 +21,6 @@
                         @error('bill_nulber') <p class="text-danger">{{$message}}</p> @enderror
                     </div>
 
-                    {{-- <div class="form-group">
-                        <label>Branch</label>
-                        <select name="branch_id" required class="form-control" value="{{ old('branch_id') }}">
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-
                     <div class="form-group">
                         <label>Name</label>
                         <input name="name" value="{{ old('name') }}" type="text" required class="form-control" autocomplete="off">
@@ -189,9 +180,6 @@
                 </form>
             </div>
         </div>
-        {{-- <div class="col-md-5">
-            <img src="{{ asset('assets/img/SIL1263.jpg') }}" alt="" class="image-responsive" width="100%">
-        </div> --}}
     </div>
 
 

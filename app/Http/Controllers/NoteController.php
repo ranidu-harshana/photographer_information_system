@@ -64,7 +64,7 @@ class NoteController extends Controller
             'note' => $validated['note'],
         ]);
 
-        session()->flash('item-category-updated', 'Item Category Updated');
+        session()->flash('note-updated', 'Note Updated');
         return back();
     }
 
@@ -90,7 +90,7 @@ class NoteController extends Controller
         $note = Note::find($id);
         $note->status = 1;
         $note->save();
-
+        session()->flash('note-mark-as-read', 'Note Marked as Read');
         return back();
     }
 }

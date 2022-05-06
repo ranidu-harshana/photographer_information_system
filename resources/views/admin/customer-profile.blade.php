@@ -20,21 +20,128 @@
 
     @php $intering_payment = 0; @endphp
     @foreach ($customer->intering_payments as $value)
-        @php $intering_payment += $value->intering_payment; @endphp
+        @php $intering_payment += $value->intering_payment; @endphp 
     @endforeach
     @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
     
+    @if(session('customer-updated'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('customer-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('intering-payment-saved'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('intering-payment-saved') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('intering-payment-updated'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('intering-payment-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> 
+        </div>
+    @elseif(session('bill-updated'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('bill-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('note-created'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('note-created') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('note-updated'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('note-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('note-deleted'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('note-deleted') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('note-mark-as-read')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('note-mark-as-read') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('item-detach')) 
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('item-detach') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('item-attach')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('item-attach') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('package-detach')) 
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('package-detach') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('package-attach')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('package-attach') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button> 
+        </div>
+    @elseif(session('mark-as-delivered')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('mark-as-delivered') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('customer-item-updated')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('customer-item-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('customer-package-updated')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('customer-package-updated') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-sm-2 col-6">
             <h4 class="page-title">Customer Profile</h4>
         </div>
-    
+
         <div class="col-sm-5 col-6 text-left ">
             <button class="btn" style="background-color:#0275d8; color:white">Generate Bill</button>
         </div>
 
         <div class="col-sm-5 col-6 text-right m-b-30 ">
-            <a href="" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
+            <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
             <a href="" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Postpone</a>
         </div>
     </div>
@@ -377,6 +484,7 @@
                                                 <div class="modal-body">
                                                     @if ($customer->packages->count() != 0)
                                                         @foreach ($customer->packages as $package)
+                                                            <input type="hidden" name="package_id" value="{{ $package->id }}">
                                                             <input type="checkbox" id="detach_packages{{$customer->id}}{{ $package->id }}" name="detach_packages[]" value="{{ $package->id }}"> <label for="detach_packages{{$customer->id}}{{ $package->id }}"> {{ $package->name }}</label>  <br>
                                                         @endforeach
                                                     @else
@@ -386,7 +494,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-success">Done</button>
+                                                    <button type="submit" class="btn btn-danger">Done</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -492,7 +600,7 @@
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-danger" name="detach_item_customer">Done</button>
+                                                                                <button type="submit" class="btn btn-success" name="detach_item_customer">Done</button>
                                                                             </form>
                                                                         </div>
                                                                     </div>
@@ -538,7 +646,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan='4' class="text-center">No any Items Attched</td>
+                                                <td colspan='6' class="text-center">No any Items Attched</td>
                                             </tr>
                                         @endif
                                     </tbody>
@@ -608,7 +716,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-success">Done</button>
+                                                    <button type="submit" class="btn btn-danger">Done</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -629,6 +737,7 @@
                                     <th scope="col">Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Edit</th>
+                                    <th scope="col">Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -680,11 +789,42 @@
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    @if ($item->pivot->status == 0)
+                                                        <span class="badge badge-pill badge-warning" style="cursor: pointer;" id="" data-toggle="modal" data-target="#exampleModal">Pending</span>
+                                                          
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Change Item Status</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are you sure you want mark this as Delivered?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <form action="{{ route('mark_as_delivered', $item->pivot->id) }}" method="post">
+                                                                            @csrf
+                                                                            @method('PUT')
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <span class="badge badge-pill badge-success">Delivered</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan='5' class="text-center">No any Items Attched</td>
+                                            <td colspan='7' class="text-center">No any Items Attched</td>
                                         </tr>
                                     @endif
                                     
@@ -1020,6 +1160,10 @@
     </div>
 
     <script>
+        $(".alert-dismissible").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert-dismissible").alert('close');
+        });
+
         $('#cost_edit_form').hide()
         $('#cost_view_form').show()
         function showCostEditForm() {

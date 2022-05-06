@@ -37,11 +37,11 @@ class Customer extends Model
     ];
 
     public function packages() {
-        return $this->belongsToMany(Package::class)->withPivot('id', 'package_price');
+        return $this->belongsToMany(Package::class)->withPivot('id', 'package_price', 'status');
     }
 
     public function items() {
-        return $this->belongsToMany(Item::class)->withPivot('id', 'item_price', 'quantity');
+        return $this->belongsToMany(Item::class)->withPivot('id', 'item_price', 'quantity', 'status');
     }
 
     public function function_type() {

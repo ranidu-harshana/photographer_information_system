@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('customer_item', function (Blueprint $table) {
             $table->double('item_price')->nullable();
-            $table->double('quantity')->nullable();
+            $table->integer('quantity')->nullable();
             $table->tinyInteger('status')->default(0);
         });
     }

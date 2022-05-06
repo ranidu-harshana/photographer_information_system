@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SessionController;
+use App\Models\Customer;
 use App\Models\FunctionType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::put('/update_customer_items/{item}', [CustomerController::class, 'update_customer_items'])->name('update_customer_items');
     Route::put('/update_customer_packages/{package}', [CustomerController::class, 'update_customer_packages'])->name('update_customer_packages');
+    Route::put('mark_as_delivered/{item}', [CustomerController::class, 'mark_as_delivered'])->name('mark_as_delivered');
 
     Route::resource('intering_payment', InteringPaymentController::class);
 

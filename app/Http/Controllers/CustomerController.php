@@ -89,8 +89,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $customer = Customer::find($id);
         $ids = [];
         foreach($customer->items as $item){
@@ -132,7 +131,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::find($id);
+        $branches = Branch::all();
+        return view('admin.edit-customer', ['customer'=>$customer, 'branches'=>$branches]);
     }
 
     /**
@@ -144,7 +145,31 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name'=>['required'],
+            'address'=>['required'],
+            'branch_id'=>['required'],
+            'mob_no1'=>['required'],
+            'mob_no2'=>['nullable'],
+            'wedding_date'=>['nullable'],
+            'wedding_location'=>['nullable'],
+            'home_com_date'=>['nullable'],
+            'home_com_location'=>['nullable'],
+
+            // 'event_type'=>['nullable'],
+
+            'event_date'=>['nullable'],
+            'event_location'=>['nullable'],
+            'photo_shoot_date'=>['nullable'],
+            'photo_shoot_location'=>['nullable'],
+            'preshoot_date'=>['nullable'],
+            'preshoot_location'=>['nullable'],
+        ]);
+
+        $customer = Customer::find($id);
+        $customer->update($validated);
+        session()->flash('customer-updated', 'Customer Updated');
+        return redirect()->route('customer.show', $id);
     }
 
     /**
@@ -164,7 +189,7 @@ class CustomerController extends Controller
         ]);
         $customer = Customer::find($id);
         $customer->items()->detach($request->detach_items);
-
+        session()->flash('item-detach', 'Items Detached from customer - '.$customer->name);
         return back();
     }
 
@@ -178,7 +203,7 @@ class CustomerController extends Controller
             $item = Item::find($attach_item);
             $customer->items()->attach($item->id, ['item_price'=>$item->item_price, 'quantity'=>1]);
         }
-        
+        session()->flash('item-attach', 'Items Attached to customer - '.$customer->name);
         return back();
     }
 
@@ -187,8 +212,11 @@ class CustomerController extends Controller
             'detach_packages'=>'required',
         ]);
         $customer = Customer::find($id);
+        $package_id = $request->package_id;
         $customer->packages()->detach($request->detach_packages);
 
+        DB::table('customer_package_items')->where('customer_id', '=', $id)->where('package_id', '=', $package_id)->delete();
+        session()->flash('package-detach', 'Package Detached from customer - '.$customer->name);
         return back();
     }
 
@@ -202,7 +230,7 @@ class CustomerController extends Controller
             $package = Package::find($attach_package);
             $customer->packages()->attach($package->id, ['package_price'=>$package->package_price]);
         }
-        
+        session()->flash('package-attach', 'Package Attached from customer - '.$customer->name);
         return back();
     }
 
@@ -355,6 +383,7 @@ class CustomerController extends Controller
             'advance_payment' => ['nullable'],
         ]);
         $customer = Customer::find($id);
+        session()->flash('bill-updated', 'Bill Updated');
         $customer->update($validated);
         return back();
     }
@@ -366,6 +395,7 @@ class CustomerController extends Controller
         ]);
 
         $customer_item = DB::table('customer_item')->where('id', '=', $id)->update($validated);
+        session()->flash('customer-item-updated', 'Customer Item Updated');
         return back();
     }
 
@@ -375,6 +405,13 @@ class CustomerController extends Controller
         ]);
 
         $customer_package = DB::table('customer_package')->where('id', '=', $id)->update($validated);
+        session()->flash('customer-package-updated', 'Customer Package Updated');
+        return back();
+    }
+
+    public function mark_as_delivered($id) {
+        DB::table('customer_item')->where('id', '=', $id)->update(['status'=>1]);
+        session()->flash('mark-as-delivered', 'Item Marked as Delivered to customer');
         return back();
     }
 }

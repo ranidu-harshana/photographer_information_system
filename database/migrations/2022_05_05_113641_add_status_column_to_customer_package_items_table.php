@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('customer_package_items', function (Blueprint $table) {
+            $table->integer('quantity')->nullable();
             $table->tinyInteger('status')->default(0);
         });
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('customer_package_items', function (Blueprint $table) {
+            $table->dropColumn('quantity');
             $table->dropColumn('status');
         });
     }
