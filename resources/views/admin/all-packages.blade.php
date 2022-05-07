@@ -184,7 +184,7 @@
             
 
             $.ajax({
-				url: "../get_package_items/"+package_id,
+				url: "get_package_items/"+package_id,
 				type: "GET",
 				success: function(data){
                     html = '';
