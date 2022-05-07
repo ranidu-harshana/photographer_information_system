@@ -507,150 +507,240 @@
                     <div class="col-lg-9">
                         <div class="card-box">
                             <h4 class="card-title">All Packages</h4>
-                                <table class="table table-sm">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Package Code</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Action</th>
-                                        <th scope="col">Edit</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($customer->packages->count() != 0)
-                                            @foreach ($customer->packages as $package)
-                                                <tr>
-                                                    <th scope="row">{{ $package->pivot->id }}</th>
-                                                    <td>{{ $package->package_code }}</td>
-                                                    <td>{{ $package->name }}</td>
-                                                    <td>{{ $package->pivot->package_price }}</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Detach Items">
-                                                            <button type="button" class="btn btn-danger btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndDetachPackageItemsModal{{ $package->id }}"><i class="fas fa-unlink"></i></button>
-                                                            <div class="modal fade" id="viewAndDetachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndDetachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="viewAndDetachPackageItemsModal{{ $package->id }}Label">Detach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form action="{{ route('detach_package_item_customer') }}" method="post">
-                                                                                @csrf
-                                                                                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                                                                                <input type="hidden" name="package_id" value="{{ $package->id }}">
-                                                                                @foreach ($package->items as $item)
-                                                                                    @php 
-                                                                                        if($arr != [] && array_key_exists($package->id, $arr)) {
-                                                                                            $item_arr = $arr[$package->id];
-                                                                                        }
-                                                                                    @endphp
-                                                                                    @if ($arr != [] && array_key_exists($package->id, $arr))
-                                                                                        @if (!in_array($item->id, $item_arr))
-                                                                                            <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
-                                                                                        @endif
-                                                                                    @else
+                                
+                            @if ($customer->packages->count() != 0)
+                                @foreach ($customer->packages as $package)
+                                    <table class="table table-sm">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Package Code</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Action</th>
+                                                <th scope="col">Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ $package->package_code }}</td>
+                                                <td>{{ $package->name }}</td>
+                                                <td>{{ $package->pivot->package_price }}</td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Detach Items">
+                                                        <button type="button" class="btn btn-danger btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndDetachPackageItemsModal{{ $package->id }}"><i class="fas fa-unlink"></i></button>
+                                                        <div class="modal fade" id="viewAndDetachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndDetachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="viewAndDetachPackageItemsModal{{ $package->id }}Label">Detach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{{ route('detach_package_item_customer') }}" method="post">
+                                                                            @csrf
+                                                                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                                                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                                            @foreach ($package->items as $item)
+                                                                                @php 
+                                                                                    if($arr != [] && array_key_exists($package->id, $arr)) {
+                                                                                        $item_arr = $arr[$package->id];
+                                                                                    }
+                                                                                @endphp
+                                                                                @if ($arr != [] && array_key_exists($package->id, $arr))
+                                                                                    @if (in_array($item->id, $item_arr))
                                                                                         <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
                                                                                     @endif
-                                                                                @endforeach
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-danger" name="detach_item_customer">Done</button>
-                                                                            </form>
-                                                                        </div>
+                                                                                @else
+                                                                                    <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
+                                                                                @endif
+                                                                            @endforeach
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-danger" name="detach_item_customer">Done</button>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
-                                                        <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Attach Items">
-                                                            <button type="button" class="btn btn-success btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndAttachPackageItemsModal{{ $package->id }}"><i class="fas fa-paperclip"></i></button>
-                                                            <div class="modal fade" id="viewAndAttachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndAttachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="viewAndAttachPackageItemsModal{{ $package->id }}Label">Attach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form action="{{ route('attach_package_item_customer') }}" method="post">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                                <input type="hidden" name="customer_id" value="{{ $customer->id }}">
-                                                                                <input type="hidden" name="package_id" value="{{ $package->id }}">
-                                                                                @foreach ($package->items as $item)
-                                                                                    @php 
-                                                                                        if($arr != [] && array_key_exists($package->id, $arr)) {
-                                                                                            $item_arr = $arr[$package->id];
-                                                                                        }
-                                                                                    @endphp
-                                                                                    @if ($arr != [] && array_key_exists($package->id, $arr))
-                                                                                        @if (in_array($item->id, $item_arr))
-                                                                                            <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                @endforeach
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                                <button type="submit" class="btn btn-success" name="detach_item_customer">Done</button>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerPackage{{ $package->pivot->id }}">
-                                                            Edit
-                                                        </button>
-                                                        
-                                                        <div class="modal fade" id="updateCustomerPackage{{ $package->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="updateCustomerPackage{{ $package->pivot->id }}Label" aria-hidden="true">
+                                                    </div>
+                                                    
+                                                    <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View & Attach Items">
+                                                        <button type="button" class="btn btn-success btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewAndAttachPackageItemsModal{{ $package->id }}"><i class="fas fa-paperclip"></i></button>
+                                                        <div class="modal fade" id="viewAndAttachPackageItemsModal{{ $package->id }}" tabindex="-1" role="dialog" aria-labelledby="viewAndAttachPackageItemsModal{{ $package->id }}Label" aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="updateCustomerPackage{{ $package->pivot->id }}Label">Modal title</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="viewAndAttachPackageItemsModal{{ $package->id }}Label">Attach Items from Package - <span class="badge badge-success">{{ $package->package_code }}</span></h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
-                                                                    </button>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{{ route('attach_package_item_customer') }}" method="post">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <input type="hidden" name="customer_id" value="{{ $customer->id }}">
+                                                                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                                            @foreach ($package->items as $item)
+                                                                                @php 
+                                                                                    if($arr != [] && array_key_exists($package->id, $arr)) {
+                                                                                        $item_arr = $arr[$package->id];
+                                                                                    }
+                                                                                @endphp
+                                                                                @if ($arr != [] && array_key_exists($package->id, $arr))
+                                                                                    @if (!in_array($item->id, $item_arr))
+                                                                                        <input type="checkbox" name="items[]" id="item{{ $package->id }}{{$item->id}}" value="{{$item->id}}"> <label for="item{{ $package->id }}{{$item->id}}"> {{ $item->item_desc }} </label><br>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-success" name="detach_item_customer">Done</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <form action="{{ route('update_customer_packages', $package->pivot->id) }}" method="POST">
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        <div class="form-group row">
-                                                                            <label class="col-md-3 col-form-label">Price</label>
-                                                                            <div class="col-md-9">
-                                                                                <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="package_price" class="form-control" value="{{ $package->pivot->package_price }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerPackage{{ $package->pivot->id }}">
+                                                        Edit
+                                                    </button>
+                                                    
+                                                    <div class="modal fade" id="updateCustomerPackage{{ $package->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="updateCustomerPackage{{ $package->pivot->id }}Label" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="updateCustomerPackage{{ $package->pivot->id }}Label">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ route('update_customer_packages', $package->pivot->id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 col-form-label">Price</label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="package_price" class="form-control" value="{{ $package->pivot->package_price }}">
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Item Code</th>
+                                                <th>Name</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                            @foreach ($package->items as $item)
+                                                @if($items_details_arr != [] && array_key_exists($package->id, $items_details_arr))
+                                                        @php $items_arr = $items_details_arr[$package->id]; @endphp
+                                                        
+                                                        @if($items_arr != [] && array_key_exists($item->id, $items_arr))
+                                                            @php $item_arr = $items_arr[$item->id]; @endphp
+                                                            <tr>
+                                                                <td>{{ $item->item_code }}</td>
+                                                                <td>{{ $item->item_desc }}</td>
+                                                                <td>{{ $item_arr[0] }}</td>
+                                                                <td>
+                                                                    @if ($item_arr[1] == 0)
+                                                                        <span class="badge badge-pill badge-warning" style="cursor: pointer;" id="" data-toggle="modal" data-target="#markAsDeliveredModal{{ $item_arr[2] }}">Pending</span>
+                                                                        <div class="modal fade" id="markAsDeliveredModal{{ $item_arr[2] }}" tabindex="-1" role="dialog" aria-labelledby="markAsDeliveredModal{{ $item_arr[2] }}Label" aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="markAsDeliveredModal{{ $item_arr[2] }}Label">Change Item Status</h5>
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        Are you sure you want mark this as Delivered?
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <form action="{{ route('customer_package_item_mark_as_delivered', $item_arr[2] ) }}" method="post">
+                                                                                            @csrf
+                                                                                            @method('PUT')
+                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save</button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                                    @else
+                                                                        <span class="badge badge-pill badge-success">Delivered</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerPackageItemQuantity{{ $item_arr[2] }}">
+                                                                        Edit
+                                                                    </button>
+                                                                    
+                                                                    <div class="modal fade" id="updateCustomerPackageItemQuantity{{ $item_arr[2] }}" tabindex="-1" role="dialog" aria-labelledby="updateCustomerPackageItemQuantity{{ $item_arr[2] }}Label" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="updateCustomerPackageItemQuantity{{ $item_arr[2] }}Label">Update</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form action="{{ route('update_customer_package_items', $item_arr[2]) }}" method="POST">
+                                                                                    @csrf
+                                                                                    @method('PUT')
+                                                                                    
+                                                                                    <div class="form-group row">
+                                                                                        <label class="col-md-3 col-form-label">Quantity</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="quantity" class="form-control" value="{{ $item_arr[0] }}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    
+                                                @endif
+                                                
+                                                
                                             @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan='6' class="text-center">No any Items Attched</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                            
+                                        </tbody>
+                                    </table><br><hr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan='6' class="text-center">No any Items Attched</td>
+                                </tr>
+                            @endif
+                                
                         </div>
                     </div>
                 </div>
@@ -791,13 +881,13 @@
                                                 </td>
                                                 <td>
                                                     @if ($item->pivot->status == 0)
-                                                        <span class="badge badge-pill badge-warning" style="cursor: pointer;" id="" data-toggle="modal" data-target="#exampleModal">Pending</span>
+                                                        <span class="badge badge-pill badge-warning" style="cursor: pointer;" id="" data-toggle="modal" data-target="#itemMarkAsDeliveredModal{{ $item->pivot->id }}">Pending</span>
                                                           
-                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal fade" id="itemMarkAsDeliveredModal{{ $item->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="itemMarkAsDeliveredModal{{ $item->pivot->id }}Label" aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Change Item Status</h5>
+                                                                        <h5 class="modal-title" id="itemMarkAsDeliveredModal{{ $item->pivot->id }}Label">Change Item Status</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>

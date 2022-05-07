@@ -65,6 +65,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::put('/update_customer_packages/{package}', [CustomerController::class, 'update_customer_packages'])->name('update_customer_packages');
     Route::put('mark_as_delivered/{item}', [CustomerController::class, 'mark_as_delivered'])->name('mark_as_delivered');
 
+    Route::put('customer_package_item_mark_as_delivered/{item}', [CustomerController::class, 'customer_package_item_mark_as_delivered'])->name('customer_package_item_mark_as_delivered');
+    Route::put('/update_customer_package_items/{item}', [CustomerController::class, 'update_customer_package_items'])->name('update_customer_package_items');
+    
     Route::resource('intering_payment', InteringPaymentController::class);
 
     Route::get('test/{customer}', function($customer_id) {

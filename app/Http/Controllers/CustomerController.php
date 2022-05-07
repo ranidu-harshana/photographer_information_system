@@ -105,22 +105,33 @@ class CustomerController extends Controller
 
         $customers = DB::table('customer_package_items')->where('customer_id', '=', $id)->get();
         $arr = [];
+        $items_details_arr = [];
         foreach ($customers as $customer_package_id) {
             $package_id = $customer_package_id->package_id;
             if (array_key_exists($package_id, $arr)) {
                 continue;
             }else{
-                $customer_items = DB::table('customer_package_items')->where('package_id', '=', $package_id)->get();
+                $customer_items = DB::table('customer_package_items')->where('customer_id','=', $id)->where('package_id', '=', $package_id)->where('status','=',0)->get();
                 $item_arr = [];
+                
                 foreach ($customer_items as $item) {
+                    $item_details_arr = [];
                     array_push($item_arr, $item->item_id);
+                    array_push($item_details_arr, $item->quantity);
+                    array_push($item_details_arr, $item->delivery_status);
+                    array_push($item_details_arr, $item->id);
+                    $items_details_arr[$package_id][$item->item_id] = $item_details_arr;
                 }
                 $arr[$package_id] = $item_arr;
+                
             }
         }
         
-        // dd($arr);
-        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'arr'=>$arr]);
+        // echo '<pre>';
+        // print_r(array_key_exists(1, $items_details_arr[1]));
+        // echo '</pre>';
+        // dd($items_details_arr);
+        return view('admin.customer-profile', ['customer'=>$customer, 'items'=>$items, 'packages'=>$packages, 'arr'=>$arr, 'items_details_arr'=>$items_details_arr]);
     }
 
     /**
@@ -207,15 +218,24 @@ class CustomerController extends Controller
         return back();
     }
 
+    public function mark_as_delivered($id) {
+        DB::table('customer_item')->where('id', '=', $id)->update(['status'=>1]);
+        session()->flash('mark-as-delivered', 'Item Marked as Delivered to customer');
+        return back();
+    }
+
     public function package_detach(Request $request, $id) {
         $request->validate([
             'detach_packages'=>'required',
         ]);
         $customer = Customer::find($id);
-        $package_id = $request->package_id;
         $customer->packages()->detach($request->detach_packages);
 
-        DB::table('customer_package_items')->where('customer_id', '=', $id)->where('package_id', '=', $package_id)->delete();
+        foreach ($request->detach_packages as $detach_package) {
+            $package = Package::find($detach_package);
+            DB::table('customer_package_items')->where('customer_id', '=', $id)->where('package_id', '=', $package->id)->delete();
+        }
+        
         session()->flash('package-detach', 'Package Detached from customer - '.$customer->name);
         return back();
     }
@@ -229,11 +249,21 @@ class CustomerController extends Controller
         foreach ($request->attach_packages as $attach_package) {
             $package = Package::find($attach_package);
             $customer->packages()->attach($package->id, ['package_price'=>$package->package_price]);
+
+            foreach ($package->items as $item) {
+                DB::table('customer_package_items')->insert([
+                    'customer_id'=>$customer->id,
+                    'package_id'=>$package->id,
+                    'item_id'=>$item->id,
+                    'quantity'=>1
+                ]);
+            }
         }
         session()->flash('package-attach', 'Package Attached from customer - '.$customer->name);
         return back();
     }
 
+    // if status = 1, items are detached already
     public function detach_package_item_customer(Request $request) {
         $customer_id = $request->customer_id;
         $package_id = $request->package_id;
@@ -242,15 +272,16 @@ class CustomerController extends Controller
         ]);
 
         foreach ($request->items as $item) {
-            DB::table('customer_package_items')->insert([
-                'customer_id'=>$customer_id,
-                'package_id'=>$package_id,
-                'item_id'=>$item,
+            DB::table('customer_package_items')->where('customer_id', '=', $customer_id)->where('package_id','=', $package_id)->where('item_id', '=', $item)->update([
+                'status'=>1,
+                'quantity'=>1,
+                'delivery_status'=>0
             ]);
         }
         return redirect()->route('customer.show', $customer_id);
     }
 
+    // if status = 0, items are attached already
     public function attach_package_item_customer(Request $request) {
         $customer_id = $request->customer_id;
         $package_id = $request->package_id;
@@ -260,7 +291,9 @@ class CustomerController extends Controller
         ]);
 
         foreach ($request->items as $item) {
-            $deleted = DB::table('customer_package_items')->where('customer_id', '=', $customer_id)->where('package_id', '=', $package_id)->where('item_id','=', $item)->delete();
+            DB::table('customer_package_items')->where('item_id', '=', $item)->where('customer_id', '=', $customer_id)->where('package_id','=', $package_id)->update([
+                'status'=>0,
+            ]);
         }
 
         return back();
@@ -409,9 +442,20 @@ class CustomerController extends Controller
         return back();
     }
 
-    public function mark_as_delivered($id) {
-        DB::table('customer_item')->where('id', '=', $id)->update(['status'=>1]);
-        session()->flash('mark-as-delivered', 'Item Marked as Delivered to customer');
+    public function customer_package_item_mark_as_delivered($id) {
+        DB::table('customer_package_items')->where('id', '=', $id)->update(['delivery_status'=>1]);
+        session()->flash('customer_package_item_mark-as-delivered', 'Item Marked as Delivered to customer');
         return back();
     }
+
+    public function update_customer_package_items(Request $reqeust, $id) {
+        $validated = $reqeust->validate([
+            'quantity'=>'required',
+        ]);
+
+        $customer_package_items = DB::table('customer_package_items')->where('id', '=', $id)->update($validated);
+        session()->flash('customer-package-item-updated', 'Customer Item Updated');
+        return back();
+    }
+
 }
