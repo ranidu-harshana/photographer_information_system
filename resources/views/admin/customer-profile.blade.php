@@ -14,7 +14,7 @@
     @php $total_item_price = 0; @endphp
     @foreach ($customer->items as $item)
         @php
-            $total_item_price += $item->pivot->item_price;
+            $total_item_price += $item->pivot->item_price * $item->pivot->quantity;
         @endphp
     @endforeach
 
@@ -306,12 +306,6 @@
                                 <ul class="personal-info">
                                     <li>
                                         <span class="title">Total Package Price </span>
-                                        @php $total_package_price = 0; @endphp
-                                        @foreach ($customer->packages as $package)
-                                            @php
-                                                $total_package_price += $package->pivot->package_price;
-                                            @endphp
-                                        @endforeach
                                         @if ($total_package_price != 0)
                                             <span class="text-primary"> {{ $total_package_price }}.00 </span>
                                         @else
@@ -351,12 +345,6 @@
                                     <li>
                                         <span class="title">Total Item Price </span>
                                         
-                                        @php $total_item_price = 0; @endphp
-                                        @foreach ($customer->items as $item)
-                                            @php
-                                                $total_item_price += $item->pivot->item_price;
-                                            @endphp
-                                        @endforeach
                                         @if ($total_item_price != 0)
                                             <span class="text-primary"> {{ $total_item_price }}.00 </span>
                                         @else
