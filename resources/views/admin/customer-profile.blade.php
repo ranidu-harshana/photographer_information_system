@@ -129,6 +129,41 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+    @elseif(session('wedding-posponed')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('wedding-posponed') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('home-com-posponed')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('home-com-posponed') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('preshoot-posponed')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('preshoot-posponed') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('event-posponed')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('event-posponed') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('photoshoot-posponed')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('photoshoot-posponed') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     @endif
 
     <div class="row">
@@ -142,7 +177,80 @@
 
         <div class="col-sm-5 col-6 text-right m-b-30 ">
             <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
-            <a href="" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Postpone</a>
+            <a class="btn btn-warning btn-rounded" data-toggle="modal" data-target="#postponeModal"><i class="fa fa-plus"></i> Postpone</a>
+        </div>
+        <div class="modal fade" id="postponeModal" tabindex="-1" role="dialog" aria-labelledby="postponeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="postponeModalLabel">Postpone</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('postpone', $customer->id) }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            @if ($customer->wedding_date != NULL && $customer->home_com_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="1">Wedding</option>
+                                    <option value="2">Homecomming</option>
+                                    @if ($customer->preshoot_date != NULL)
+                                        <option value="3">Pre Shoot</option>
+                                    @endif
+                                </select>
+                            @elseif ($customer->wedding_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="1">Wedding</option>
+                                    @if ($customer->preshoot_date != NULL)
+                                        <option value="3">Pre Shoot</option>
+                                    @endif
+                                </select>
+                            @elseif($customer->home_com_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="2">Homecomming</option>
+                                    @if ($customer->preshoot_date != NULL)
+                                        <option value="3">Pre Shoot</option>
+                                    @endif
+                                </select>
+                            @elseif($customer->event_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="4">Event</option>
+                                    @if ($customer->preshoot_date != NULL)
+                                        <option value="3">Pre Shoot</option>
+                                    @endif
+                                </select>
+                            @elseif($customer->photo_shoot_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="5">Photo Shoot</option>
+                                    @if ($customer->preshoot_date != NULL)
+                                        <option value="3">Pre Shoot</option>
+                                    @endif
+                                </select>
+                            @elseif($customer->preshoot_date != NULL)
+                                <select name="fake" required class="form-control">
+                                    <option value="3">Pre Shoot</option>
+                                </select>
+                            @endif
+                            <br>
+                            <div class="form-group">
+                                <label>Postpone Date</label>
+                                <input name="date" type="date" class="form-control" required autocomplete="off">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Done</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-box profile-header " id="profile-card" style="min-height: 260px; overflow:scroll; overflow-x: hidden;">
@@ -181,23 +289,12 @@
                                         
                                     </li>
 
-                                    <li>
-                                        <span class="title">Phone 1</span>
-                                        <span class="text"><a href="#">{{ $customer->mob_no1 }}</a></span>
-                                    </li>
-
-                                    @if ($customer->mob_no2 != NULL)
-                                        <li>
-                                            <span class="title">Phone 2</span>
-                                            <span class="text"><a href="#">{{ $customer->mob_no2 }}</a></span>
-                                        </li>
-                                    @endif
-
                                     @if ($customer->wedding_date != NULL)
                                         <li>
                                             <span class="title">Wedding Date</span>
-                                            <span class="text">{{ $customer->wedding_date }}</span>
+                                            <span class="text"><b>{{ $customer->wedding_date }}</b></span>
                                         </li>
+                                        
                                         @if ($customer->wedding_location != NULL)
                                             <li>
                                                 <span class="title">Place</span>
@@ -205,10 +302,11 @@
                                             </li>
                                         @endif
                                     @endif
+
                                     @if ($customer->home_com_date != NULL)
                                         <li>
                                             <span class="title">Homecomming Date</span>
-                                            <span class="text">{{ $customer->home_com_date }}</span>
+                                            <span class="text"><b>{{ $customer->home_com_date }}</b></span>
                                         </li>
                                         @if ($customer->home_com_location != NULL)
                                             <li>
@@ -225,8 +323,9 @@
                                         </li>
                                         <li>
                                             <span class="title">Event Date</span>
-                                            <span class="text">{{ $customer->event_date }}</span>
+                                            <span class="text"><b>{{ $customer->event_date }}</b></span>
                                         </li>
+                                        
                                         @if ($customer->event_location != NULL)
                                             <li>
                                                 <span class="title">Place</span>
@@ -234,10 +333,11 @@
                                             </li>
                                         @endif
                                     @endif
+
                                     @if ($customer->photo_shoot_date != NULL)
                                         <li>
                                             <span class="title">Photo Shoot Date</span>
-                                            <span class="text">{{ $customer->photo_shoot_date }}</span>
+                                            <span class="text"><b>{{ $customer->photo_shoot_date }}</b></span>
                                         </li>
                                         @if ($customer->photo_shoot_location != NULL)
                                             <li>
@@ -246,10 +346,11 @@
                                             </li>
                                         @endif
                                     @endif
+
                                     @if ($customer->preshoot_date != NULL)
                                         <li>
                                             <span class="title">Pre Shoot Date</span>
-                                            <span class="text">{{ $customer->preshoot_date }}</span>
+                                            <span class="text"><b>{{ $customer->preshoot_date }}</b></span>
                                         </li>
                                         @if ($customer->preshoot_location != NULL)
                                             <li>
@@ -273,7 +374,7 @@
             <li class="nav-item" id="tab2"><a class="nav-link @if (session('tab2')) active @endif" href="#items_tab" data-toggle="tab">Items</a></li>
             <li class="nav-item" id="tab3"><a class="nav-link @if (session('tab3')) active @endif" href="#bill_tab" data-toggle="tab">Bill</a></li>
             <li class="nav-item" id="tab4"><a class="nav-link @if (session('tab4')) active @endif" href="#notes_tab" data-toggle="tab">Notes</a></li>
-            {{-- <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li> --}}
+            <li class="nav-item" id="tab5"><a class="nav-link @if (session('tab5')) active @endif" href="#other_tab" data-toggle="tab">Other</a></li>
         </ul>
 
         <div class="tab-content">
@@ -976,24 +1077,7 @@
                                     @endif
                                 </li>
 
-                                <li>
-                                    <span class="title">Discount </span>
-                                    @if ($customer->discount != NULL || $customer->discount != 0)
-                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
-                                    @else
-                                        0.00
-                                    @endif
-                                </li>
                                 
-                                <li>
-                                    <span class="title">Advance Payment </span>
-                                    @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
-                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
-                                    @else
-                                        0.00
-                                    @endif
-                                    
-                                </li>
                                 <li>
                                     <span class="title">Total Package Price </span>
                                     
@@ -1016,6 +1100,24 @@
                                 <li>
                                     <span class="title">Total Amount</span>
                                     <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
+                                    
+                                </li>
+                                <li>
+                                    <span class="title">Discount </span>
+                                    @if ($customer->discount != NULL || $customer->discount != 0)
+                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
+                                </li>
+                                
+                                <li>
+                                    <span class="title">Advance Payment </span>
+                                    @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
+                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
+                                    @else
+                                        0.00
+                                    @endif
                                     
                                 </li>
                                 <li>
@@ -1216,30 +1318,64 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="tab-pane @if (session('tab5')) active @endif" id="other_tab" >
+            <div class="tab-pane @if (session('tab5')) active @endif" id="other_tab" >
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card-box">
-                            <h4 class="card-title">Other Details</h4>
+                            <h4 class="card-title">Postponed Details</h4>
                             <ul class="personal-info">
-                                <li>
-                                    <span class="title">Dressing Place </span>
-                                    <span class="text-primary">
-                                            In Home
-                                    </span>
-                                </li>
+                                @if ($customer->wedding_date != NULL)
+                                    @if ($customer->posponed_date != NULL)
+                                        <li>
+                                            <span class=""> Wedding Postponed From: </span>
+                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
+                                        </li>
+                                    @endif
+                                @endif
 
+                                @if ($customer->home_com_date != NULL)
+                                    @if ($customer->homecomming_posponed_date != NULL)
+                                        <li>
+                                            <span class="">Homecomming Postponed From: </span>
+                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->homecomming_posponed_date}}</b></span>
+                                        </li>
+                                    @endif
+                                @endif
+
+                                @if ($customer->event_date != NULL)
+                                    @if ($customer->posponed_date != NULL)
+                                        <li>
+                                            <span class="">Event Postponed From: </span>
+                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
+                                        </li>
+                                    @endif
+                                @endif
+
+                                @if ($customer->photo_shoot_date != NULL)
+                                    @if ($customer->posponed_date != NULL)
+                                        <li>
+                                            <span class="">Photo Shoot Postponed From: </span>
+                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
+                                        </li>
+                                    @endif
+                                @endif
+                                @if ($customer->preshoot_date != NULL)
+                                    @if ($customer->preshoot_postponed_date != NULL)
+                                        <li>
+                                            <span class="">Preshoot Postponed From: </span>
+                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->preshoot_postponed_date}}</b></span>
+                                        </li>
+                                    @endif
+                                @endif
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 
     <script>
-        
-
         $('#cost_edit_form').hide()
         $('#cost_view_form').show()
         function showCostEditForm() {

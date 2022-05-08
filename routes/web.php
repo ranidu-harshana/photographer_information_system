@@ -44,6 +44,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/customer/attach/package/{customer_id}', [CustomerController::class, 'package_attach'])->name('customer.package.attach');
     Route::delete('/customer/detach/package/{customer_id}', [CustomerController::class, 'package_detach'])->name('customer.package.detach');
 
+    Route::put('/postpone/{customer}', [CustomerController::class, 'postpone'])->name('postpone');
+
     Route::post('set_tab0_session', [SessionController::class, 'set_tab0_session']);
     Route::post('set_tab1_session', [SessionController::class, 'set_tab1_session']);
     Route::post('set_tab2_session', [SessionController::class, 'set_tab2_session']);

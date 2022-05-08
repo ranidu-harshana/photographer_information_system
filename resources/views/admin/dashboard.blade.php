@@ -157,13 +157,17 @@
                                             html += element.bill_number;
                                             html += '</a> | '+element.name+' | <span class="text-primary">HomeComming</span> <br>';
                                         }else if(element.type == 3) {
-                                            html += '<a class="badge badge-warning mb-2" style="color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += '<a class="badge mb-2" style="background-color:#5bc0de; color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
                                             html += element.bill_number;
-                                            html += '</a> | '+element.name+' | <span class="text-warning">Event</span> <br>';
+                                            html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> <br>';
                                         }else if(element.type == 4) {
-                                            html += '<a class="badge mb-2" style="background-color:blue; color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += '<a class="badge mb-2" style="background-color:#0694fb; color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
                                             html += element.bill_number;
-                                            html += '</a> | '+element.name+' | <span style="color: blue">PhotoShoot</span> <br>';
+                                            html += '</a> | '+element.name+' | <span style="color: #0694fb">PhotoShoot</span> <br>';
+                                        }else if(element.type == 5) {
+                                            html += '<a class="badge mb-2" style="background-color:#8c7cbc; color:white; font-size: 14px" href="customer/'+element.customer_id+'">';
+                                            html += element.bill_number;
+                                            html += '</a> | '+element.name+' | <span style="color: #8c7cbc">PreShoot</span> <br>';
                                         }
                                                 
                                             

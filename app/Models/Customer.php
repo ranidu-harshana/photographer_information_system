@@ -34,6 +34,11 @@ class Customer extends Model
         'advance_payment',
         'total_package_price',
         'total_item_price',
+        'status',
+        'posponed_date',
+        'homecomming_posponed_date',
+        'preshoot_postponed_date',
+
     ];
 
     public function packages() {
