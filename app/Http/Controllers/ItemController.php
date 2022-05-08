@@ -115,6 +115,7 @@ class ItemController extends Controller
     {
         $item = Item::find($id);
         $item->delete();
+        session()->flash('item-deleted', 'Item Deleted');
         return back();
     }
 

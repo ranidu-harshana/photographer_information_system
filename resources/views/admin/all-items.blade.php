@@ -7,19 +7,28 @@
                 <div class="card-block">
                     <h6 class="card-title text-bold">All Customers</h6>
                     @if (session('item-created'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('item-created') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @elseif(session('item-updated'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('item-updated') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    @elseif(session('measurment-date-updated'))
-                        <div class="alert alert-success">
-                            {{ session('measurment-date-updated') }}
+                    @elseif(session('item-deleted'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('item-deleted') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
-
+                    
                     <div class="table-responsive">
                         <table id="all-items-datatable" class="table table-striped table-bordered table-sm">
                             <thead>

@@ -7,16 +7,25 @@
                 <div class="card-block">
                     <h6 class="card-title text-bold">All Packages</h6>
                     @if (session('package-created'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('package-created') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @elseif(session('package-updated'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('package-updated') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    @elseif(session('measurment-date-updated'))
-                        <div class="alert alert-success">
-                            {{ session('measurment-date-updated') }}
+                    @elseif(session('package-deleted'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('package-deleted') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
 

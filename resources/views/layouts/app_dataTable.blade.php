@@ -51,6 +51,10 @@
         //         "order": [[ 0, "desc" ]]
         //     });
         // } );
+
+        $(".alert-dismissible").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert-dismissible").alert('close');
+        });
     </script>
     <div class="sidebar-overlay" data-reff=""></div>
 	<script src="{{ asset('assets/js/popper.min.js') }}"></script>

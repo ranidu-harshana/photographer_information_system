@@ -89,7 +89,6 @@ class PackageController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'package_code'=>['required'],
             'name'=>['required'],
             'desc'=>['required'],
             'package_price'=>['required'],
@@ -112,6 +111,7 @@ class PackageController extends Controller
     {
         $item = Package::find($id);
         $item->delete();
+        session()->flash('package-deleted', 'Package Deleted');
         return back();
     }
 
