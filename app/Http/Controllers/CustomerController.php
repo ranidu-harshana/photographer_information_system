@@ -355,12 +355,12 @@ class CustomerController extends Controller
         $customers = Customer::where('wedding_date', '=', "{$request->date}")->get();
         foreach ($customers as $customer) {
             $data_arr = [];
-            // $postponed = $customer->postponed;
-            // if ($postponed == NULL) {
-            //     $postponed = "NO";
-            // }
+            $postponed = $customer->posponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
             $data_arr['name'] = $customer->name;
-            // $data_arr['postponed'] = $postponed;
+            $data_arr['postponed'] = $postponed;
             $data_arr['customer_id'] = $customer->id;
             $data_arr['bill_number'] = $customer->bill_nulber;
             $data_arr['status'] = $customer->status;
@@ -371,12 +371,12 @@ class CustomerController extends Controller
         $customers = Customer::where('home_com_date', '=', "{$request->date}")->get();
         foreach ($customers as $customer) {
             $data_arr = [];
-            // $postponed = $customer->postponed;
-            // if ($postponed == NULL) {
-            //     $postponed = "NO";
-            // }
+            $postponed = $customer->homecomming_posponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
             $data_arr['name'] = $customer->name;
-            // $data_arr['postponed'] = $postponed;
+            $data_arr['postponed'] = $postponed;
             $data_arr['customer_id'] = $customer->id;
             $data_arr['bill_number'] = $customer->bill_nulber;
             $data_arr['status'] = $customer->status;
@@ -387,12 +387,12 @@ class CustomerController extends Controller
         $customers = Customer::where('event_date', '=', "{$request->date}")->get();
         foreach ($customers as $customer) {
             $data_arr = [];
-            // $postponed = $customer->postponed;
-            // if ($postponed == NULL) {
-            //     $postponed = "NO";
-            // }
+            $postponed = $customer->posponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
             $data_arr['name'] = $customer->name;
-            // $data_arr['postponed'] = $postponed;
+            $data_arr['postponed'] = $postponed;
             $data_arr['customer_id'] = $customer->id;
             $data_arr['bill_number'] = $customer->bill_nulber;
             $data_arr['status'] = $customer->status;
@@ -403,12 +403,12 @@ class CustomerController extends Controller
         $customers = Customer::where('photo_shoot_date', '=', "{$request->date}")->get();
         foreach ($customers as $customer) {
             $data_arr = [];
-            // $postponed = $customer->postponed;
-            // if ($postponed == NULL) {
-            //     $postponed = "NO";
-            // }
+            $postponed = $customer->posponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
             $data_arr['name'] = $customer->name;
-            // $data_arr['postponed'] = $postponed;
+            $data_arr['postponed'] = $postponed;
             $data_arr['customer_id'] = $customer->id;
             $data_arr['bill_number'] = $customer->bill_nulber;
             $data_arr['status'] = $customer->status;
@@ -419,12 +419,12 @@ class CustomerController extends Controller
         $customers = Customer::where('preshoot_date', '=', "{$request->date}")->get();
         foreach ($customers as $customer) {
             $data_arr = [];
-            // $postponed = $customer->postponed;
-            // if ($postponed == NULL) {
-            //     $postponed = "NO";
-            // }
+            $postponed = $customer->preshoot_postponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
             $data_arr['name'] = $customer->name;
-            // $data_arr['postponed'] = $postponed;
+            $data_arr['postponed'] = $postponed;
             $data_arr['customer_id'] = $customer->id;
             $data_arr['bill_number'] = $customer->bill_nulber;
             $data_arr['status'] = $customer->status;
