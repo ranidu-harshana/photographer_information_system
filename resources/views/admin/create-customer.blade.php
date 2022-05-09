@@ -114,6 +114,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Event Type</label>
+                            <input name="event_type" id="event_type" value="{{ old('event_type') }}" type="text" class="form-control" autocomplete="off">
+                        </div>
+
+                        <div class="form-group">
                             <label>Event Location</label>
                             <input name="event_location" id="event_location" value="{{ old('event_location') }}" type="text" class="form-control" autocomplete="off">
                         </div>
@@ -240,6 +245,12 @@
             $('#wedding_date').prop('required', false)
             $('#event_date').prop('required', false)
             $('#wedding_type_id').prop('required', false)
+
+            $('#photo_shoot_date').prop('disabled', true)
+            $('#home_com_date').prop('disabled', true)
+            $('#wedding_date').prop('disabled', true)
+            $('#event_date').prop('disabled', true)
+            
             $('#function_type_id').change(function() {
                 var function_type_id = $('#function_type_id').val()
                 if(function_type_id == 2){
@@ -253,6 +264,12 @@
                     $('#wedding_date').prop('required', false)
                     $('#event_date').prop('required', false)
                     $('#wedding_type_id').prop('required', false)
+
+                    $('#photo_shoot_date').prop('disabled', false)
+                    $('#home_com_date').prop('disabled', true)
+                    $('#wedding_date').prop('disabled', true)
+                    $('#event_date').prop('disabled', true)
+                    
                 }else if (function_type_id == 1) {
                     $('#wedding_type').show();
                     $('#wedding_div').hide();
@@ -260,6 +277,7 @@
                     $('#event_div').hide();
                     $('#photosshoot_div').hide();
                     $('#wedding_type_id').prop('required', true)
+                    $('#wedding_type_id').prop('disabled', false)
                     $('#wedding_type_id').change(function() {
                         var wedding_type_id = $('#wedding_type_id').val();
                         if(wedding_type_id == 1) {
@@ -273,6 +291,12 @@
                             $('#wedding_date').prop('required', true)
                             $('#event_date').prop('required', false)
                             $('#wedding_type_id').prop('required', false)
+
+                            $('#photo_shoot_date').prop('disabled', true)
+                            $('#home_com_date').prop('disabled', true)
+                            $('#wedding_date').prop('disabled', false)
+                            $('#event_date').prop('disabled', true)
+                            
                         }else if(wedding_type_id == 2) {
                             $('#wedding_type').show();
                             $('#wedding_div').hide();
@@ -284,6 +308,12 @@
                             $('#wedding_date').prop('required', false)
                             $('#event_date').prop('required', false)
                             $('#wedding_type_id').prop('required', false)
+
+                            $('#photo_shoot_date').prop('disabled', true)
+                            $('#home_com_date').prop('disabled', false)
+                            $('#wedding_date').prop('disabled', true)
+                            $('#event_date').prop('disabled', true)
+                            
                         }else if(wedding_type_id == 3) {
                             $('#wedding_type').show();
                             $('#wedding_div').show();
@@ -295,6 +325,12 @@
                             $('#wedding_date').prop('required', true)
                             $('#event_date').prop('required', false)
                             $('#wedding_type_id').prop('required', false)
+
+                            $('#photo_shoot_date').prop('disabled', true)
+                            $('#home_com_date').prop('disabled', false)
+                            $('#wedding_date').prop('disabled', false)
+                            $('#event_date').prop('disabled', true)
+                            
                         }else{
                             $('#wedding_type').hide();
                             $('#wedding_div').hide();
@@ -306,6 +342,12 @@
                             $('#wedding_date').prop('required', false)
                             $('#event_date').prop('required', false)
                             $('#wedding_type_id').prop('required', false)
+
+                            $('#photo_shoot_date').prop('disabled', true)
+                            $('#home_com_date').prop('disabled', true)
+                            $('#wedding_date').prop('disabled', true)
+                            $('#event_date').prop('disabled', true)
+                            
                         }
                     });
                 }else if(function_type_id == 3){
@@ -319,6 +361,12 @@
                     $('#wedding_date').prop('required', false)
                     $('#event_date').prop('required', true)
                     $('#wedding_type_id').prop('required', false)
+
+                    $('#photo_shoot_date').prop('disabled', true)
+                    $('#home_com_date').prop('disabled', true)
+                    $('#wedding_date').prop('disabled', true)
+                    $('#event_date').prop('disabled', false)
+                    
                 }else{
                     $('#wedding_type').hide();
                     $('#wedding_div').hide();
@@ -330,6 +378,12 @@
                     $('#wedding_date').prop('required', false)
                     $('#event_date').prop('required', false)
                     $('#wedding_type_id').prop('required', false)
+
+                    $('#photo_shoot_date').prop('disabled', true)
+                    $('#home_com_date').prop('disabled', true)
+                    $('#wedding_date').prop('disabled', true)
+                    $('#event_date').prop('disabled', true)
+                    
                 }
             });
         });

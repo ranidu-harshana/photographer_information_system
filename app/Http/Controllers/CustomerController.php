@@ -63,9 +63,7 @@ class CustomerController extends Controller
             'wedding_location'=>['nullable'],
             'home_com_date'=>['nullable'],
             'home_com_location'=>['nullable'],
-
-            // 'event_type'=>['nullable'],
-
+            'event_type'=>['nullable'],
             'event_date'=>['nullable'],
             'event_location'=>['nullable'],
             'photo_shoot_date'=>['nullable'],
@@ -166,9 +164,7 @@ class CustomerController extends Controller
             'wedding_location'=>['nullable'],
             'home_com_date'=>['nullable'],
             'home_com_location'=>['nullable'],
-
-            // 'event_type'=>['nullable'],
-
+            'event_type'=>['nullable'],
             'event_date'=>['nullable'],
             'event_location'=>['nullable'],
             'photo_shoot_date'=>['nullable'],

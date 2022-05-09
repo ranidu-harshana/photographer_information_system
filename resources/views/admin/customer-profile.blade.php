@@ -317,10 +317,12 @@
                                     @endif
                                     
                                     @if ($customer->event_date != NULL)
-                                        <li>
-                                            <span class="title">Type</span>
-                                            <span class="text">{{ $customer->event_type }}</span>
-                                        </li>
+                                        @if ($customer->event_type != NULL)
+                                            <li>
+                                                <span class="title">Type</span>
+                                                <span class="text">{{ $customer->event_type }}</span>
+                                            </li>
+                                        @endif
                                         <li>
                                             <span class="title">Event Date</span>
                                             <span class="text"><b>{{ $customer->event_date }}</b></span>

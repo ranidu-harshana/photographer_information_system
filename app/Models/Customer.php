@@ -19,9 +19,7 @@ class Customer extends Model
         'wedding_location',
         'home_com_date',
         'home_com_location',
-
-        // 'event_type',
-
+        'event_type',
         'event_date',
         'event_location',
         'photo_shoot_date',
