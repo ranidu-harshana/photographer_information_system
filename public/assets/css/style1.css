@@ -2809,8 +2809,8 @@ a.fc-event:not([href]) {
 	padding: 0;
 }
 .notifications .drop-scroll {
-	height: 290px;
-	width: 400px;
+	height: 100px;
+	width: 250px;
 }
 .notifications.msg-noti .drop-scroll {
 	width: 310px;
@@ -2848,7 +2848,6 @@ a.fc-event:not([href]) {
 	background-color: #fafafa;
 }
 .drop-scroll {
-	overflow-y: scroll;
 	position: relative;
 }
 .topnav-dropdown-header {
