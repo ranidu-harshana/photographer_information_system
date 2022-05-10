@@ -100,6 +100,11 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Event Type</label>
+                                <input name="event_type" id="event_type" value="{{ $customer->event_type }}" type="text" class="form-control" autocomplete="off">
+                            </div>
+
+                            <div class="form-group">
                                 <label>Event Location</label>
                                 <input name="event_location" id="event_location" value="{{ $customer->event_location }}" type="text" class="form-control" autocomplete="off">
                             </div>
