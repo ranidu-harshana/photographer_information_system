@@ -72,6 +72,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     
     Route::resource('intering_payment', InteringPaymentController::class);
 
+    Route::post('/invoice/{customer}', [CustomerController::class, 'invoice_pdf'])->name('invoice');
+    
     Route::get('test/{customer}', function($customer_id) {
         
         

@@ -150,22 +150,22 @@
                                     data.forEach(element => {
                                         if(element.type == 1) {
                                             if(element.postponed == 'NO'){
-                                                html += '<a class="badge badge-success mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-success mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span class="text-success">Wedding</span>  <br>';
                                             }else{
-                                                html += '<a class="badge badge-warning mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span class="text-success">Wedding</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }
                                                 
                                         }else if(element.type == 2) {
                                             if(element.postponed == 'NO'){
-                                                html += '<a class="badge badge-primary mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-primary mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span class="text-primary">HomeComming</span> <br>';
                                             }else{
-                                                html += '<a class="badge badge-warning mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span class="text-primary">HomeComming</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }
@@ -175,7 +175,7 @@
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> <br>';
                                             }else{
-                                                html += '<a class="badge badge-warning mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }
@@ -185,7 +185,7 @@
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #0694fb">PhotoShoot</span> <br>';
                                             }else{
-                                                html += '<a class="badge badge-warning mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #0694fb">PhotoShoot</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }
@@ -195,7 +195,7 @@
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #8c7cbc">PreShoot</span> <br>';
                                             }else{
-                                                html += '<a class="badge badge-warning mb-2" href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #8c7cbc">PreShoot</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }

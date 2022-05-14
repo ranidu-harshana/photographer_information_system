@@ -8,6 +8,7 @@ use App\Models\FunctionType;
 use App\Models\Item;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
@@ -521,5 +522,13 @@ class CustomerController extends Controller
         }
 
         return back();
+    }
+
+    public function invoice_pdf($id) {
+        $customer = Customer::find($id);
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('admin.invoice-pdf', ['customer'=>$customer]);
+        return $pdf->stream();
+        // return view('admin.invoice-pdf');
     }
 }

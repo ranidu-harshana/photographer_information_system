@@ -172,7 +172,10 @@
         </div>
 
         <div class="col-sm-5 col-6 text-left ">
-            <button class="btn" style="background-color:#0275d8; color:white">Generate Bill</button>
+            <form action="{{ route('invoice', $customer->id) }}" method="post">
+                @csrf
+                <button class="btn" style="background-color:#0275d8; color:white">Generate Bill</button>
+            </form>
         </div>
 
         <div class="col-sm-5 col-6 text-right m-b-30 ">
