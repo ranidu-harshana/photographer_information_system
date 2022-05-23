@@ -863,7 +863,7 @@
                                                             <input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
                                                         @endforeach
                                                     @else
-                                                        <div class="alert alert-success" role="alert">No any Items to Detach</div>
+                                                        <div class="alert alert-success" role="alert">No any Items to Attach</div>
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
