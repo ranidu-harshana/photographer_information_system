@@ -312,140 +312,7 @@ class CustomerController extends Controller
         return back();
     }
 
-    public function get_all_func_dates() {
-        $date_arr = [];
 
-        $all_wedding_dates = Customer::select('wedding_date')->get();
-        $wedding_dates = array_values($all_wedding_dates->toArray());
-        foreach ($wedding_dates as $key => $value) {
-            if ($value['wedding_date'] != NULL) {
-                array_push($date_arr, $value['wedding_date']);
-            }
-            
-        }
-
-        $all_home_com_dates = Customer::select('home_com_date')->get();
-        $home_com_dates = array_values($all_home_com_dates->toArray());
-        foreach ($home_com_dates as $key => $value) {
-            if ($value['home_com_date'] != NULL) {
-                array_push($date_arr, $value['home_com_date']);
-            }
-            
-        }
-        
-        $all_event_dates = Customer::select('event_date')->get();
-        $event_dates = array_values($all_event_dates->toArray());
-        foreach ($event_dates as $key => $value) {
-            if ($value['event_date'] != NULL) {
-                array_push($date_arr, $value['event_date']);
-            }
-            
-        }
-
-        $all_photo_shoot_dates = Customer::select('photo_shoot_date')->get();
-        $photo_shoot_dates = array_values($all_photo_shoot_dates->toArray());
-        foreach ($photo_shoot_dates as $key => $value) {
-            if ($value['photo_shoot_date'] != NULL) {
-                array_push($date_arr, $value['photo_shoot_date']);
-            }
-            
-        }
-
-        $all_preshoot_date = Customer::select('preshoot_date')->get();
-        $preshoot_date = array_values($all_preshoot_date->toArray());
-        foreach ($preshoot_date as $key => $value) {
-            if ($value['preshoot_date'] != NULL) {
-                array_push($date_arr, $value['preshoot_date']);
-            }
-            
-        }
-
-        return response()->json($date_arr);
-    }
-
-    public function get_functions_of_day(Request $request) {
-        $arr = [];
-        $customers = Customer::where('wedding_date', '=', "{$request->date}")->get();
-        foreach ($customers as $customer) {
-            $data_arr = [];
-            $postponed = $customer->posponed_date;
-            if ($postponed == NULL) {
-                $postponed = "NO";
-            }
-            $data_arr['name'] = $customer->name;
-            $data_arr['postponed'] = $postponed;
-            $data_arr['customer_id'] = $customer->id;
-            $data_arr['bill_number'] = $customer->bill_nulber;
-            $data_arr['status'] = $customer->status;
-            $data_arr['type'] = 1;
-            array_push($arr, $data_arr);
-        }
-
-        $customers = Customer::where('home_com_date', '=', "{$request->date}")->get();
-        foreach ($customers as $customer) {
-            $data_arr = [];
-            $postponed = $customer->homecomming_posponed_date;
-            if ($postponed == NULL) {
-                $postponed = "NO";
-            }
-            $data_arr['name'] = $customer->name;
-            $data_arr['postponed'] = $postponed;
-            $data_arr['customer_id'] = $customer->id;
-            $data_arr['bill_number'] = $customer->bill_nulber;
-            $data_arr['status'] = $customer->status;
-            $data_arr['type'] = 2;
-            array_push($arr, $data_arr);
-        }
-
-        $customers = Customer::where('event_date', '=', "{$request->date}")->get();
-        foreach ($customers as $customer) {
-            $data_arr = [];
-            $postponed = $customer->posponed_date;
-            if ($postponed == NULL) {
-                $postponed = "NO";
-            }
-            $data_arr['name'] = $customer->name;
-            $data_arr['postponed'] = $postponed;
-            $data_arr['customer_id'] = $customer->id;
-            $data_arr['bill_number'] = $customer->bill_nulber;
-            $data_arr['status'] = $customer->status;
-            $data_arr['type'] = 3;
-            array_push($arr, $data_arr);
-        }
-
-        $customers = Customer::where('photo_shoot_date', '=', "{$request->date}")->get();
-        foreach ($customers as $customer) {
-            $data_arr = [];
-            $postponed = $customer->posponed_date;
-            if ($postponed == NULL) {
-                $postponed = "NO";
-            }
-            $data_arr['name'] = $customer->name;
-            $data_arr['postponed'] = $postponed;
-            $data_arr['customer_id'] = $customer->id;
-            $data_arr['bill_number'] = $customer->bill_nulber;
-            $data_arr['status'] = $customer->status;
-            $data_arr['type'] = 4;
-            array_push($arr, $data_arr);
-        }
-
-        $customers = Customer::where('preshoot_date', '=', "{$request->date}")->get();
-        foreach ($customers as $customer) {
-            $data_arr = [];
-            $postponed = $customer->preshoot_postponed_date;
-            if ($postponed == NULL) {
-                $postponed = "NO";
-            }
-            $data_arr['name'] = $customer->name;
-            $data_arr['postponed'] = $postponed;
-            $data_arr['customer_id'] = $customer->id;
-            $data_arr['bill_number'] = $customer->bill_nulber;
-            $data_arr['status'] = $customer->status;
-            $data_arr['type'] = 5;
-            array_push($arr, $data_arr);
-        }
-        return response()->json($arr);
-    }
 
     public function edit_bill(Request $request, $id) {
         $validated = $request->validate([
@@ -513,5 +380,43 @@ class CustomerController extends Controller
         $pdf->loadView('admin.invoice-pdf', ['customer'=>$customer]);
         return $pdf->stream();
         // return view('admin.invoice-pdf');
+    }
+
+    // Calender
+    public function get_all_func_dates() {
+        $date_arr = [];
+
+        $all_func_dates = DB::table('customer_function_type')->get();
+        foreach ($all_func_dates as $key => $value) {
+            if ($value->date != NULL) {
+                array_push($date_arr, $value->date);
+            }
+            
+        }
+
+        return response()->json($date_arr);
+    }
+
+    public function get_functions_of_day(Request $request) {
+        $arr = [];
+        $all_funcs = DB::table('customer_function_type')->where('date', '=', "{$request->date}")->get();
+
+        foreach ($all_funcs as $func) {
+            $data_arr = [];
+            $postponed = $func->postponed_date;
+            if ($postponed == NULL) {
+                $postponed = "NO";
+            }
+            $customer = Customer::find($func->customer_id);
+            $data_arr['name'] = $customer->name;
+            $data_arr['postponed'] = $postponed;
+            $data_arr['customer_id'] = $customer->id;
+            $data_arr['bill_number'] = $customer->bill_nulber;
+            $data_arr['status'] = $func->status;
+            $data_arr['type'] = $func->function_type_id;;
+            array_push($arr, $data_arr);
+        }
+        
+        return response()->json($arr);
     }
 }
