@@ -29,15 +29,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Item Type</label>
-                        <select name="function_type_id" id="" class="form-control">
-                            <option value="{{ $item->function_type_id }}">{{ $item->function_type->name }}</option>
-                            @foreach ($function_types as $function_type)
-                                @if ($function_type->name != $item->function_type->name)
-                                    <option value="{{ $function_type->id }}">{{ $function_type->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <label>Function Type</label><br>
+                        @foreach ($item->function_types as $function_type)
+                            <input type="checkbox" disabled checked id="attach_func_type{{ $function_type->id }}" name="attach_func_type[]" value="{{ $function_type->id }}"> <label for="attach_func_type{{ $function_type->id }}"> {{ $function_type->name }}</label>  <br>
+                        @endforeach
                     </div>
 
                     <div class="form-group">

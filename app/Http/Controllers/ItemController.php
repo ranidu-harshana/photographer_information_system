@@ -42,14 +42,14 @@ class ItemController extends Controller
         $validated = $request->validate([
             'item_code'=>['required', 'unique:items,item_code'],
             'item_desc'=>['required'],
-            'function_type_id'=>['required'],
+            'attach_func_type'=>['required'],
             'item_price'=>['required'],
         ]);
 
         $validated['item_code'] = sprintf('%05d', $request->item_code);
-
-        $function = FunctionType::find($request->function_type_id);
-        $function->items()->create($validated);
+        $validated['function_type_id'] = 1;
+        $item = Item::create($validated);
+        $item->function_types()->attach($request->attach_func_type);
         session()->flash('item-created', 'Item Created');
         return redirect()->route('item.index');
     }
@@ -74,8 +74,7 @@ class ItemController extends Controller
     public function edit($id)
     {
         $item = Item::find($id);
-        $function_types = FunctionType::all();
-        return view('admin.edit-item', ['item'=>$item, 'function_types'=>$function_types]);
+        return view('admin.edit-item', ['item'=>$item]);
     }
 
     /**
@@ -120,7 +119,8 @@ class ItemController extends Controller
     }
 
     public function get_items_of_function($id) {
-        $items = Item::where('function_type_id', '=', $id)->get()->toArray();
+        $function_type = FunctionType::find($id);
+        $items = $function_type->items->toArray();
         
         return response()->json($items);
     }

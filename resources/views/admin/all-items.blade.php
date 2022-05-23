@@ -36,7 +36,6 @@
                                     <th>Item Code</th>
                                     <th>Description</th>
                                     <th>Price</th>
-                                    <th>Type</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                 </tr>
@@ -47,7 +46,6 @@
                                         <td>{{ $item->item_code }}</td>
                                         <td>{{ $item->item_desc }}</td>
                                         <td>{{ $item->item_price }}</td>
-                                        <td>{{ $item->function_type->name }}</td>
                                         <td>
                                             <a href="{{ route('item.edit', $item->id) }}">
                                                 <button type="button" class="btn btn-success btn-sm">Edit</button>
@@ -90,7 +88,6 @@
                                     <th>Item Code</th>
                                     <th>Description</th>
                                     <th>Price</th>
-                                    <th>Type</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                 </tr>

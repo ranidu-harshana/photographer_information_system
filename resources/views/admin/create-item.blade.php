@@ -6,7 +6,9 @@
         <div class="col-md-7">
             <div class="card-box">
                 <h4 class="card-title">Create Item</h4>
-
+                @if($errors->any())
+                {{ implode('', $errors->all('<div>:message</div>')) }}
+            @endif
                 @if(session('failed'))
                     <div class="alert alert-danger">
                         {{ session('failed') }}
@@ -28,12 +30,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Item Type</label>
-                        <select name="function_type_id" id="" class="form-control">
-                            @foreach ($function_types as $function_type)
-                                <option value="{{ $function_type->id }}">{{ $function_type->name }}</option>
-                            @endforeach
-                        </select>
+                        <label>Function Type</label><br>
+                        @foreach ($function_types as $function_type)
+                            <input type="checkbox" id="attach_func_type{{ $function_type->id }}" name="attach_func_type[]" value="{{ $function_type->id }}"> <label for="attach_func_type{{ $function_type->id }}"> {{ $function_type->name }}</label>  <br>
+                        @endforeach
                     </div>
 
                     <div class="form-group">
