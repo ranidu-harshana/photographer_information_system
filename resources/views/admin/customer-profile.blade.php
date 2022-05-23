@@ -129,41 +129,14 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    @elseif(session('wedding-posponed')) 
+    @elseif(session('posponed')) 
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('wedding-posponed') }}
+            {{ session('posponed') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    @elseif(session('home-com-posponed')) 
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('home-com-posponed') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @elseif(session('preshoot-posponed')) 
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('preshoot-posponed') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @elseif(session('event-posponed')) 
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('event-posponed') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @elseif(session('photoshoot-posponed')) 
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('photoshoot-posponed') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+    
     @endif
 
     <div class="row">
@@ -1199,49 +1172,16 @@
                         <div class="card-box">
                             <h4 class="card-title">Postponed Details</h4>
                             <ul class="personal-info">
-                                @if ($customer->wedding_date != NULL)
-                                    @if ($customer->posponed_date != NULL)
-                                        <li>
-                                            <span class=""> Wedding Postponed From: </span>
-                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
-                                        </li>
+                                @foreach ($customer->function_types as $function_type)
+                                    @if ($function_type->pivot->date != NULL)
+                                        @if ($function_type->pivot->postponed_date != NULL)
+                                            <li>
+                                                <span class=""> {{ $function_type->name }} Postponed From: </span>
+                                                <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $function_type->pivot->postponed_date}}</b></span>
+                                            </li>
+                                        @endif
                                     @endif
-                                @endif
-
-                                @if ($customer->home_com_date != NULL)
-                                    @if ($customer->homecomming_posponed_date != NULL)
-                                        <li>
-                                            <span class="">Homecomming Postponed From: </span>
-                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->homecomming_posponed_date}}</b></span>
-                                        </li>
-                                    @endif
-                                @endif
-
-                                @if ($customer->event_date != NULL)
-                                    @if ($customer->posponed_date != NULL)
-                                        <li>
-                                            <span class="">Event Postponed From: </span>
-                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
-                                        </li>
-                                    @endif
-                                @endif
-
-                                @if ($customer->photo_shoot_date != NULL)
-                                    @if ($customer->posponed_date != NULL)
-                                        <li>
-                                            <span class="">Photo Shoot Postponed From: </span>
-                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->posponed_date}}</b></span>
-                                        </li>
-                                    @endif
-                                @endif
-                                @if ($customer->preshoot_date != NULL)
-                                    @if ($customer->preshoot_postponed_date != NULL)
-                                        <li>
-                                            <span class="">Preshoot Postponed From: </span>
-                                            <span class="text-primary">&nbsp;&nbsp;&nbsp;<b>{{ $customer->preshoot_postponed_date}}</b></span>
-                                        </li>
-                                    @endif
-                                @endif
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -1278,7 +1218,12 @@
                                                                         
                                                                         <div class="form-group">
                                                                             <label>Date</label>
-                                                                            <input name="date" type="date" class="form-control" required autocomplete="off">
+                                                                            @if ($function_type->pivot->postponed_date != NULL)
+                                                                                <input name="date" type="date" value="{{ $function_type->pivot->date }}" class="form-control" required autocomplete="off">
+                                                                            @else
+                                                                                <input name="date" type="date" class="form-control" required autocomplete="off">
+                                                                            @endif
+                                                                            
                                                                         </div>
                                                                 </div>
                                                                 <div class="modal-footer">

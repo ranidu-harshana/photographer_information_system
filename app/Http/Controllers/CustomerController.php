@@ -50,8 +50,7 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validated = $request->validate([
             'bill_nulber'=>['required', 'unique:customers,bill_nulber'],
             'name'=>['required'],
@@ -498,46 +497,13 @@ class CustomerController extends Controller
     }
 
     function postpone(Request $request, $id) {
-        $customer = Customer::find($id);
-        
-        $fake = $request->fake;
-        if($fake == 1) {
-            $wedding_date = $customer->wedding_date;
-            $result = $customer->update([
-                'wedding_date' => $request->date,
-                'posponed_date' => $wedding_date,
-            ]);
-            session()->flash('wedding-posponed', 'Wedding Date Posponed');
-        }else if($fake == 2) {
-            $home_com_date = $customer->home_com_date;
-            $result = $customer->update([
-                'home_com_date'=> $request->date,
-                'homecomming_posponed_date' => $home_com_date,
-            ]);
-            session()->flash('home-com-posponed', 'Homecomming Date Posponed');
-        }else if($fake == 3) {
-            $preshoot_date = $customer->preshoot_date;
-            $result = $customer->update([
-                'preshoot_date'=> $request->date,
-                'preshoot_postponed_date' => $preshoot_date,
-            ]);
-            session()->flash('preshoot-posponed', 'Preshoot Date Posponed');
-        }else if($fake == 4) {
-            $event_date = $customer->event_date;
-            $result = $customer->update([
-                'event_date' => $request->date,
-                'posponed_date' => $event_date,
-            ]);
-            session()->flash('event-posponed', 'Event Date Posponed');
-        }else if($fake == 5) {
-            $photo_shoot_date = $customer->photo_shoot_date;
-            $result = $customer->update([
-                'photo_shoot_date' => $request->date,
-                'posponed_date' => $photo_shoot_date,
-            ]);
-            session()->flash('photoshoot-posponed', 'Photoshoot Date Posponed');
-        }
+        $affected = DB::table('customer_function_type')->where('id', $id)->get()->first();
+            //   ->update(['date' => $request->date, ''=>]);
 
+        $updated = DB::table('customer_function_type')->where('id', $id)->update(['date'=>$request->date, 'postponed_date'=>$affected->date]);
+        
+        $func_type = FunctionType::find($affected->function_type_id);
+        session()->flash('posponed', $func_type->name . ' date postponed');
         return back();
     }
 

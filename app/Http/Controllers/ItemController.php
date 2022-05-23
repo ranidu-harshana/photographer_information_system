@@ -47,7 +47,6 @@ class ItemController extends Controller
         ]);
 
         $validated['item_code'] = sprintf('%05d', $request->item_code);
-        $validated['function_type_id'] = 1;
         $item = Item::create($validated);
         $item->function_types()->attach($request->attach_func_type);
         session()->flash('item-created', 'Item Created');

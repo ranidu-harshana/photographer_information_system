@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('item_code')->nullable();
-            $table->foreignId('function_type_id')->onDelete('cascade');
             $table->string('item_desc')->nullable();
             $table->double('item_price')->nullable();
             $table->timestamps();
