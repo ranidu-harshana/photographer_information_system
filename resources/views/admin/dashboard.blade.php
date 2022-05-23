@@ -171,33 +171,44 @@
                                             }
                                         }else if(element.type == 3) {
                                             if(element.postponed == 'NO'){
-                                                html += '<a class="badge mb-2" style="background-color:#5bc0de; color:white; " href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> <br>';
-                                            }else{
-                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
-                                            }
-                                        }else if(element.type == 4) {
-                                            if(element.postponed == 'NO'){
-                                                html += '<a class="badge mb-2" style="background-color:#0694fb; color:white; " href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+' | <span style="color: #0694fb">PhotoShoot</span> <br>';
-                                            }else{
-                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
-                                                html += element.bill_number;
-                                                html += '</a> | '+element.name+' | <span style="color: #0694fb">PhotoShoot</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
-                                            }
-                                        }else if(element.type == 5) {
-                                            if(element.postponed == 'NO'){
-                                                html += '<a class="badge mb-2" style="background-color:#8c7cbc; color:white; " href="customer/'+element.customer_id+'">';
+                                                html += '<a class="badge mb-2" style="font-size: 14px; background-color:#8c7cbc; color:white; " href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #8c7cbc">PreShoot</span> <br>';
                                             }else{
                                                 html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
                                                 html += element.bill_number;
                                                 html += '</a> | '+element.name+' | <span style="color: #8c7cbc">PreShoot</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
+                                            }
+                                        
+                                        }else if(element.type == 4) {
+                                            if(element.postponed == 'NO'){
+                                                html += '<a class="badge mb-2" style="font-size: 14px; background-color:#0694fb; color:white; " href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: #0694fb">Goingaway</span> <br>';
+                                            }else{
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: #0694fb">Goingaway</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
+                                            }
+                                        }else if(element.type == 5) {
+                                            if(element.postponed == 'NO'){
+                                                html += '<a class="badge mb-2" style="font-size: 14px; background-color:	#3c4cbb; color:white; " href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: 	#3c4cbb">Engagement</span> <br>';
+                                            }else{
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: 	#3c4cbb">Engagement</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
+                                            }
+                                        }else if(element.type == 6) {
+                                            if(element.postponed == 'NO'){
+                                                html += '<a class="badge mb-2" style="font-size: 14px; background-color:#5bc0de; color:white; " href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> <br>';
+                                            }else{
+                                                html += '<a class="badge badge-warning mb-2" style="font-size: 14px" href="customer/'+element.customer_id+'">';
+                                                html += element.bill_number;
+                                                html += '</a> | '+element.name+' | <span style="color: #5bc0de">Event</span> | <span class="text-danger">'+element.postponed+'</span> <br>';
                                             }
                                         }
                                     });

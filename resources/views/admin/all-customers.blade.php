@@ -26,7 +26,6 @@
                                 <tr>
                                     <th>Bill No</th>
                                     <th>Name</th>
-                                    <th>Function Type</th>
                                     <th>Branch</th>
                                     <th>View</th>
                                 </tr>
@@ -36,7 +35,6 @@
                                     <tr>
                                         <td>{{ $customer->bill_nulber }}</td>
                                         <td>{{ $customer->name }}</td>
-                                        <td>{{ $customer->function_type->name }}</td>
                                         <td>branch</td>
                                         <td>
                                             <a href="{{ route('customer.show', $customer->id) }}" class="btn btn-primary btn-sm">View</a>
@@ -49,7 +47,6 @@
                                 <tr>
                                     <th>Bill No</th>
                                     <th>Name</th>
-                                    <th>Function Type</th>
                                     <th>Branch</th>
                                     <th>View</th>
                                 </tr>

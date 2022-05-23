@@ -21,20 +21,11 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('mob_no1')->nullable();
             $table->string('mob_no2')->nullable();
-            $table->date('wedding_date')->nullable();
-            $table->string('wedding_location')->nullable();
-            $table->date('home_com_date')->nullable();
-            $table->string('home_com_location')->nullable();
-            $table->string('event_type')->nullable();
-            $table->date('event_date')->nullable();
-            $table->string('event_location')->nullable();
-            $table->date('photo_shoot_date')->nullable();
-            $table->string('photo_shoot_location')->nullable();
+            
             $table->double('total_payment')->nullable();
             $table->double('discount')->nullable();
             $table->double('advance_payment')->nullable();
-            $table->double('total_package_price')->nullable();
-            $table->double('total_item_price')->nullable();
+            
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

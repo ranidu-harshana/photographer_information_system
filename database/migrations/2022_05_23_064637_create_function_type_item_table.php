@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->date('preshoot_postponed_date')->nullable();
+        Schema::create('function_type_item', function (Blueprint $table) {
+            $table->id();
+            $table->integer('function_type_id');
+            $table->integer('item_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('preshoot_postponed_date');
-        });
+        Schema::dropIfExists('function_type_item');
     }
 };

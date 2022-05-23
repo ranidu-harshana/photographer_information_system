@@ -11,6 +11,9 @@
                         {{ session('failed') }}
                     </div>
                 @endif
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
+                @endif
 
                 <form action="{{ route('customer.store') }}" method="POST">
                     @csrf
@@ -54,102 +57,106 @@
                     <div class="form-group">
                         <label>Type </label>
                         <select name="function_type_id" id="function_type_id" required class="form-control" value="{{ old('type') }}">
-                            <option value="">Select Type</option>
+                            <option value="">Select</option>
                             <option value="1">Wedding</option>
-                            <option value="2">Photoshoot</option>
-                            <option value="3">Event</option>
+                            <option value="2">Event</option>
                         </select>
                     </div>
 
                     {{-- when function type is Wedding --}}
-                    <div id="wedding_type">
-                        <div class="form-group">
-                            <label>Wedding Type </label>
-                            <select name="wedding_type_id" id="wedding_type_id" class="form-control" value="{{ old('type') }}">
-                                <option value="">Select Type</option>
-                                <option value="1">Wedding Only</option>
-                                <option value="2">Homecomming Only</option>
-                                <option value="3">Wedding & Hommcomming</option>
-                            </select>
+                    <div id="wedding_div">
+                        <label>Wedding</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding1" name="function_type_checkbox[]" value="1">
+                                </div>
+                                <input name="wedding_date" id="wedding_date" value="{{ old('wedding_date') }}" type="date" class="form-control @error('wedding_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('wedding_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="wedding_location" id="wedding_location" placeholder="Wedding Location" value="{{ old('wedding_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control" value="50000">
+                        </div>
+
+                        <label>Homecomming</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding2" name="function_type_checkbox[]" value="2">
+                                </div>
+                                <input name="home_com_date" id="home_com_date" value="{{ old('home_com_date') }}" type="date" class="form-control @error('home_com_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('home_com_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="home_com_location" id="home_com_location" placeholder="Homecomming Location" value="{{ old('home_com_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control" value="50000">
+                        </div>
+                        
+                        <label>Preshoot</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding3" name="function_type_checkbox[]" value="3">
+                                </div>
+                                <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="preshoot_location" id="preshoot_location" placeholder="Preshoot Location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control">
+                        </div>
+
+                        <label>Going Away</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding4" name="function_type_checkbox[]" value="4">
+                                </div>
+                                <input name="goingaway_date" id="goingaway_date" value="{{ old('goingaway_date') }}" type="date" class="form-control @error('goingaway_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('goingaway_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="goingaway_location" id="goingaway_location" placeholder="Going Away Location" value="{{ old('goingaway_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control">
+                        </div>
+
+                        <label>Engagement</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding5" name="function_type_checkbox[]" value="5">
+                                </div>
+                                <input name="engagement_date" id="engagement_date" value="{{ old('engagement_date') }}" type="date" class="form-control @error('engagement_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('engagement_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="engagement_location" id="engagement_location" placeholder="Engagement Location" value="{{ old('engagement_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control">
                         </div>
                     </div>
                     {{-- End when function type is Wedding --}}
 
-                    {{-- when wedding type is Wedding only --}}
-                    <div id="wedding_div">
-                        <div class="form-group">
-                            <label>Wedding Date</label>
-                            <input name="wedding_date" id="wedding_date" value="{{ old('wedding_date') }}" type="date" class="form-control @error('wedding_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                            @error('wedding_date') <p class="text-danger">{{$message}}</p> @enderror
-                        </div>
 
-                        <div class="form-group">
-                            <label>Wedding Location</label>
-                            <input name="wedding_location" id="wedding_location" value="{{ old('wedding_location') }}" type="text" class="form-control" autocomplete="off">
-                        </div>
-                    </div>
-                    {{-- End when wedding type is Wedding only --}}
-
-                    {{-- when wedding type is Homecomming only --}}
-                    <div id="homecomming_div">
-                        <div class="form-group">
-                            <label>Homecomming Date</label>
-                            <input name="home_com_date" id="home_com_date" value="{{ old('home_com_date') }}" type="date" class="form-control @error('home_com_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                            @error('home_com_date') <p class="text-danger">{{$message}}</p> @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Homecomming Location</label>
-                            <input name="home_com_location" id="home_com_location" value="{{ old('home_com_location') }}" type="text" class="form-control" autocomplete="off">
-                        </div>
-                    </div> 
-                    {{-- End when wedding type is Homecomming only --}}
-
-                    {{-- when wedding type is Event --}}
+                    {{-- when function type is Event --}}
                     <div id="event_div">
-                        <div class="form-group">
-                            <label>Event Date</label>
-                            <input name="event_date" id="event_date" value="{{ old('event_date') }}" type="date" class="form-control @error('event_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                            @error('event_date') <p class="text-danger">{{$message}}</p> @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Event Type</label>
-                            <input name="event_type" id="event_type" value="{{ old('event_type') }}" type="text" class="form-control" autocomplete="off">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Event Location</label>
-                            <input name="event_location" id="event_location" value="{{ old('event_location') }}" type="text" class="form-control" autocomplete="off">
+                        <label>Event</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" id="wedding6" name="function_type_checkbox[]" value="6">
+                                </div>
+                                <input name="event_date" id="event_date" value="{{ old('event_date') }}" type="date" class="form-control @error('event_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('event_date') <p class="text-danger">{{$message}}</p> @enderror
+                            </div>
+                            <input name="event_type" id="event_type" placeholder="Description" value="{{ old('event_type') }}" type="text" class="form-control" autocomplete="off">
+                            <input name="event_location" id="event_location" placeholder="Event Location" value="{{ old('event_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="text" name="" id="" class="form-control">
                         </div>
                     </div>
-                    {{-- End when wedding type is Event --}}
+                    {{-- end when function type is Event --}}
 
-                    {{-- when wedding type is Photoshoot --}}
-                    <div id="photosshoot_div">
-                        <div class="form-group">
-                            <label>Photoshoot Date</label>
-                            <input name="photo_shoot_date" id="photo_shoot_date" value="{{ old('photo_shoot_date') }}" type="date" class="form-control @error('photo_shoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                            @error('photo_shoot_date') <p class="text-danger">{{$message}}</p> @enderror
-                        </div>
 
-                        <div class="form-group">
-                            <label>Photoshoot Location</label>
-                            <input name="photo_shoot_location" id="photo_shoot_location" value="{{ old('photo_shoot_location') }}" type="text" class="form-control" autocomplete="off">
-                        </div>
-                    </div>
-                    {{-- End when wedding type is Photoshoot --}}
 
-                    <div class="form-group">
-                        <label>Preshoot Date</label>
-                        <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                        @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
-                    </div>
 
-                    <div class="form-group">
-                        <label>Preshoot Location</label>
-                        <input name="preshoot_location" id="preshoot_location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
-                    </div>
+
+                    
+
 
                     <div class="form-group">
                         <label>Total Amount</label>
@@ -187,206 +194,24 @@
         </div>
     </div>
 
-
-    {{-- 
-        var path0 = "{{ route('autocomplete_wedding_location')  }}";
-        $('#wedding_location').typeahead({
-            
-            source:  function (query0, process0) {
-                return $.get(path0, { term0: query0 }, function (data0) {
-                    return process0(data0);
-                });
-            }
-        });
-
-        var path = "{{ route('autocomplete_brida_place')  }}";
-        $('#bridal_dressing_place').typeahead({
-            
-            source:  function (query, process) {
-                return $.get(path, { term: query }, function (data) {
-                    return process(data);
-                });
-            }
-        });
-
-        var path1 = "{{ route('autocomplete_photography_place')  }}";
-        $('#photography_place').typeahead({
-            
-            source:  function (query1, process1) {
-                return $.get(path1, { term1: query1 }, function (data1) {
-                    return process1(data1);
-                });
-            }
-        });  --}}
-
-
     <script>
-        $(document).ready(function(){
-            $("#submit").on('click',function(){
-                $.ajaxSetup({
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    url: "../set_tab0_session",
-                    type: "POST",
-                })
-            });
-
-            $('#discount_by_field').prop("disabled", true);
-            $('#wedding_type').hide();
+        $(document).ready(() => {
             $('#wedding_div').hide();
-            $('#homecomming_div').hide();
             $('#event_div').hide();
-            $('#photosshoot_div').hide();
-            $('#photo_shoot_date').prop('required', false)
-            $('#home_com_date').prop('required', false)
-            $('#wedding_date').prop('required', false)
-            $('#event_date').prop('required', false)
-            $('#wedding_type_id').prop('required', false)
-
-            $('#photo_shoot_date').prop('disabled', true)
-            $('#home_com_date').prop('disabled', true)
-            $('#wedding_date').prop('disabled', true)
-            $('#event_date').prop('disabled', true)
-            
-            $('#function_type_id').change(function() {
+            $('#function_type_id').change(() => {
                 var function_type_id = $('#function_type_id').val()
-                if(function_type_id == 2){
-                    $('#wedding_type').hide();
-                    $('#wedding_div').hide();
-                    $('#homecomming_div').hide();
+                if(function_type_id == 1){
+                    $('#wedding_div').show();
                     $('#event_div').hide();
-                    $('#photosshoot_div').show();
-                    $('#photo_shoot_date').prop('required', true)
-                    $('#home_com_date').prop('required', false)
-                    $('#wedding_date').prop('required', false)
-                    $('#event_date').prop('required', false)
-                    $('#wedding_type_id').prop('required', false)
-
-                    $('#photo_shoot_date').prop('disabled', false)
-                    $('#home_com_date').prop('disabled', true)
-                    $('#wedding_date').prop('disabled', true)
-                    $('#event_date').prop('disabled', true)
-                    
-                }else if (function_type_id == 1) {
-                    $('#wedding_type').show();
+                } else if (function_type_id == 2) {
                     $('#wedding_div').hide();
-                    $('#homecomming_div').hide();
-                    $('#event_div').hide();
-                    $('#photosshoot_div').hide();
-                    $('#wedding_type_id').prop('required', true)
-                    $('#wedding_type_id').prop('disabled', false)
-                    $('#wedding_type_id').change(function() {
-                        var wedding_type_id = $('#wedding_type_id').val();
-                        if(wedding_type_id == 1) {
-                            $('#wedding_type').show();
-                            $('#wedding_div').show();
-                            $('#homecomming_div').hide();
-                            $('#event_div').hide();
-                            $('#photosshoot_div').hide();
-                            $('#photo_shoot_date').prop('required', false)
-                            $('#home_com_date').prop('required', false)
-                            $('#wedding_date').prop('required', true)
-                            $('#event_date').prop('required', false)
-                            $('#wedding_type_id').prop('required', false)
-
-                            $('#photo_shoot_date').prop('disabled', true)
-                            $('#home_com_date').prop('disabled', true)
-                            $('#wedding_date').prop('disabled', false)
-                            $('#event_date').prop('disabled', true)
-                            
-                        }else if(wedding_type_id == 2) {
-                            $('#wedding_type').show();
-                            $('#wedding_div').hide();
-                            $('#homecomming_div').show();
-                            $('#event_div').hide();
-                            $('#photosshoot_div').hide();
-                            $('#photo_shoot_date').prop('required', false)
-                            $('#home_com_date').prop('required', true)
-                            $('#wedding_date').prop('required', false)
-                            $('#event_date').prop('required', false)
-                            $('#wedding_type_id').prop('required', false)
-
-                            $('#photo_shoot_date').prop('disabled', true)
-                            $('#home_com_date').prop('disabled', false)
-                            $('#wedding_date').prop('disabled', true)
-                            $('#event_date').prop('disabled', true)
-                            
-                        }else if(wedding_type_id == 3) {
-                            $('#wedding_type').show();
-                            $('#wedding_div').show();
-                            $('#homecomming_div').show();
-                            $('#event_div').hide();
-                            $('#photosshoot_div').hide();
-                            $('#photo_shoot_date').prop('required', false)
-                            $('#home_com_date').prop('required', true)
-                            $('#wedding_date').prop('required', true)
-                            $('#event_date').prop('required', false)
-                            $('#wedding_type_id').prop('required', false)
-
-                            $('#photo_shoot_date').prop('disabled', true)
-                            $('#home_com_date').prop('disabled', false)
-                            $('#wedding_date').prop('disabled', false)
-                            $('#event_date').prop('disabled', true)
-                            
-                        }else{
-                            $('#wedding_type').hide();
-                            $('#wedding_div').hide();
-                            $('#homecomming_div').hide();
-                            $('#event_div').hide();
-                            $('#photosshoot_div').hide();
-                            $('#photo_shoot_date').prop('required', false)
-                            $('#home_com_date').prop('required', false)
-                            $('#wedding_date').prop('required', false)
-                            $('#event_date').prop('required', false)
-                            $('#wedding_type_id').prop('required', false)
-
-                            $('#photo_shoot_date').prop('disabled', true)
-                            $('#home_com_date').prop('disabled', true)
-                            $('#wedding_date').prop('disabled', true)
-                            $('#event_date').prop('disabled', true)
-                            
-                        }
-                    });
-                }else if(function_type_id == 3){
-                    $('#wedding_type').hide();
-                    $('#wedding_div').hide();
-                    $('#homecomming_div').hide();
                     $('#event_div').show();
-                    $('#photosshoot_div').hide();
-                    $('#photo_shoot_date').prop('required', false)
-                    $('#home_com_date').prop('required', false)
-                    $('#wedding_date').prop('required', false)
-                    $('#event_date').prop('required', true)
-                    $('#wedding_type_id').prop('required', false)
-
-                    $('#photo_shoot_date').prop('disabled', true)
-                    $('#home_com_date').prop('disabled', true)
-                    $('#wedding_date').prop('disabled', true)
-                    $('#event_date').prop('disabled', false)
-                    
-                }else{
-                    $('#wedding_type').hide();
+                } else {
                     $('#wedding_div').hide();
-                    $('#homecomming_div').hide();
                     $('#event_div').hide();
-                    $('#photosshoot_div').hide();
-                    $('#photo_shoot_date').prop('required', false)
-                    $('#home_com_date').prop('required', false)
-                    $('#wedding_date').prop('required', false)
-                    $('#event_date').prop('required', false)
-                    $('#wedding_type_id').prop('required', false)
-
-                    $('#photo_shoot_date').prop('disabled', true)
-                    $('#home_com_date').prop('disabled', true)
-                    $('#wedding_date').prop('disabled', true)
-                    $('#event_date').prop('disabled', true)
-                    
                 }
-            });
-        });
+            })
+        })
 
         $("#discount_by").change(function(){
             if($("#discount_by").val() == 1){

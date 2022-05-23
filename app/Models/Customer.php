@@ -47,8 +47,8 @@ class Customer extends Model
         return $this->belongsToMany(Item::class)->withPivot('id', 'item_price', 'quantity', 'status');
     }
 
-    public function function_type() {
-        return $this->belongsTo(FunctionType::class);
+    public function function_types() {
+        return $this->belongsToMany(FunctionType::class)->withPivot('id', 'date', 'location', 'event_type', 'postponed_date', 'status');
     }
 
     public function notes()

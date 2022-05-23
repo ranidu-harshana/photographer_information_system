@@ -15,9 +15,9 @@ class Item extends Model
         'function_type_id',
         'item_price',
     ];
-    public function function_type()
+    public function function_types()
     {
-        return $this->belongsTo(FunctionType::class);
+        return $this->belongsToMany(FunctionType::class);;
     }
 
     public function package() {
