@@ -54,31 +54,37 @@ class CustomerController extends Controller
     {
         $validated = $request->validate([
             'bill_nulber'=>['required', 'unique:customers,bill_nulber'],
-            'function_type_id'=>['required'],
             'name'=>['required'],
             'address'=>['required'],
             'branch_id'=>['required'],
             'mob_no1'=>['required'],
             'mob_no2'=>['nullable'],
-            'wedding_date'=>['nullable'],
-            'wedding_location'=>['nullable'],
-            'home_com_date'=>['nullable'],
-            'home_com_location'=>['nullable'],
-            'event_type'=>['nullable'],
-            'event_date'=>['nullable'],
-            'event_location'=>['nullable'],
-            'photo_shoot_date'=>['nullable'],
-            'photo_shoot_location'=>['nullable'],
-            'preshoot_date'=>['nullable'],
-            'preshoot_location'=>['nullable'],
+            
             'total_payment'=>['nullable'],
             'discount'=>['nullable'],
             'advance_payment'=>['nullable'],
+            'function_type_checkbox'=>['required'],
         ]);
-
+        $validated['function_type_id'] = 1;
         $validated['bill_nulber'] = sprintf('%05d', $request->bill_nulber);
-        $function_type = FunctionType::find($request->function_type_id);
-        $customer = $function_type->customers()->create($validated);
+        $customer = Customer::create($validated);
+
+        foreach ($request->function_type_checkbox as $function_type_checkbox) {
+            if( $function_type_checkbox == 1 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->wedding_date, 'location'=>$request->wedding_location, 'event_type'=>NULL]);
+            } else if( $function_type_checkbox == 2 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->home_com_date, 'location'=>$request->home_com_location, 'event_type'=>NULL]);
+            } else if( $function_type_checkbox == 3 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->preshoot_date, 'location'=>$request->preshoot_location, 'event_type'=>NULL]);
+            } else if( $function_type_checkbox == 4 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->goingaway_date, 'location'=>$request->goingaway_location, 'event_type'=>NULL]);
+            } else if( $function_type_checkbox == 5 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->engagement_date, 'location'=>$request->engagement_location, 'event_type'=>NULL]);
+            } else if( $function_type_checkbox == 6 ) {
+                $customer->function_types()->attach($function_type_checkbox, ['date'=>$request->event_date, 'location'=>$request->event_location, 'event_type'=>$request->event_type]);
+            }
+        }
+
         return redirect()->route('customer.show', $customer);
     }
 
@@ -91,16 +97,27 @@ class CustomerController extends Controller
     public function show($id) {
         $customer = Customer::find($id);
         $ids = [];
+        $function_ids = [];
         foreach($customer->items as $item){
             array_push($ids, $item->id);
         }
-        $items = Item::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
+        foreach($customer->function_types as $function_type){
+            array_push($function_ids, $function_type->id);
+        }
+        $items = DB::table('items')
+            ->whereNotIn('id',$ids)
+            ->whereRaw('id IN (SELECT item_id FROM function_type_item WHERE function_type_id IN ('.implode(', ', $function_ids).'))')
+            ->get();
 
+            
+            
         $ids = [];
         foreach($customer->packages as $package){
             array_push($ids, $package->id);
         }
         $packages = Package::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
+
+
 
         $customers = DB::table('customer_package_items')->where('customer_id', '=', $id)->get();
         $arr = [];

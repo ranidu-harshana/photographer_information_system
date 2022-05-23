@@ -11,6 +11,9 @@
                         {{ session('failed') }}
                     </div>
                 @endif
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
+                @endif
 
                 <form action="{{ route('customer.store') }}" method="POST">
                     @csrf
@@ -54,19 +57,19 @@
                     <div class="form-group">
                         <label>Type </label>
                         <select name="function_type_id" id="function_type_id" required class="form-control" value="{{ old('type') }}">
-                            {{-- @foreach ($function_types as $function_type)
-                                <option value="{{ $function_type->id }}">{{ $function_type->name }}</option>
-                            @endforeach --}}
+                            <option value="">Select</option>
+                            <option value="1">Wedding</option>
+                            <option value="2">Event</option>
                         </select>
                     </div>
 
                     {{-- when function type is Wedding --}}
                     <div id="wedding_div">
-                    <label>Wedding</label>
+                        <label>Wedding</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" id="c01">
+                                    <input type="checkbox" id="wedding1" name="function_type_checkbox[]" value="1">
                                 </div>
                                 <input name="wedding_date" id="wedding_date" value="{{ old('wedding_date') }}" type="date" class="form-control @error('wedding_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('wedding_date') <p class="text-danger">{{$message}}</p> @enderror
@@ -79,7 +82,7 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input type="checkbox" id="wedding2" name="function_type_checkbox[]" value="2">
                                 </div>
                                 <input name="home_com_date" id="home_com_date" value="{{ old('home_com_date') }}" type="date" class="form-control @error('home_com_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('home_com_date') <p class="text-danger">{{$message}}</p> @enderror
@@ -92,7 +95,7 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input type="checkbox" id="wedding3" name="function_type_checkbox[]" value="3">
                                 </div>
                                 <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
@@ -105,12 +108,12 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input type="checkbox" id="wedding4" name="function_type_checkbox[]" value="4">
                                 </div>
-                                <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                                @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
+                                <input name="goingaway_date" id="goingaway_date" value="{{ old('goingaway_date') }}" type="date" class="form-control @error('goingaway_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('goingaway_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="preshoot_location" id="preshoot_location" placeholder="Going Away Location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input name="goingaway_location" id="goingaway_location" placeholder="Going Away Location" value="{{ old('goingaway_location') }}" type="text" class="form-control" autocomplete="off">
                             <input type="text" name="" id="" class="form-control">
                         </div>
 
@@ -118,12 +121,12 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input type="checkbox" id="wedding5" name="function_type_checkbox[]" value="5">
                                 </div>
-                                <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
-                                @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
+                                <input name="engagement_date" id="engagement_date" value="{{ old('engagement_date') }}" type="date" class="form-control @error('engagement_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                @error('engagement_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="preshoot_location" id="preshoot_location" placeholder="Engagement Location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input name="engagement_location" id="engagement_location" placeholder="Engagement Location" value="{{ old('engagement_location') }}" type="text" class="form-control" autocomplete="off">
                             <input type="text" name="" id="" class="form-control">
                         </div>
                     </div>
@@ -136,7 +139,7 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input type="checkbox" id="wedding6" name="function_type_checkbox[]" value="6">
                                 </div>
                                 <input name="event_date" id="event_date" value="{{ old('event_date') }}" type="date" class="form-control @error('event_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('event_date') <p class="text-danger">{{$message}}</p> @enderror

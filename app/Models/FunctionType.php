@@ -21,6 +21,6 @@ class FunctionType extends Model
 
     public function customers()
     {
-        return $this->hasMany(Customer::class);
+        return $this->belongsToMany(Customer::class);
     }
 }

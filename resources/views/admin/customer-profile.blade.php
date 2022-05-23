@@ -180,81 +180,9 @@
 
         <div class="col-sm-5 col-6 text-right m-b-30 ">
             <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
-            <a class="btn btn-warning btn-rounded" data-toggle="modal" data-target="#postponeModal"><i class="fa fa-plus"></i> Postpone</a>
+            {{-- <a class="btn btn-warning btn-rounded" data-toggle="modal" data-target="#postponeModal"><i class="fa fa-plus"></i> Postpone</a> --}}
         </div>
-        <div class="modal fade" id="postponeModal" tabindex="-1" role="dialog" aria-labelledby="postponeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="postponeModalLabel">Postpone</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('postpone', $customer->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            @if ($customer->wedding_date != NULL && $customer->home_com_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="1">Wedding</option>
-                                    <option value="2">Homecomming</option>
-                                    @if ($customer->preshoot_date != NULL)
-                                        <option value="3">Pre Shoot</option>
-                                    @endif
-                                </select>
-                            @elseif ($customer->wedding_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="1">Wedding</option>
-                                    @if ($customer->preshoot_date != NULL)
-                                        <option value="3">Pre Shoot</option>
-                                    @endif
-                                </select>
-                            @elseif($customer->home_com_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="2">Homecomming</option>
-                                    @if ($customer->preshoot_date != NULL)
-                                        <option value="3">Pre Shoot</option>
-                                    @endif
-                                </select>
-                            @elseif($customer->event_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="4">Event</option>
-                                    @if ($customer->preshoot_date != NULL)
-                                        <option value="3">Pre Shoot</option>
-                                    @endif
-                                </select>
-                            @elseif($customer->photo_shoot_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="5">Photo Shoot</option>
-                                    @if ($customer->preshoot_date != NULL)
-                                        <option value="3">Pre Shoot</option>
-                                    @endif
-                                </select>
-                            @elseif($customer->preshoot_date != NULL)
-                                <select name="fake" required class="form-control">
-                                    <option value="3">Pre Shoot</option>
-                                </select>
-                            @endif
-                            <br>
-                            <div class="form-group">
-                                <label>Postpone Date</label>
-                                <input name="date" type="date" class="form-control" required autocomplete="off">
-                            </div>
-                    </div>
-                    <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Done</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
     <div class="card-box profile-header " id="profile-card" style="min-height: 260px; overflow:scroll; overflow-x: hidden;">
         <div class="row">
@@ -292,78 +220,20 @@
                                         
                                     </li>
 
-                                    @if ($customer->wedding_date != NULL)
-                                        <li>
-                                            <span class="title">Wedding Date</span>
-                                            <span class="text"><b>{{ $customer->wedding_date }}</b></span>
-                                        </li>
-                                        
-                                        @if ($customer->wedding_location != NULL)
+                                    @foreach ($customer->function_types as $function_type)
+                                        @if ($function_type->pivot->date != NULL && $function_type->pivot->date >= explode(' ', now())[0])
                                             <li>
-                                                <span class="title">Place</span>
-                                                <span class="text">{{ $customer->wedding_location }}</span>
+                                                <span class="title">{{ $function_type->name }}</span>
+                                                <span class="text"><b>{{ $function_type->pivot->date }}</b></span>
                                             </li>
+                                            @if ($function_type->pivot->location != NULL)
+                                                <li>
+                                                    <span class="title">Place</span>
+                                                    <span class="text">{{ $function_type->pivot->location }}</span>
+                                                </li>
+                                            @endif
                                         @endif
-                                    @endif
-
-                                    @if ($customer->home_com_date != NULL)
-                                        <li>
-                                            <span class="title">Homecomming Date</span>
-                                            <span class="text"><b>{{ $customer->home_com_date }}</b></span>
-                                        </li>
-                                        @if ($customer->home_com_location != NULL)
-                                            <li>
-                                                <span class="title">Place</span>
-                                                <span class="text">{{ $customer->home_com_location }}</span>
-                                            </li>
-                                        @endif
-                                    @endif
-                                    
-                                    @if ($customer->event_date != NULL)
-                                        @if ($customer->event_type != NULL)
-                                            <li>
-                                                <span class="title">Type</span>
-                                                <span class="text">{{ $customer->event_type }}</span>
-                                            </li>
-                                        @endif
-                                        <li>
-                                            <span class="title">Event Date</span>
-                                            <span class="text"><b>{{ $customer->event_date }}</b></span>
-                                        </li>
-                                        
-                                        @if ($customer->event_location != NULL)
-                                            <li>
-                                                <span class="title">Place</span>
-                                                <span class="text">{{ $customer->event_location }}</span>
-                                            </li>
-                                        @endif
-                                    @endif
-
-                                    @if ($customer->photo_shoot_date != NULL)
-                                        <li>
-                                            <span class="title">Photo Shoot Date</span>
-                                            <span class="text"><b>{{ $customer->photo_shoot_date }}</b></span>
-                                        </li>
-                                        @if ($customer->photo_shoot_location != NULL)
-                                            <li>
-                                                <span class="title">Place</span>
-                                                <span class="text">{{ $customer->photo_shoot_location }}</span>
-                                            </li>
-                                        @endif
-                                    @endif
-
-                                    @if ($customer->preshoot_date != NULL)
-                                        <li>
-                                            <span class="title">Pre Shoot Date</span>
-                                            <span class="text"><b>{{ $customer->preshoot_date }}</b></span>
-                                        </li>
-                                        @if ($customer->preshoot_location != NULL)
-                                            <li>
-                                                <span class="title">Place</span>
-                                                <span class="text">{{ $customer->preshoot_location }}</span>
-                                            </li>
-                                        @endif
-                                    @endif
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -1373,6 +1243,60 @@
                                     @endif
                                 @endif
                             </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-box">
+                            <h4 class="card-title">Postponed or Cancel</h4>
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Postpone</th>
+                                        <th scope="col">Cancel</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($customer->function_types as $function_type)
+                                            <tr>
+                                                <td>{{ $function_type->name }}</td>
+                                                <td>
+                                                    <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#postponeModal{{ $function_type->pivot->id }}">Postpone</a>
+                                                    <div class="modal fade" id="postponeModal{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="postponeModal{{ $function_type->pivot->id }}Label" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="postponeModal{{ $function_type->pivot->id }}Label">Postpone {{ $function_type->name }} Date</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('postpone', $function_type->pivot->id) }}" method="post">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label>Date</label>
+                                                                            <input name="date" type="date" class="form-control" required autocomplete="off">
+                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Done</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>Cancel</td>
+                                            </tr>
+                                        @endforeach
+                                    
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
