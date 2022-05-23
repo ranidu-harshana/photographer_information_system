@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('function_type_id');
+            
             $table->string('bill_nulber')->nullable();
             $table->string('name')->nullable();
             $table->string('address')->nullable();
