@@ -14,7 +14,11 @@
     @php $total_item_price = 0; @endphp
     @foreach ($customer->items as $item)
         @php
-            $total_item_price += $item->pivot->item_price * $item->pivot->quantity;
+            $design_charge = 0;
+            if ($item->design_charge != NULL) {
+                $design_charge = $item->design_charge;
+            }
+            $total_item_price += ($item->pivot->item_price * $item->pivot->quantity) + $design_charge;
         @endphp
     @endforeach
 
@@ -231,43 +235,6 @@
                     <div class="col-lg-6 row">
                         <div class="col-lg-12">
                             <div class="card-box">
-                                <h4 class="card-title">Package Details</h4>
-                                <div class="row mb-3">
-                                    <label for="package_name" class="col-md-4 col-form-label text-md-end"><b>{{ __('Selected Packages') }}</b></label>
-                
-                                    <div class="col-md-6">
-                                        @if ($customer->packages->count() != 0)
-                                            @foreach ($customer->packages as $package)
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" disabled checked>
-                                                    <label class="form-check-label" for="packagees{{ $package->id }}">
-                                                        {{ $package->name }}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                        <span class="text-primary">
-                                            No any Selected Packages
-                                        </span>
-                                        @endif
-                                    </div>
-                                </div>
-                                <ul class="personal-info">
-                                    <li>
-                                        <span class="title">Total Package Price </span>
-                                        @if ($total_package_price != 0)
-                                            <span class="text-primary"> {{ $total_package_price }}.00 </span>
-                                        @else
-                                            0.00
-                                        @endif
-                                        
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="card-box">
                                 <h4 class="card-title">Item Details</h4>
                                 <div class="row mb-3">
                                     <label for="package_name" class="col-md-4 col-form-label text-md-end"><b>{{ __('Selected Items') }}</b></label>
@@ -304,6 +271,44 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="col-lg-12">
+                            <div class="card-box">
+                                <h4 class="card-title">Package Details</h4>
+                                <div class="row mb-3">
+                                    <label for="package_name" class="col-md-4 col-form-label text-md-end"><b>{{ __('Selected Packages') }}</b></label>
+                
+                                    <div class="col-md-6">
+                                        @if ($customer->packages->count() != 0)
+                                            @foreach ($customer->packages as $package)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" disabled checked>
+                                                    <label class="form-check-label" for="packagees{{ $package->id }}">
+                                                        {{ $package->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                        <span class="text-primary">
+                                            No any Selected Packages
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <ul class="personal-info">
+                                    <li>
+                                        <span class="title">Total Package Price </span>
+                                        @if ($total_package_price != 0)
+                                            <span class="text-primary"> {{ $total_package_price }}.00 </span>
+                                        @else
+                                            0.00
+                                        @endif
+                                        
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="col-lg-6">
                         <div class="card-box">
@@ -761,7 +766,8 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Item Code</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
+                                    <th scope="col">U. Price</th>
+                                    <th scope="col">D. Charge</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Edit</th>
                                     <th scope="col">Status</th>
@@ -775,6 +781,14 @@
                                                 <td>{{ $item->item_code }}</td>
                                                 <td>{{ $item->item_desc }}</td>
                                                 <td>{{ $item->pivot->item_price }}</td>
+                                                <td>
+                                                    @if ($item->design_charge == NULL)
+                                                        -
+                                                    @else
+                                                        {{ $item->design_charge }}
+                                                    @endif
+                                                    
+                                                </td>
                                                 <td>{{ $item->pivot->quantity }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#updateCustomerItem{{ $item->pivot->id }}">

@@ -14,6 +14,7 @@ class Item extends Model
         'item_desc',
         'function_type_id',
         'item_price',
+        'design_charge',
     ];
     public function function_types()
     {

@@ -71,11 +71,11 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding1" name="function_type_checkbox[]" value="1">
                                 </div>
-                                <input name="wedding_date" id="wedding_date" value="{{ old('wedding_date') }}" type="date" class="form-control @error('wedding_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="wedding_date" id="date1" value="{{ old('wedding_date') }}" type="date" class="form-control @error('wedding_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('wedding_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="wedding_location" id="wedding_location" placeholder="Wedding Location" value="{{ old('wedding_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control" value="50000">
+                            <input name="wedding_location" id="location1" placeholder="Wedding Location" value="{{ old('wedding_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount1" class="form-control" value="50000">
                         </div>
 
                         <label>Homecomming</label>
@@ -84,11 +84,11 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding2" name="function_type_checkbox[]" value="2">
                                 </div>
-                                <input name="home_com_date" id="home_com_date" value="{{ old('home_com_date') }}" type="date" class="form-control @error('home_com_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="home_com_date" id="date2" value="{{ old('home_com_date') }}" type="date" class="form-control @error('home_com_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('home_com_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="home_com_location" id="home_com_location" placeholder="Homecomming Location" value="{{ old('home_com_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control" value="50000">
+                            <input name="home_com_location" id="location2" placeholder="Homecomming Location" value="{{ old('home_com_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount2" class="form-control" value="50000">
                         </div>
                         
                         <label>Preshoot</label>
@@ -97,11 +97,11 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding3" name="function_type_checkbox[]" value="3">
                                 </div>
-                                <input name="preshoot_date" id="preshoot_date" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="preshoot_date" id="date3" value="{{ old('preshoot_date') }}" type="date" class="form-control @error('preshoot_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('preshoot_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="preshoot_location" id="preshoot_location" placeholder="Preshoot Location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control">
+                            <input name="preshoot_location" id="location3" placeholder="Preshoot Location" value="{{ old('preshoot_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount3" class="form-control" value="25000">
                         </div>
 
                         <label>Going Away</label>
@@ -110,11 +110,11 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding4" name="function_type_checkbox[]" value="4">
                                 </div>
-                                <input name="goingaway_date" id="goingaway_date" value="{{ old('goingaway_date') }}" type="date" class="form-control @error('goingaway_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="goingaway_date" id="date4" value="{{ old('goingaway_date') }}" type="date" class="form-control @error('goingaway_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('goingaway_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="goingaway_location" id="goingaway_location" placeholder="Going Away Location" value="{{ old('goingaway_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control">
+                            <input name="goingaway_location" id="location4" placeholder="Going Away Location" value="{{ old('goingaway_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount4" class="form-control" value="10000">
                         </div>
 
                         <label>Engagement</label>
@@ -123,11 +123,11 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding5" name="function_type_checkbox[]" value="5">
                                 </div>
-                                <input name="engagement_date" id="engagement_date" value="{{ old('engagement_date') }}" type="date" class="form-control @error('engagement_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="engagement_date" id="date5" value="{{ old('engagement_date') }}" type="date" class="form-control @error('engagement_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('engagement_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
-                            <input name="engagement_location" id="engagement_location" placeholder="Engagement Location" value="{{ old('engagement_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control">
+                            <input name="engagement_location" id="location5" placeholder="Engagement Location" value="{{ old('engagement_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount5" class="form-control" value="5000">
                         </div>
                     </div>
                     {{-- End when function type is Wedding --}}
@@ -141,12 +141,12 @@
                                 <div class="input-group-text">
                                     <input type="checkbox" id="wedding6" name="function_type_checkbox[]" value="6">
                                 </div>
-                                <input name="event_date" id="event_date" value="{{ old('event_date') }}" type="date" class="form-control @error('event_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
+                                <input name="event_date" id="date6" value="{{ old('event_date') }}" type="date" class="form-control @error('event_date') is-invalid @enderror" autocomplete="off" min="{{ date('Y-m-d') }}">
                                 @error('event_date') <p class="text-danger">{{$message}}</p> @enderror
                             </div>
                             <input name="event_type" id="event_type" placeholder="Description" value="{{ old('event_type') }}" type="text" class="form-control" autocomplete="off">
-                            <input name="event_location" id="event_location" placeholder="Event Location" value="{{ old('event_location') }}" type="text" class="form-control" autocomplete="off">
-                            <input type="text" name="" id="" class="form-control">
+                            <input name="event_location" id="location6" placeholder="Event Location" value="{{ old('event_location') }}" type="text" class="form-control" autocomplete="off">
+                            <input type="hidden" name="" id="amount6" class="form-control" value="20000">
                         </div>
                     </div>
                     {{-- end when function type is Event --}}
@@ -167,7 +167,6 @@
                         
                         <div class="input-group-prepend">
                             <select name="" id="discount_by" class="form-control">
-                                <option value="">Select</option>
                                 <option value="1">By Amount</option>
                                 <option value="2">By Percentage</option>
                             </select>
@@ -196,6 +195,32 @@
 
     <script>
         $(document).ready(() => {
+            for (let index = 1; index < 7; index++) {
+                $("#date"+index).prop("disabled", true)
+                $("#location"+index).prop("disabled", true)
+                $("#amount"+index).prop("disabled", true)
+                $('#wedding'+index).click(function(){
+                    if($(this).prop("checked") == true){
+                        $("#date"+index).prop("disabled", false)
+                        $("#location"+index).prop("disabled", false)
+                        $("#amount"+index).prop("disabled", false)
+                        var amount = $("#amount"+index).val()
+                        var total_payment = $('#total_payment').val()
+                        $('#total_payment').val(Number(amount) + Number(total_payment))
+                        $('#balance_to_be_paid').val(Number(amount) + Number(total_payment));
+                    } else if($(this).prop("checked") == false){
+                        $("#date"+index).prop("disabled", true)
+                        $("#location"+index).prop("disabled", true)
+                        $("#amount"+index).prop("disabled", true)
+                        var amount = $("#amount"+index).val()
+                        var total_payment = $('#total_payment').val()
+                        $('#total_payment').val(Number(total_payment) - Number(amount))
+                        $('#balance_to_be_paid').val(Number(total_payment) - Number(amount));
+                    }
+                    
+                });
+            }
+
             $('#wedding_div').hide();
             $('#event_div').hide();
             $('#function_type_id').change(() => {
@@ -214,20 +239,10 @@
         })
 
         $("#discount_by").change(function(){
-            if($("#discount_by").val() == 1){
-                $('#discount_by_field').prop("disabled", false);
-                $('#discount_by_field').val(null);
-                $('#discount').val(null);
-            }
-            else if($("#discount_by").val() == 2){
-                $('#discount_by_field').prop("disabled", false);
-                $('#discount_by_field').val(null);
-                $('#discount').val(null);
-            }else{
-                $('#discount_by_field').prop("disabled", true);
-                $('#discount_by_field').val(null);
-                $('#discount').val(null);
-            }
+            $('#discount_by_field').val(null);
+            $('#discount').val(null);
+            var total_payment = $('#total_payment').val()
+            $('#balance_to_be_paid').val(total_payment);
         });
         $('#total_payment').keyup(function(){
             var total_payment = $('#total_payment').val()

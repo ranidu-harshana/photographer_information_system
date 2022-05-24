@@ -41,6 +41,10 @@
                         <input name="item_price" id="item_price" value="{{ old('item_price') }}" type="number" class="form-control" autocomplete="off">
                     </div>
 
+                    <div class="form-group">
+                        <label>Designing Charge</label>
+                        <input name="design_charge" id="design_charge" value="{{ old('design_charge') }}" type="number" class="form-control" autocomplete="off">
+                    </div>
 
                     <div class="text-right">
                         <button type="submit" class="btn btn-primary">Submit</button>

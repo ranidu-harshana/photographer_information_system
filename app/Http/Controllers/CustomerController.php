@@ -18,8 +18,7 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         session()->forget('tab0');
         session()->forget('tab1');
         session()->forget('tab2');
@@ -169,25 +168,13 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $validated = $request->validate([
             'name'=>['required'],
             'address'=>['required'],
             'branch_id'=>['required'],
             'mob_no1'=>['required'],
             'mob_no2'=>['nullable'],
-            'wedding_date'=>['nullable'],
-            'wedding_location'=>['nullable'],
-            'home_com_date'=>['nullable'],
-            'home_com_location'=>['nullable'],
-            'event_type'=>['nullable'],
-            'event_date'=>['nullable'],
-            'event_location'=>['nullable'],
-            'photo_shoot_date'=>['nullable'],
-            'photo_shoot_location'=>['nullable'],
-            'preshoot_date'=>['nullable'],
-            'preshoot_location'=>['nullable'],
         ]);
 
         $customer = Customer::find($id);

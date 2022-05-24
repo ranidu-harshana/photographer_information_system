@@ -44,6 +44,7 @@ class ItemController extends Controller
             'item_desc'=>['required'],
             'attach_func_type'=>['required'],
             'item_price'=>['required'],
+            'design_charge'=>['nullable'],
         ]);
 
         $validated['item_code'] = sprintf('%05d', $request->item_code);
@@ -90,6 +91,7 @@ class ItemController extends Controller
             'item_desc'=>['required'],
             'function_type_id'=>['required'],
             'item_price'=>['required'],
+            'design_charge'=>['nullable'],
         ]);
 
         $item = Item::find($id);
