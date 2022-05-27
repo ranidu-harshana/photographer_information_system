@@ -140,7 +140,20 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    
+    @elseif(session('date_added')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('date_added') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('location_added')) 
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('location_added') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     @endif
 
     <div class="row">
@@ -192,18 +205,132 @@
                                         @if ($balance == 0)
                                             <span class="text-success">Payment Success</span> 
                                         @else
-                                        <span class="text "><a class="text-danger"><b>{{ $balance }}.00</b></a></span>
+                                        <span class="text "><a class="text-danger"><b>{{ number_format($balance, 2) }}</b></a></span>
                                         @endif
                                         
                                     </li>
 
                                     @foreach ($customer->function_types as $function_type)
-                                        @if ($function_type->pivot->date != NULL && $function_type->pivot->date >= explode(' ', now())[0])
+                                        @if ($function_type->pivot->date != NULL)
+                                            @if ($function_type->pivot->date >= explode(' ', now())[0])
+                                                <li>
+                                                    <span class="title">{{ $function_type->name }}</span>
+                                                    <span class="text"><b>{{ $function_type->pivot->date }}</b></span>
+                                                </li>
+                                                @if ($function_type->pivot->location != NULL)
+                                                    <li>
+                                                        <span class="title">Place</span>
+                                                        <span class="text">{{ $function_type->pivot->location }}</span>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <span class="title">Place</span>
+                                                        <span class="text">
+                                                            <a href="" data-toggle="modal" data-target="#addLocation{{ $function_type->pivot->id }}"><i class="fas fa-plus"></i> Add a location</a>
+
+                                                            <div class="modal fade" id="addLocation{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="addLocation{{ $function_type->pivot->id }}Label" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="addLocation{{ $function_type->pivot->id }}Label">Add Location</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{ route('add_location', $function_type->pivot->id) }}" method="post">
+                                                                                @csrf
+                                                                                @method('PUT')
+                                                                                
+                                                                                <div class="form-group">
+                                                                                    <label>Location</label>
+                                                                                    <input name="location" type="text" class="form-control" required autocomplete="off">
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </li>
+                                                @endif
+                                            @endif
+                                        @else
                                             <li>
                                                 <span class="title">{{ $function_type->name }}</span>
-                                                <span class="text"><b>{{ $function_type->pivot->date }}</b></span>
+                                                <span class="text">
+                                                    <a href="" data-toggle="modal" data-target="#addDate{{ $function_type->pivot->id }}"><i class="fas fa-plus"></i> Add a date</a>
+
+                                                    <div class="modal fade" id="addDate{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="addDate{{ $function_type->pivot->id }}Label" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="addDate{{ $function_type->pivot->id }}Label">Add Date</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('add_date', $function_type->pivot->id) }}" method="post">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <label>Date</label>
+                                                                            <input name="date" type="date" class="form-control" required autocomplete="off">
+                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
                                             </li>
-                                            @if ($function_type->pivot->location != NULL)
+                                            @if ($function_type->pivot->location == NULL)
+                                                <li>
+                                                    <span class="title">Place</span>
+                                                    <span class="text">
+                                                        
+                                                        <a href="" data-toggle="modal" data-target="#addLocation{{ $function_type->pivot->id }}"><i class="fas fa-plus"></i> Add a location</a>
+
+                                                        <div class="modal fade" id="addLocation{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="addLocation{{ $function_type->pivot->id }}Label" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="addLocation{{ $function_type->pivot->id }}Label">Add Location</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{{ route('add_location', $function_type->pivot->id) }}" method="post">
+                                                                            @csrf
+                                                                            @method('PUT')
+                                                                            
+                                                                            <div class="form-group">
+                                                                                <label>Location</label>
+                                                                                <input name="location" type="text" class="form-control" required autocomplete="off">
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </li>
+                                            @else
                                                 <li>
                                                     <span class="title">Place</span>
                                                     <span class="text">{{ $function_type->pivot->location }}</span>
@@ -262,7 +389,7 @@
                                         <span class="title">Total Item Price </span>
                                         
                                         @if ($total_item_price != 0)
-                                            <span class="text-primary"> {{ $total_item_price }}.00 </span>
+                                            <span class="text-primary"> {{ number_format($total_item_price, 2) }} </span>
                                         @else
                                             0.00
                                         @endif
@@ -298,7 +425,7 @@
                                     <li>
                                         <span class="title">Total Package Price </span>
                                         @if ($total_package_price != 0)
-                                            <span class="text-primary"> {{ $total_package_price }}.00 </span>
+                                            <span class="text-primary"> {{ number_format($total_package_price, 2) }} </span>
                                         @else
                                             0.00
                                         @endif
@@ -322,7 +449,7 @@
                                 <li>
                                     <span class="title">Amount</span>
                                     @if ($customer->total_payment != NULL || $customer->total_payment != 0)
-                                        <span class="text-primary"> {{ $customer->total_payment }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->total_payment, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -331,7 +458,7 @@
                                 <li>
                                     <span class="title">Discount </span>
                                     @if ($customer->discount != NULL || $customer->discount != 0)
-                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->discount, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -340,7 +467,7 @@
                                 <li>
                                     <span class="title">Advance Payment </span>
                                     @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
-                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->advance_payment, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -349,7 +476,7 @@
 
                                 <li>
                                     <span class="title">Total Amount</span>
-                                    <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
+                                    <span class="text-primary"><b> {{ number_format($customer->total_payment + $total_package_price + $total_item_price, 2) }} </b></span>
                                 </li>
                                 @php $intering_payment = 0; @endphp
                                 @foreach ($customer->intering_payments as $value)
@@ -362,7 +489,7 @@
                                         @if ($balance == 0)
                                             <span class="text-success">Payment Success</span> 
                                         @else
-                                            {{ $balance }}.00
+                                            {{ number_format($balance, 2) }}
                                         @endif
                                     </a></span>
                                 </li>
@@ -706,10 +833,49 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+
                                                     @if ($items->count() != 0)
-                                                        @foreach ($items as $item)
-                                                            <input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
-                                                        @endforeach
+                                                    @for ($i = 0; $i < 5; $i++)
+                                                        @if ($i == 0)
+                                                            {{-- <input type="checkbox" name="" id="" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"> --}}
+                                                            @foreach ($items as $item)
+                                                                @if (!preg_match("/thanks card/i", $item->item_desc) && !preg_match("/enlargment/i", $item->item_desc) && !preg_match("/album/i", $item->item_desc) )
+                                                                    
+                                                                        <input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
+                                                                    
+                                                                @endif
+                                                            @endforeach
+                                                        @elseif ($i == 1)
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Thanks Cards</label><br>
+                                                            @foreach ($items as $item)
+                                                                @if (preg_match("/thanks card/i", $item->item_desc))
+                                                                    <div class="collapse" id="collapseSubTitles{{ $i }}">
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        @elseif ($i == 2)
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Enlargments</label><br>
+                                                            @foreach ($items as $item)
+                                                                @if (preg_match("/enlargment/i", $item->item_desc))
+                                                                    <div class="collapse" id="collapseSubTitles{{ $i }}">
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        @elseif ($i == 3)
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Albums</label><br>
+                                                            @foreach ($items as $item)
+                                                                @if (preg_match("/album/i", $item->item_desc))
+                                                                    <div class="collapse" id="collapseSubTitles{{ $i }}">
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                        
+                                                    @endfor
+                                                        
                                                     @else
                                                         <div class="alert alert-success" role="alert">No any Items to Attach</div>
                                                     @endif
@@ -933,7 +1099,7 @@
                                 <li>
                                     <span class="title">Amount</span>
                                     @if ($customer->total_payment != NULL || $customer->total_payment != 0)
-                                        <span class="text-primary"> {{ $customer->total_payment }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->total_payment, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -944,7 +1110,7 @@
                                     <span class="title">Total Package Price </span>
                                     
                                     @if ($total_package_price != 0)
-                                        <span class="text-primary"> {{ $total_package_price }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($total_package_price, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -953,7 +1119,7 @@
                                     <span class="title">Total Item Price </span>
                                     
                                     @if ($total_item_price != 0)
-                                        <span class="text-primary"> {{ $total_item_price }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($total_item_price, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -961,13 +1127,13 @@
 
                                 <li>
                                     <span class="title">Total Amount</span>
-                                    <span class="text-primary"><b> {{ $customer->total_payment + $total_package_price + $total_item_price }}.00 </b></span>
+                                    <span class="text-primary"><b> {{ number_format($customer->total_payment + $total_package_price + $total_item_price , 2) }}</b></span>
                                     
                                 </li>
                                 <li>
                                     <span class="title">Discount </span>
                                     @if ($customer->discount != NULL || $customer->discount != 0)
-                                        <span class="text-primary"> {{ $customer->discount }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->discount, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -976,7 +1142,7 @@
                                 <li>
                                     <span class="title">Advance Payment </span>
                                     @if ($customer->advance_payment != NULL || $customer->advance_payment != 0)
-                                        <span class="text-primary"> {{ $customer->advance_payment }}.00 </span>
+                                        <span class="text-primary"> {{ number_format($customer->advance_payment, 2) }} </span>
                                     @else
                                         0.00
                                     @endif
@@ -988,7 +1154,7 @@
                                         @if ($balance == 0)
                                             <span class="text-success">Payment Success</span> 
                                         @else
-                                            {{ $balance }}.00
+                                            {{ number_format($balance, 2) }}
                                         @endif
                                     </a></span>
                                 </li>
@@ -1030,7 +1196,7 @@
                                         @foreach ($customer->intering_payments as $intering_payment)
                                             <tr>
                                                 <th scope="row">{{ $counter }}</th>
-                                                <td>{{ $intering_payment->intering_payment }}.00</td>
+                                                <td>{{ number_format($intering_payment->intering_payment, 2) }}</td>
                                                 <td>{{ $intering_payment->created_at }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editInterimPayment{{ $intering_payment->id }}">
@@ -1212,45 +1378,47 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($customer->function_types as $function_type)
-                                            <tr>
-                                                <td>{{ $function_type->name }}</td>
-                                                <td>
-                                                    <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#postponeModal{{ $function_type->pivot->id }}">Postpone</a>
-                                                    <div class="modal fade" id="postponeModal{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="postponeModal{{ $function_type->pivot->id }}Label" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="postponeModal{{ $function_type->pivot->id }}Label">Postpone {{ $function_type->name }} Date</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form action="{{ route('postpone', $function_type->pivot->id) }}" method="post">
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label>Date</label>
-                                                                            @if ($function_type->pivot->postponed_date != NULL)
-                                                                                <input name="date" type="date" value="{{ $function_type->pivot->date }}" class="form-control" required autocomplete="off">
-                                                                            @else
-                                                                                <input name="date" type="date" class="form-control" required autocomplete="off">
-                                                                            @endif
+                                            @if ($function_type->pivot->date != NULL)
+                                                <tr>
+                                                    <td>{{ $function_type->name }}</td>
+                                                    <td>
+                                                        <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#postponeModal{{ $function_type->pivot->id }}">Postpone</a>
+                                                        <div class="modal fade" id="postponeModal{{ $function_type->pivot->id }}" tabindex="-1" role="dialog" aria-labelledby="postponeModal{{ $function_type->pivot->id }}Label" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="postponeModal{{ $function_type->pivot->id }}Label">Postpone {{ $function_type->name }} Date</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form action="{{ route('postpone', $function_type->pivot->id) }}" method="post">
+                                                                            @csrf
+                                                                            @method('PUT')
                                                                             
-                                                                        </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Done</button>
-                                                                    </form>
+                                                                            <div class="form-group">
+                                                                                <label>Date</label>
+                                                                                @if ($function_type->pivot->postponed_date != NULL)
+                                                                                    <input name="date" type="date" value="{{ $function_type->pivot->date }}" class="form-control" required autocomplete="off">
+                                                                                @else
+                                                                                    <input name="date" type="date" class="form-control" required autocomplete="off">
+                                                                                @endif
+                                                                                
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Done</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>Cancel</td>
-                                            </tr>
+                                                    </td>
+                                                    <td>Cancel</td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     
                                     

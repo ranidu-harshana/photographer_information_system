@@ -47,7 +47,7 @@ class ItemController extends Controller
             'design_charge'=>['nullable'],
         ]);
 
-        $validated['item_code'] = sprintf('%05d', $request->item_code);
+        // $validated['item_code'] = sprintf('%05d', $request->item_code);
         $item = Item::create($validated);
         $item->function_types()->attach($request->attach_func_type);
         session()->flash('item-created', 'Item Created');

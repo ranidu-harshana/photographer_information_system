@@ -64,7 +64,6 @@ class CustomerController extends Controller
             'function_type_checkbox'=>['required'],
         ]);
         $validated['function_type_id'] = 1;
-        $validated['bill_nulber'] = sprintf('%05d', $request->bill_nulber);
         $customer = Customer::create($validated);
 
         foreach ($request->function_type_checkbox as $function_type_checkbox) {
@@ -369,7 +368,7 @@ class CustomerController extends Controller
         // return view('admin.invoice-pdf');
     }
 
-    // Calender
+    // Calender functions
     public function get_all_func_dates() {
         $date_arr = [];
 
@@ -405,5 +404,23 @@ class CustomerController extends Controller
         }
         
         return response()->json($arr);
+    }
+    // end
+
+
+    public function add_date(Request $request, $id) {
+        $updated = DB::table('customer_function_type')->where('id', $id)->update(['date'=>$request->date]);
+        
+        $func_type = FunctionType::find($updated);
+        session()->flash('date_added', $func_type->name . ' date added');
+        return back();
+    }
+
+    public function add_location(Request $request, $id) {
+        $updated = DB::table('customer_function_type')->where('id', $id)->update(['location'=>$request->location]);
+        
+        $func_type = FunctionType::find($updated);
+        session()->flash('location_added', $func_type->name . ' location added');
+        return back();
     }
 }

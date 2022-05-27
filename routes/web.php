@@ -45,6 +45,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::delete('/customer/detach/package/{customer_id}', [CustomerController::class, 'package_detach'])->name('customer.package.detach');
 
     Route::put('/postpone/{customer}', [CustomerController::class, 'postpone'])->name('postpone');
+    Route::put('/add/date/{id}', [CustomerController::class, 'add_date'])->name('add_date');
+    Route::put('/add/location/{id}', [CustomerController::class, 'add_location'])->name('add_location');
 
     Route::post('set_tab0_session', [SessionController::class, 'set_tab0_session']);
     Route::post('set_tab1_session', [SessionController::class, 'set_tab1_session']);
