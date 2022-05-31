@@ -833,20 +833,16 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-
                                                     @if ($items->count() != 0)
                                                     @for ($i = 0; $i < 5; $i++)
                                                         @if ($i == 0)
-                                                            {{-- <input type="checkbox" name="" id="" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"> --}}
                                                             @foreach ($items as $item)
                                                                 @if (!preg_match("/thanks card/i", $item->item_desc) && !preg_match("/enlargment/i", $item->item_desc) && !preg_match("/album/i", $item->item_desc) )
-                                                                    
-                                                                        <input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
-                                                                    
+                                                                    <input type="checkbox" id="attach_items{{$customer->id}}{{ $item->id }}" name="attach_items[]" value="{{ $item->id }}"> <label for="attach_items{{$customer->id}}{{ $item->id }}"> {{ $item->item_desc }}</label>  <br>
                                                                 @endif
                                                             @endforeach
                                                         @elseif ($i == 1)
-                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Thanks Cards</label><br>
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> &nbsp;Thanks Cards</label><br>
                                                             @foreach ($items as $item)
                                                                 @if (preg_match("/thanks card/i", $item->item_desc))
                                                                     <div class="collapse" id="collapseSubTitles{{ $i }}">
@@ -855,7 +851,7 @@
                                                                 @endif
                                                             @endforeach
                                                         @elseif ($i == 2)
-                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Enlargments</label><br>
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> &nbsp;Enlargments</label><br>
                                                             @foreach ($items as $item)
                                                                 @if (preg_match("/enlargment/i", $item->item_desc))
                                                                     <div class="collapse" id="collapseSubTitles{{ $i }}">
@@ -864,7 +860,7 @@
                                                                 @endif
                                                             @endforeach
                                                         @elseif ($i == 3)
-                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> Albums</label><br>
+                                                            <input type="checkbox" name="" id="collapseSubTitles{{ $i }}" data-toggle="collapse" data-target="#collapseSubTitles{{ $i }}" aria-expanded="false" aria-controls="collapseSubTitles{{ $i }}"><label for="collapseSubTitles{{ $i }}"> &nbsp;Albums</label><br>
                                                             @foreach ($items as $item)
                                                                 @if (preg_match("/album/i", $item->item_desc))
                                                                     <div class="collapse" id="collapseSubTitles{{ $i }}">
@@ -924,7 +920,7 @@
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <div class="card-box">
+                        <div class="card-box" style="overflow-x:scroll">
                             <h4 class="card-title">All Items</h4>
                             <table class="table table-sm">
                                 <thead>

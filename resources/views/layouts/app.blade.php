@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style1.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/calendar.css') }}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
@@ -23,7 +22,7 @@
         <x-admin-top-nav></x-admin-top-nav>
         <x-admin-side-bar></x-admin-side-bar>
         <div class="page-wrapper">
-            <div class="content">
+            <div class="content" style="overflow-x: scroll">
                 @yield('content')
             </div>
             
