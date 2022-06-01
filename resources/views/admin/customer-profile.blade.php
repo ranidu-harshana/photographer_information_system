@@ -26,7 +26,16 @@
     @foreach ($customer->intering_payments as $value)
         @php $intering_payment += $value->intering_payment; @endphp 
     @endforeach
-    @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+
+    @if ($customer->discount_by == 1)
+            
+        @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
+    @elseif($customer->discount_by == 2)
+        @php
+            $discount = $customer->total_payment * ( $customer->discount / 100 );
+            $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($discount + $customer->advance_payment  + $intering_payment) ;
+        @endphp
+    @endif
     
     @if(session('customer-updated'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -158,7 +167,7 @@
 
     <div class="row">
         <div class="col-sm-2 col-6">
-            <h4 class="page-title">Customer Profile</h4>
+            <h4 class="page-title">Customer Profile </h4>
         </div>
 
         <div class="col-sm-5 col-6 text-left ">
@@ -187,7 +196,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="profile-info-left">
-                                    <h3 class="user-name m-t-0 mb-0">Name : {{ $customer->name }}</h3>
+                                    <h3 class="user-name m-t-0 mb-0">{{ $customer->name }}</h3>
                                     <div class="staff-id">Address : {{ $customer->address }}</div>
                                     <div class="staff-id">Bill Number : {{ $customer->bill_nulber }}</div>
                                     <div class="staff-id">Booked On : {{ $customer->created_at }}</div>
@@ -478,12 +487,7 @@
                                     <span class="title">Total Amount</span>
                                     <span class="text-primary"><b> {{ number_format($customer->total_payment + $total_package_price + $total_item_price, 2) }} </b></span>
                                 </li>
-                                @php $intering_payment = 0; @endphp
-                                @foreach ($customer->intering_payments as $value)
-                                    @php $intering_payment += $value->intering_payment; @endphp
-                                @endforeach
-                                @php $balance = ($customer->total_payment + $total_package_price + $total_item_price) - ($customer->discount + $customer->advance_payment  + $intering_payment) @endphp
-                                <li>
+                               <li>
                                     <span class="title">Balance </span>
                                     <span class="text"><a href="#">
                                         @if ($balance == 0)
@@ -1068,18 +1072,36 @@
                                                             <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="total_payment" class="form-control" value="{{ $customer->total_payment }}">
                                                         </div>
                                                     </div>
+
                                                     <div class="form-group row">
                                                         <label class="col-md-3 col-form-label">Discount</label>
                                                         <div class="col-md-9">
-                                                            <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" name="discount" class="form-control" value="{{ $customer->discount }}">
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <select name="discount_by" id="discount_by" class="form-control">
+                                                                        @if ($customer->discount_by == 1)
+                                                                            <option value="1">By Amount</option>
+                                                                            <option value="2">By Percentage</option>
+                                                                        @elseif($customer->discount_by == 2)
+                                                                            <option value="2">By Percentage</option>
+                                                                            <option value="1">By Amount</option>
+                                                                        @endif
+                                                                    </select>
+                                                                </div>
+                                                                <input type="text" autocomplete="off" name="discount" class="form-control" value="{{ $customer->discount }}">
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="form-group row">
                                                         <label class="col-md-3 col-form-label">Advance Payment</label>
                                                         <div class="col-md-9">
                                                             <input type="text" onkeypress="return isExactNumberKey(event)" autocomplete="off" class="form-control" name="advance_payment" value="{{ $customer->advance_payment }}">
                                                         </div>
                                                     </div>
+
+                                                    
+                                                    
                                             </div>
                                             <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1129,9 +1151,18 @@
                                 <li>
                                     <span class="title">Discount </span>
                                     @if ($customer->discount != NULL || $customer->discount != 0)
-                                        <span class="text-primary"> {{ number_format($customer->discount, 2) }} </span>
+                                        @if ($customer->discount_by == 1)
+                                            <span class="text-primary"> {{ number_format($customer->discount, 2) }} </span>
+                                        @elseif($customer->discount_by == 2)
+                                            <span class="text-primary"> {{ $customer->discount }}% </span>
+                                        @endif
+                                        
                                     @else
-                                        0.00
+                                        @if ($customer->discount_by == 1)
+                                            0.00
+                                        @elseif($customer->discount_by == 2)
+                                            0%
+                                        @endif
                                     @endif
                                 </li>
                                 
@@ -1145,7 +1176,7 @@
                                     
                                 </li>
                                 <li>
-                                    <span class="title">Balance </span>
+                                    <span class="title">Balance  </span>
                                     <span class="text"><a href="#">
                                         @if ($balance == 0)
                                             <span class="text-success">Payment Success</span> 
@@ -1160,7 +1191,7 @@
                                 <form action="{{ route('intering_payment.store') }}" method="POST">
                                     @csrf
                                     <div class="form-group row">
-                                        <label class="col-form-label col-md-4">Intering Payment</label>
+                                        <label class="col-form-label col-md-4">Interim Payment</label>
                                         <div class="col-md-4">
                                             <input type="hidden" name="customer_id" value="{{ $customer->id }}">
                                             <input type="text" class="form-control" name="intering_payment" onkeypress="return isExactNumberKey(event)" autocomplete="off">

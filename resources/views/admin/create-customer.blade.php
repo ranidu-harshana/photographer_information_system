@@ -166,7 +166,7 @@
                     <div class="input-group mb-3">
                         
                         <div class="input-group-prepend">
-                            <select name="" id="discount_by" class="form-control">
+                            <select name="discount_by" id="discount_by" class="form-control">
                                 <option value="1">By Amount</option>
                                 <option value="2">By Percentage</option>
                             </select>

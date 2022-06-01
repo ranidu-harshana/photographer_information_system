@@ -28,6 +28,7 @@ class Customer extends Model
         'preshoot_location',
         'total_payment',
         'discount',
+        'discount_by',
         'branch_id',
         'advance_payment',
         'total_package_price',

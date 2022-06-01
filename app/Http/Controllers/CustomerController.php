@@ -57,9 +57,9 @@ class CustomerController extends Controller
             'branch_id'=>['required'],
             'mob_no1'=>['required'],
             'mob_no2'=>['nullable'],
-            
             'total_payment'=>['nullable'],
             'discount'=>['nullable'],
+            'discount_by'=>['required'],
             'advance_payment'=>['nullable'],
             'function_type_checkbox'=>['required'],
         ]);
@@ -174,6 +174,7 @@ class CustomerController extends Controller
             'branch_id'=>['required'],
             'mob_no1'=>['required'],
             'mob_no2'=>['nullable'],
+            
         ]);
 
         $customer = Customer::find($id);
@@ -304,6 +305,7 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'total_payment' => ['nullable'],
             'discount' => ['nullable'],
+            'discount_by'=>['required'],
             'advance_payment' => ['nullable'],
         ]);
         $customer = Customer::find($id);
