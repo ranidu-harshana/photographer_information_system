@@ -93,6 +93,8 @@ class CustomerController extends Controller
      */
     public function show($id) {
         $customer = Customer::find($id);
+
+
         $ids = [];
         $function_ids = [];
         foreach($customer->items as $item){
@@ -109,10 +111,17 @@ class CustomerController extends Controller
             
             
         $ids = [];
+        $function_ids = [];
         foreach($customer->packages as $package){
             array_push($ids, $package->id);
         }
-        $packages = Package::where('function_type_id', '=', $customer->function_type_id)->whereNotIn('id', $ids)->get();
+        foreach($customer->function_types as $function_type){
+            array_push($function_ids, $function_type->id);
+        }
+        $packages = DB::table('packages')
+            ->whereNotIn('id',$ids)
+            ->whereRaw('id IN (SELECT package_id FROM function_type_package WHERE function_type_id IN ('.implode(', ', $function_ids).'))')
+            ->get();
 
 
 
@@ -351,7 +360,7 @@ class CustomerController extends Controller
         return back();
     }
 
-    function postpone(Request $request, $id) {
+    public function postpone(Request $request, $id) {
         $affected = DB::table('customer_function_type')->where('id', $id)->get()->first();
             //   ->update(['date' => $request->date, ''=>]);
 
@@ -425,4 +434,7 @@ class CustomerController extends Controller
         session()->flash('location_added', $func_type->name . ' location added');
         return back();
     }
+
 }
+
+

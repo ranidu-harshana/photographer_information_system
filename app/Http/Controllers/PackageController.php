@@ -28,7 +28,8 @@ class PackageController extends Controller
     public function create()
     {
         $function_types = FunctionType::all();
-        return view('admin.create-package', ['function_types'=>$function_types]);
+        $items = Item::all();
+        return view('admin.create-package', ['function_types'=>$function_types, 'items'=>$items]);
     }
 
     /**
@@ -43,14 +44,16 @@ class PackageController extends Controller
             'package_code'=>['required', 'unique:packages,package_code'],
             'name'=>['nullable'],
             'desc'=>['nullable'],
+            // 'attach_func_type.*z'=>['required'],
             'package_price'=>['nullable'],
         ]);
 
-        $function = FunctionType::find($request->function_type_id);
-        $validated['package_code'] = sprintf('%05d', $request->package_code);
-        $package = $function->packages()->create($validated);
+        // dd($validated);
+        $package = Package::create($validated);
 
-        $package->items()->attach($request->items);
+        $package->function_types()->sync($request->attach_func_type);
+        $package->items()->sync($request->items);
+
         session()->flash('package-created', 'Package Created');
         return redirect()->route('package.index');
     }

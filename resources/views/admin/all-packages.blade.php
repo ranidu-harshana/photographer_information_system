@@ -1,5 +1,4 @@
 @extends('layouts.app_dataTable')
-
 @section('content')
     <div class="row">
         <div class="col-sm-12">
@@ -37,7 +36,6 @@
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Price</th>
-                                    <th>Type</th>
                                     <th>Action</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
@@ -50,7 +48,6 @@
                                         <td>{{ $package->name }}</td>
                                         <td>{{ $package->desc }}</td>
                                         <td>{{ $package->package_price }}</td>
-                                        <td>{{ $package->function_type->name }}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View Items">
                                                 <button type="button" class="btn btn-warning btn-sm" name="view" id="view" data-toggle="modal" data-target="#viewPackageItemsModal{{ $package->id }}"><i class="far fa-eye"></i> </button>
@@ -174,7 +171,6 @@
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Price</th>
-                                    <th>Type</th>
                                     <th>Action</th>
                                     <th>Edit</th>
                                     <th>Delete</th>

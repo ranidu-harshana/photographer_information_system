@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('function_type_package', function (Blueprint $table) {
             $table->id();
-            $table->string('package_code')->nullable();
-            $table->string('name')->nullable();
-            $table->string('desc')->nullable();
-            $table->double('package_price')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->integer('function_type_id');
+            $table->integer('package_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('function_type_package');
     }
 };

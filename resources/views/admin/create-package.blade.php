@@ -33,12 +33,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Function Type</label>
-                        <select name="function_type_id" id="function_type_id" class="form-control">
-                            @foreach ($function_types as $function_type)
-                                <option value="{{ $function_type->id }}">{{ $function_type->name }}</option>
-                            @endforeach
-                        </select>
+                        <label>Function Type</label><br>
+                        @foreach ($function_types as $function_type)
+                            <input type="checkbox" id="attach_func_type{{ $function_type->id }}" name="attach_func_type[]" value="{{ $function_type->id }}"> <label for="attach_func_type{{ $function_type->id }}"> {{ $function_type->name }}</label>  <br>
+                        @endforeach
                     </div>
 
                     <div class="form-group">
@@ -51,7 +49,12 @@
                         <label for="item" class="col-form-label text-md-end">{{ __('Item Name') }}</label>
     
                         <div class="form-control mt-2 border border-success" id="display_area" style="height: 192px; overflow: auto">
-                            No Items
+                            @foreach ($items as $item)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ $item->id }}" name="items[]" id="items{{ $item->id }}">
+                                    <label class="form-check-label" for="items{{ $item->id }}"> {{ $item->item_desc }} </label>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="text-right">
@@ -62,7 +65,7 @@
         </div>
 
     </div>
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             var function_type_id = $('#function_type_id').val();
             $.ajax({
@@ -107,5 +110,5 @@
                 })
             });
         });
-    </script>
+    </script> --}}
 @endsection

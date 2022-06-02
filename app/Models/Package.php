@@ -14,12 +14,13 @@ class Package extends Model
         'name',
         'desc',
         'package_price',
-        'package_id'
+        'package_id',
+        'attach_func_type'
     ];
 
-    public function function_type()
+    public function function_types()
     {
-        return $this->belongsTo(FunctionType::class);
+        return $this->belongsToMany(FunctionType::class);
     }
 
     public function items() {
