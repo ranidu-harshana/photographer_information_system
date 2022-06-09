@@ -51,7 +51,8 @@ class CustomerController extends Controller
      */
     public function store(Request $request) {
         $validated = $request->validate([
-            'bill_nulber'=>['required', 'unique:customers,bill_nulber'],
+            // 'bill_nulber'=>['required', 'unique:customers,bill_nulber'],
+            'bill_nulber'=>['required', 'unique:customers,bill_nulber,NULL,id,branch_id,'. $request->branch_id],
             'name'=>['required'],
             'address'=>['required'],
             'branch_id'=>['required'],

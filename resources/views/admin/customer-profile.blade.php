@@ -198,7 +198,7 @@
                                 <div class="profile-info-left">
                                     <h3 class="user-name m-t-0 mb-0">{{ $customer->name }}</h3>
                                     <div class="staff-id">Address : {{ $customer->address }}</div>
-                                    <div class="staff-id">Bill Number : {{ $customer->bill_nulber }}</div>
+                                    <div class="staff-id">Bill Number : {{ $customer->branch->prefix }}{{ sprintf('%04d', $customer->bill_nulber) }}</div>
                                     <div class="staff-id">Booked On : {{ $customer->created_at }}</div>
                                     <div class="staff-id">Branch : {{ $customer->branch->name }}</div>
                                     <div class="staff-id">Phone 1 : {{ $customer->mob_no1 }}</div>
@@ -595,7 +595,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $package->package_code }}</td>
+                                                <td>{{ sprintf('%05d', $package->package_code) }}</td>
                                                 <td>{{ $package->name }}</td>
                                                 <td>{{ $package->pivot->package_price }}</td>
                                                 <td>
@@ -729,7 +729,7 @@
                                                         @if($items_arr != [] && array_key_exists($item->id, $items_arr))
                                                             @php $item_arr = $items_arr[$item->id]; @endphp
                                                             <tr>
-                                                                <td>{{ $item->item_code }}</td>
+                                                                <td>{{ sprintf('%05d', $item->item_code) }}</td>
                                                                 <td>{{ $item->item_desc }}</td>
                                                                 <td>{{ $item_arr[0] }}</td>
                                                                 <td>
@@ -944,7 +944,7 @@
                                         @foreach ($customer->items as $item)
                                             <tr>
                                                 <th scope="row">{{ $item->pivot->id }}</th>
-                                                <td>{{ $item->item_code }}</td>
+                                                <td>{{ sprintf('%05d', $item->item_code) }}</td>
                                                 <td>{{ $item->item_desc }}</td>
                                                 <td>{{ $item->pivot->item_price }}</td>
                                                 <td>
