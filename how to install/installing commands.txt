@@ -3,6 +3,7 @@ Steps to install
 ====================
 
 git clone https://github.com/ranidu-harshana/photographer_information_system.git
+cd photographer_information_system
 composer install
 cp .env.example .env
 php artisan key:generate
@@ -10,3 +11,13 @@ php artisan migrate
 
 create a databe ---> photographer_information_system
 run sql queries in sql_queries.txt
+
+php artisan serve
+
+
+
+====================
+Login Details
+====================
+username: admin@gmail.com
+password: abcd12ABCD
