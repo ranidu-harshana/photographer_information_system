@@ -8,4 +8,5 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 
+create a databe ---> photographer_information_system
 run sql queries in sql_queries.txt
