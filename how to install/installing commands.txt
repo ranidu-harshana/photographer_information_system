@@ -1,0 +1,11 @@
+====================
+Steps to install
+====================
+
+git clone https://github.com/ranidu-harshana/photographer_information_system.git
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+
+run sql queries in sql_queries.txt

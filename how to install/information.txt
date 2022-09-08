@@ -1,0 +1,10 @@
+Index No: UWU/CST/19/033
+Name: MANAMENDRA M.A.R.H
+Composer version 2.0.13
+PHP: 8.1.6
+
+This web app is developed for an real world photography studio.
+By developing this web client need to manage his buisness.
+This is still in developing stage, some changes will be made according to requirements of client.
+I decide to submit this project as my web development course module assignment because this is
+an actual real world project done by me.
