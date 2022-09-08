@@ -33,13 +33,13 @@
                     </ul>
                 </li>
 
-                <li class="submenu">
+                {{-- <li class="submenu">
                     <a href="#"><i class="fas fa-book"></i> <span> Reports </span> <span><i class="fas fa-caret-down"></i></span></a>
                     <ul style="display: none;">
                         <li><a href="">Wedding Reservation</a></li>
                         <li><a href="">Reserved Items</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

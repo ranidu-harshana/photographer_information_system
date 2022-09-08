@@ -170,12 +170,12 @@
             <h4 class="page-title">Customer Profile </h4>
         </div>
 
-        <div class="col-sm-5 col-6 text-left ">
+        {{-- <div class="col-sm-5 col-6 text-left ">
             <form action="{{ route('invoice', $customer->id) }}" method="post">
                 @csrf
                 <button class="btn" style="background-color:#0275d8; color:white">Generate Bill</button>
             </form>
-        </div>
+        </div> --}}
 
         <div class="col-sm-5 col-6 text-right m-b-30 ">
             <a href="{{ route('customer.edit', $customer->id) }}" class="btn btn-success btn-rounded"><i class="fas fa-edit"></i> Edit</a>
